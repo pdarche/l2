@@ -2,17 +2,19 @@ var series,
     hours,
     minVal,
     maxVal,
-    w = 400,
-    h = 400,
+    w = 800,
+    h = 800,
     vizPadding = {
-        top: 10,
-        right: 0,
-        bottom: 15,
-        left: 0
+        top: 50,
+        right: 50,
+        bottom: 50,
+        left: 50
     },
     radius,
     radiusLength,
-    ruleColor = "#CCC";
+    ruleColor = "#CCC",
+    colors = [ "#C5DE97", "#88C9BF", "#D1D2D4", "#90C086", "#F9AF88", "#B2DBB6", "#8775B1", "#F3879E", "#DED6B3", "#ECDC66", "#8DB9C0", "#C5DE97", "#88C9BF", "#D1D2D4", "#90C086", "#F9AF88", "#B2DBB6", "#8775B1", "#F3879E", "#DED6B3", "#ECDC66", "#8DB9C0" ],
+    brandNames = []
 
 var loadViz = function(){
   loadData();
@@ -22,33 +24,35 @@ var loadViz = function(){
   draw();
 };
 
+
+// var controls = {
+//     brandNames = brandNames,
+//     populateBrands: function(){
+//     //   $.each()
+//     // }
+//     }
+
+// }
+
 var loadData = function(){
     var randomFromTo = function randomFromTo(from, to){
        return Math.floor(Math.random() * (to - from + 1) + from);
     };
 
-    series = [
-      [],[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
-    ];
-
-    console.log(ranking)
-
+    series = [];
     hours = [];
+    attributes = [ "technology", "search_nav", "customer_service", "product_page", "account", "checkout" ]
 
-    for (var i = 0; i < series.length; i++){
-        series[i][ 
-          ranking.data[i].account, 
-          ranking.data[i].product_page, 
-          ranking.data[i].total_size, 
-          ranking.data[i].checkout, 
-          ranking.data[i].customer_service,
-          ranking.data[i].search_nav,
-          ranking.data[i].technology,
-          ranking.data[i].rank
-        ]
+    for ( var i = 0; i < attributes.length ; i++ ){
+        console.log("ranking", ranking)
+        var metric = []
+        for (var j = 0; j < 5 ; j++){
+           var score = ranking.data[j][attributes[i]]
+           metric.push(score)
+        }
+        series.push(metric)
     }
-    
-    //hours[i] = i; //in case we want to do different formatting
+
 
     mergedArr = series[0]
 
@@ -56,18 +60,26 @@ var loadData = function(){
         mergedArr = mergedArr.concat(series[i + 1])
     }
 
-    minVal = d3.min(mergedArr);
-    maxVal = d3.max(mergedArr);
+    console.log(mergedArr)
+
+    minVal = 0//d3.min(mergedArr);
+    maxVal = 5//d3.max(mergedArr);
     //give 25% of range as buffer to top
-    maxVal = maxVal + ((maxVal - minVal) * 0.25);
+    // maxVal = maxVal + ((maxVal - minVal) * 0.25);
     minVal = 0;
 
     //to complete the radial lines
-    for (i = 0; i < series.length; i += 1) {
+    for (var i = 0; i < series.length; i += 1) {
         series[i].push(series[i][0]);
     }
 
-    console.log("series", series)
+    for (var n = 0; n < series.length; n++){
+        series[n].push(series[n][5])
+    }
+
+    console.log("series",series)
+
+
 };
 
 var buildBase = function(){
@@ -128,13 +140,13 @@ addAxes = function () {
       .enter().append('svg:g')
       .attr("class", "circle-ticks");
 
-  circleAxes.append("svg:circle")
-      .attr("r", function (d, i) {
-          return radius(d);
-      })
-      .attr("class", "circle")
-      .style("stroke", ruleColor)
-      .style("fill", "none");
+  // circleAxes.append("svg:circle")
+  //     .attr("r", function (d, i) {
+  //         return radius(d);
+  //     })
+  //     .attr("class", "circle")
+  //     .style("stroke", ruleColor)
+  //     .style("fill", "none");
 
   circleAxes.append("svg:text")
       .attr("text-anchor", "middle")
@@ -144,10 +156,10 @@ addAxes = function () {
       .text(String);
 
   lineAxes = vizBody.selectAll('.line-ticks')
-      .data(hours)
+      .data(attributes)
       .enter().append('svg:g')
       .attr("transform", function (d, i) {
-          return "rotate(" + ((i / hours.length * 360) - 90) +
+          return "rotate(" + ((i / attributes.length * 360) - 90) +
               ")translate(" + radius(maxVal) + ")";
       })
       .attr("class", "line-ticks");
@@ -158,10 +170,26 @@ addAxes = function () {
       .style("fill", "none");
 
   lineAxes.append('svg:text')
-      .text(String)
-      .attr("text-anchor", "middle")
+      .data(attributes)
+      .text(function(d){
+        return d
+      })
+      .attr("text-anchor", function(d, i){
+        console.log(i)
+        if( i === 0 || i === 3){
+          return "middle"
+        } else if (i === 1 || i === 2 ){
+          return "start"
+        } else if (i === 4 || i === 5 ){
+          return "end"
+        }
+      })
+      // .attr("dy", "-1em")
+      .style("font-family", "helvetica")
+      .style("font-size", "12px")
       .attr("transform", function (d, i) {
-          return (i / hours.length * 360) < 180 ? null : "rotate(180)";
+          var rotVal = 90 - (i / attributes.length * 360)
+          return "rotate(" + rotVal + ")"
       });
 };
 
@@ -177,18 +205,10 @@ var draw = function () {
   groups.enter().append("svg:g")
       .attr('class', 'series')
       .style('fill', function (d, i) {
-          if(i === 0){
-            return "green";
-          } else {
-            return "blue";
-          }
+          return colors[i]
       })
       .style('stroke', function (d, i) {
-          if(i === 0){
-            return "green";
-          } else {
-            return "blue";
-          }
+          return colors[i]
       });
   groups.exit().remove();
 
@@ -202,6 +222,9 @@ var draw = function () {
               if (i === 7) {
                   i = 0;
               } //close the line
+              // console.log("d", d)
+              // console.log("i", i)
+              // console.log(" ")
               return (i / 7) * 2 * Math.PI;
           }))
       .style("stroke-width", 3)
@@ -228,9 +251,10 @@ var draw = function () {
           return radius(d);
       })
       .angle(function (d, i) {
-          if (i === 7) {
+          if (i === 6) {
               i = 0;
           } //close the line
-          return (i / 7) * 2 * Math.PI;
+          return (i / 6) * 2 * Math.PI;
       }));
 };
+
