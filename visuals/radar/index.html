@@ -10,15 +10,40 @@
 </head>
 <body>
 	<div id="container">
-		<h1>Spider Chart</h1>
-		<div id="viz_container">
+		<div id="text_container">
+			<h1>Spider Chart</h1>
 			<div id="controls">
 				<h2>Controls</h2>
-				<div id="brand_container"></div>
+				<div id="brand_container">
+					<ul id="brand_list">
+					</ul>
+				</div>
 			</div>
+		</div>
+		<div id="viz_container">
 			<div id="viz"></div>
+			<div id="german_chart">
+				<table>
+					<tr>
+						<th>Brand</th>
+						<th>Technology</th>
+						<th>Search & Navigation</th>
+						<th>Customer Service</th>
+						<th>Product Page</th>
+						<th>Account</th>
+						<th>Checkout</th>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</div>
-<script>loadViz();</script>
+<script>
+	loadViz();
+	control.populateBrands()
+	control.highlightBrand()
+	// control.expandBrand()
+	control.initBrands()
+	control.toggleBrand()
+</script>
 </body>
 </html>
