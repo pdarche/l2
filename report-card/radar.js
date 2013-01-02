@@ -1,14 +1,14 @@
   var series, 
-      w = 700,
-      h = 700
+      w = 750,
+      h = 750
 
-    // padding 
-    var vizPadding = {
-        top: 50,
-        right: 110,
-        bottom: 50,
-        left: 110
-    }
+  // padding 
+  var vizPadding = {
+      top: 10,
+      right: 100,
+      bottom: 10,
+      left: 60
+  }
 
   // path radius
   var radius,
@@ -32,7 +32,7 @@
               "product_page", "account", "checkout" 
       ],
       dimensionNames = [ 
-              "Technology", "Search and Navigation",
+              "Technology", "Search and Nav",
               "Customer Service", "Product Page", 
               "Account", "Checkout"
       ],
@@ -69,8 +69,6 @@ var loadData = function(){
         series.push(brand)
     }
 
-    // console.log(series, brandNames)
-
     //to complete the radial lines
     for (var m = 0; m < series.length; m += 1) {
         series[m].push(series[m][0]);
@@ -105,7 +103,8 @@ var loadData = function(){
 
 
 var buildBase = function(){
-    var viz = d3.select("#viz")
+
+    var viz = d3.select("#chart_container")
         .append('svg:svg')
         .attr('width', w)
         .attr('height', h)
@@ -121,6 +120,7 @@ var buildBase = function(){
     
     vizBody = viz.append("svg:g")
         .attr('id', 'body');
+
 };
 
 
@@ -210,7 +210,7 @@ var addAxes = function () {
       })
       // .attr("dy", "-1em")
       .style("font-family", "helvetica")
-      .style("font-size", "12px")
+      .style("font-size", "10px")
       .attr("transform", function (d, i) {
           var rotVal = 90 - (i / dimensions.length * 360)
           return "rotate(" + rotVal + ")"
@@ -219,12 +219,12 @@ var addAxes = function () {
       d3.selectAll('.line-ticks').select('text')
           .attr('dy', function(d, i){
               var deg = (( 360 / 6 ) * i) * (Math.PI/180) 
-              return -Math.cos(deg) * 20
+              return -Math.cos(deg) * 15
           })
           .attr('dx', function(d, i){
               i === 1 || i === 2 || i === 4 || i === 5 ? i = -i : null 
               var deg = (( 360 / 6 ) * i) * (Math.PI/180)
-              return -Math.sin(deg) * 20
+              return -Math.sin(deg) * 15
           })
 };
 
@@ -245,13 +245,14 @@ var draw = function () {
       })
       .style('stroke', function (d, i) {
           return colors[i]
-      });
+      })
+      .style("display", "none");
   groups.exit().remove();
 
   lines = groups.append('svg:path')
       .attr("class", "line")
       .style("stroke-width", 3)
-      .style("fill", "none");
+      .style("fill", "none")
 
   //************** BRAND SCORE LABELS ************** 
   groups.selectAll(".label")
@@ -263,12 +264,12 @@ var draw = function () {
       .attr("class", "label")
       .attr('dy', function(d, i){
           var deg = (( 360 / 6 ) * i) * (Math.PI/180) 
-          return -Math.cos(deg) * ( radius(d) + 10 )
+          return -Math.cos(deg) * ( radius(d) + 5 )
       })
       .attr('dx', function(d, i){
           i === 1 || i === 2 || i === 4 || i === 5 ? i = -i : null 
           var deg = (( 360 / 6 ) * i) * (Math.PI/180)
-          return -Math.sin(deg) * ( radius(d) + 10 )
+          return -Math.sin(deg) * ( radius(d) + 5 )
       })
       .attr("text-anchor", function(d, i){
         if( i === 0 || i === 3){
@@ -280,7 +281,7 @@ var draw = function () {
         }
       })
       .style('display', 'none')
-      .style('stroke', '#000')
+      .style('stroke', '#fff')
 
   lines.attr("d", d3.svg.line.radial()
       .radius(function (d) {
@@ -299,7 +300,6 @@ function round2(num){
 }
 
 var Controls = {
-  
     brandNames: brandNames,
     init: function(){
 
@@ -478,8 +478,4 @@ var Controls = {
     }
 }
 
-
-// HELPERS
-
-var control = Object.create( Controls )
 
