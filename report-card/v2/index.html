@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<title>L2 Report Card</title>
+
+		<!-- META -->
+
+		<meta name="description" content="Member Brand Report Card">
+		<meta name="keywords" content="luxury, L2ThinkTank, L2, DigitalIQ">
+		<meta name="author" content="L2 Think Tank">
+		<meta charset="UTF-8">
+
+		<!-- STYLESHEETS -->
+
+		<link rel="stylesheet" href="style.css">
+
+		<!-- JAVASCRIPT -->
+
+		<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+		<script src="http://d3js.org/d3.v2.js" type="text/javascript"></script>
+		<script src="../ranking.js" type="text/javascript"></script>
+		<script src="../radar.js" type="text/javascript"></script>
+		<script src="reportCard.js" type="text/javascript"></script>
+
+	</head>
+	<body>
+
+		<div id="header"></div>
+
+		<div id="content">
+			<div id="nav">
+				<ul>
+					<li>Home</li>
+					<li>
+						<p>Intelligence</p>
+						<ul id="subnav">
+							<li>Research Reports</li>
+							<li>Digital IQ Report Card</li>
+						</ul>
+					</li>
+					<li>Videos</li>
+					<li>Events</li>
+					<li>Research</li>
+				</ul>
+			</div>
+			<div id="report_card_container">
+				<div id="member_brand">
+					<h1>Kate Spade</h1>
+				</div>
+				<div id="research_reports" class="module">
+					<p>L2 Research Reports</p>
+
+					<ul id="reports">
+						<li class="report">
+							<div class="report-cover"></div>
+							<div class="report-info">
+								<div class="report-details">
+									<div class="report-name">Digital IQ Fashion 2012</div>
+									<div class="report-date">June 2012</div>
+								</div>
+								<div class="rank">
+									<p>16</p>
+								</div>
+							</div>
+							<div class="arrow"></div>
+						</li>
+						<li class="report">
+							<div class="report-cover"></div>
+							<div class="report-info">
+								<div class="report-details">
+									<div class="report-name">Digital IQ Fashion 2012</div>
+									<div class="report-date">June 2012</div>
+								</div>
+								<div class="rank">
+									<p>16</p>
+								</div>
+							</div>
+							<div class="arrow"></div>
+						</li>
+						<li class="report">
+							<div class="report-cover"></div>
+							<div class="report-info">
+								<div class="report-details">
+									<div class="report-name">Digital IQ Fashion 2012</div>
+									<div class="report-date">June 2012</div>
+								</div>
+								<div class="rank">
+									<p>16</p>
+								</div>
+							</div>
+							<div class="arrow"></div>
+						</li>
+						<li class="report">
+							<div class="report-cover"></div>
+							<div class="report-info">
+								<div class="report-details">
+									<div class="report-name">Digital IQ Fashion 2012</div>
+									<div class="report-date">June 2012</div>
+								</div>
+								<div class="rank">
+									<p>16</p>
+								</div>
+							</div>
+							<div class="arrow"></div>
+						</li>
+
+					</ul>
+					<div id="report_pane">
+
+					</div>
+				</div>
+
+				<div id="spider_chart" class="module">
+					<p>Digital IQ Report Card</p> 
+					<div id="spider_controls">
+						<div id="brand_toggle"></div>
+						<div id="categories">
+							<div class="diqc">Innovation</div>
+							<div class="diqc">User Generated Content</div>
+							<div class="diqc">Email Marketing</div>
+							<div class="diqc">Digital Marketing</div>
+							<div class="diqc">Technology</div>
+							<div class="diqc">Search and Nav</div>
+							<div class="diqc">Customer Service</div>
+							<div class="diqc">Product Page</div>
+							<div class="diqc">Cehckout</div>
+							<div class="diqc">Facebook</div>
+							<div class="diqc">Twitter</div>
+							<div class="diqc">Instgram</div>
+						</div>
+					</div>
+					<div id="chart_container"></div>
+<!-- 					<div id="german_chart">
+						<table>
+							<tr>
+								<th>Brand</th>
+								<th>Technology</th>
+								<th>Search & Navigation</th>
+								<th>Customer Service</th>
+								<th>Product Page</th>
+								<th>Account</th>
+								<th>Checkout</th>
+							</tr>
+						</table>
+					</div> -->
+				</div>
+			
+			</div>
+		</div>
+		<script>
+			$( document ).ready( function(){
+				
+				var control = Object.create( Controls )
+				loadViz()
+
+				$('.series').eq(1).show()
+
+				Events.bind()
+				Controls.populateBrands()
+				Controls.highlightBrand()
+				Controls.initBrands()
+				Controls.toggleBrand()
+				Controls.init()
+				
+			})
+		</script>
+
+	</body>
+</html>

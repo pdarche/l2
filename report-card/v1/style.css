@@ -1,0 +1,174 @@
+body {
+	height: 1000px;
+	margin: 0px;
+	font-family: Arial;
+	/*background-color: rgba(200,200,200,.3)*/
+}
+
+#content {
+	height: 100%;
+	width: 960px;
+	margin: 0px auto;
+}
+
+#header{
+	width: 100%;
+	height: 120px;
+	margin-bottom:5px;
+	background-color: rgb(155,188, 77);
+}
+
+#nav {
+	width: 115px;
+	height: 100%;
+	float: left;
+	margin-right: 5px;
+}
+
+#report_card_container{
+	width: 820px;
+	/*height: 100%;*/
+	float: left;
+	/*background-color: rgba(200,200,200, .5);*/
+}
+
+#member_brand h1{
+	margin: 0px;
+	padding: 2px;
+	height:60px;
+	line-height: 190%;
+	text-align: center;
+	width:98%;
+	margin:1%;
+	background-color: rgba(200,200,200, .8);
+	border-radius: 3px;
+}
+
+.module {
+	margin:1%;
+	width:98%;
+	background-color: white;
+	float: left;
+	text-align: center;
+	border: 1px solid rgba(200,200,200, .8);
+	box-shadow: 0px 1px 9px rgba(200,200,200, .8);
+	border-radius: 3px; 
+}
+
+#research_reports p{
+	text-align: left;
+	font-size: 25px;
+	margin: 10px 0px 10px 10px;
+}
+
+#research_reports ul, #nav ul {
+	list-style-type: none;
+	-webkit-padding-start: 0px;
+}
+
+#nav li {
+	margin:10px 5px;
+	color: #3EA549;
+	font-size: 18px;
+}
+
+#research_reports li {
+	position: relative;
+	/*height:240px;*/
+	height:100%;
+	width:240px;
+	margin: 0px 0px 20px 20px;
+	color: black;
+	/*border: 7px solid white;*/
+	/*box-shadow: -2px 2px 6px gray;*/
+	float: left;
+
+}
+
+.report-cover{
+	background-image: url('../images/fashion-2012.jpeg');
+	width:100%;
+	height:170px;
+}
+
+#research_reports .rank p {
+	font-size:20px;
+	font-weight:bold;
+	text-align: center;
+	margin: 10px;
+}
+
+.report-info{
+	/*background-color: rgba(255,255,255,.9);*/
+	background-color: black;
+	padding: 10px 0px;
+	color: white;
+}
+
+.report-type {
+	text-align: left;
+}
+
+.report-name {
+	font-size: 16px;
+	margin-bottom:2px;
+	text-align: left;
+}
+
+.report-date {
+	text-align: left;
+	font-size: 14px;
+	color:lightgreen;
+}
+
+.rank {
+	display: inline-block;
+	float: left;
+	width: 20%;
+	/*height:100%;*/
+	/*margin-left: 10px;*/
+}
+
+.report-details {
+	/*display: inline-block;*/
+	right:0px;
+}
+
+#spider_chart p {
+	text-align: left;
+	font-size: 25px;
+	margin: 10px;
+}
+
+/*#spider_chart svg{
+	background-color: white;
+	background-color: rgba(50, 50, 50, 0.8);
+	box-shadow: 0px 0px 10px gray;
+	border: 7px solid white;
+}*/
+
+.label text {
+	stroke: #fff;
+}
+
+#spider_controls {
+	width:98%;
+	height:50px;
+/*	box-shadow: 0px 0px 10px gray;
+	margin-bottom: 10px;
+	background-color: white;*/
+}
+
+#spider_controls select {
+/*	-webkit-appearance: none;
+	padding:5px;
+	border:1px solid rgba(100,100,100,.5);
+	border-radius:0px; */
+	width: 200px;
+/*	margin: 10px;
+	height: 30px;*/
+}
+
+/*#header, #nav, #report_card_container{
+	border: 1px dashed gray;
+}*/

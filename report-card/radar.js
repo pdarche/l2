@@ -1,6 +1,6 @@
   var series, 
-      w = 750,
-      h = 750
+      w = 550,
+      h = 550
 
   // padding 
   var vizPadding = {
