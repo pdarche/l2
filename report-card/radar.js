@@ -4,9 +4,9 @@
 
   // padding 
   var vizPadding = {
-      top: 10,
+      top: 0,
       right: 100,
-      bottom: 10,
+      bottom: 0,
       left: 60
   }
 
@@ -70,7 +70,7 @@ var loadData = function(){
     }
 
     //to complete the radial lines
-    for (var m = 0; m < series.length; m += 1) {
+    for (var m = 0; m < series.length; m++) {
         series[m].push(series[m][0]);
     }
 

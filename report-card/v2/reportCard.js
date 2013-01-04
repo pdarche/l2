@@ -8,7 +8,7 @@ var Events = {
 
 		$('.report').on( 'mouseout', Events.hideArrow )
 
-		$('.arrow').on( 'click', Events.showReportDetails )
+		$('.report').on( 'click', Events.showReportDetails )
 
 	},
 
@@ -16,32 +16,47 @@ var Events = {
 
 		var index = $(this).find(':selected').val()
 
-		$('.series').eq(index).show()
+      $('.series').eq(index).show()
 	},
 
 	showArrow	: function(){
 
-		$(this).find('.arrow').show()
+    if ( !$(this).find('.arrow').hasClass('gray') ){
+  	
+    	$(this).find('.arrow').show()
+
+    }
 
 	},
 
 	hideArrow 	: function(){
 
-		$(this).find('.arrow').hide()
+    if ( !$(this).find('.arrow').hasClass('gray') ){
+
+        $(this).find('.arrow').hide()
+
+    }
+		  
 
 	},
 
 	showReportDetails: function(){
 
 		$('.details-shown').removeClass('details-shown')
+    $('.gray').removeClass('gray')
 
-		$($(this).parent(), this).addClass('details-shown')
+		$( $(this) ).addClass('details-shown')
+    $( $(this).find('.arrow') ).addClass('gray') 
 
-		$('#report_pane').css("background-color", "#DDD")
+		$('#report_pane').show()
 
 	} 
 }
 
+
+// $('#categories').masonry({
+//   itemSelector: '.diqc'
+// });
 
 
 var Controls = {
@@ -109,13 +124,15 @@ var Controls = {
       $('.brand-name').eq(6).find("input").attr("checked", true)
       brand = d3.selectAll('.series').filter(function(d,i){ return i == 6}).classed('shown', true)
       Controls.addRow(series[6], brandNames[6])
-      $('.brand-name').eq(6).parent().css('border-bottom', '2px solid ' + colors[6])
+      // $('.brand-name').eq(6).parent().css('border-bottom', '2px solid ' + colors[6])
+      $('.brand-name').eq(6).css('color', colors[6])
 
       $('.series').eq(0).show()
       $('.brand-name').eq(0).find("input").attr("checked", true)
       brand = d3.selectAll('.series').filter(function(d,i){ return i == 0}).classed('shown', true)
       Controls.addRow(series[0], brandNames[0])
-      $('.brand-name').eq(0).parent().css('border-bottom', '2px solid ' + colors[0])
+      // $('.brand-name').eq(0).parent().css('border-bottom', '2px solid ' + colors[0])
+      $('.brand-name').eq(0).css('color', colors[0])
 
     },
     toggleBrand: function(){
@@ -131,14 +148,16 @@ var Controls = {
           brand.classed('shown', false)
           Controls.removeRow(brandNames[index])
 
-          $('.brand-name').eq(index).parent().css('border-bottom', '0px solid ' + colors[index])
+          // $('.brand-name').eq(index).parent().css('border-bottom', '0px solid ' + colors[index])
+          $('.brand-name').eq(index).css('color', 'black')
 
         } else {
           
           brand.style('display', 'block')
           brand.classed('shown', true)
           Controls.addRow(series[index], brandNames[index])
-          $('.brand-name').eq(index).parent().css('border-bottom', '2px solid ' + colors[index])
+          // $('.brand-name').eq(index).parent().css('border-bottom', '2px solid ' + colors[index])
+          $('.brand-name').eq(index).css('color', colors[index])
           
         }
 
