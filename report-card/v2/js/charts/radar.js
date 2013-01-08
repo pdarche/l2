@@ -1,3 +1,5 @@
+var radarChart = function(){
+
   var series, 
       w = 550,
       h = 550
@@ -48,255 +50,259 @@
     draw();
   };
 
-var loadData = function(){
+  var loadData = function(){
 
-    //for each dimentions
-    for ( var i = 0; i < dimensions.length; i++ ){
+      //for each dimentions
+      for ( var i = 0; i < dimensions.length; i++ ){
+          
+          // add brandname to brandnames
+          brandNames.push(ranking.data[i].brand)
+          var brand = []
+
+          //make metric array from the ith dimension of each brand
+          for (var j = 0; j < 6 ; j++){
+
+             var score = ranking.data[i][dimensions[j]]
+             
+             score.length < 2 ? score = score + ".00" : null
+             brand.push( score )
+
+          }
+          series.push(brand)
+      }
+
+      //to complete the radial lines
+      for (var m = 0; m < series.length; m++) {
+          series[m].push(series[m][0]);
+      }
+
+      average = []
+
+      //attribute k
+      for ( var k = 0; k < 7; k++){
         
-        // add brandname to brandnames
-        brandNames.push(ranking.data[i].brand)
-        var brand = []
+          var dataPoint = 0
+        
+          //brand l
+          for (var l = 0; l < 6; l++){
 
-        //make metric array from the ith dimension of each brand
-        for (var j = 0; j < 6 ; j++){
+              dataPoint += Number(series[l][k])
 
-           var score = ranking.data[i][dimensions[j]]
-           
-           score.length < 2 ? score = score + ".00" : null
-           brand.push( score )
+          }
 
-        }
-        series.push(brand)
-    }
+        dataPoint = round2(dataPoint/6)
+        String(dataPoint).length < 2 ? dataPoint = String(dataPoint) + ".00" : null
 
-    //to complete the radial lines
-    for (var m = 0; m < series.length; m++) {
-        series[m].push(series[m][0]);
-    }
+        console.log(dataPoint)
+        average.push(dataPoint)
 
-    average = []
+      }
 
-    //attribute k
-    for ( var k = 0; k < 7; k++){
+      series.push(average)
+      brandNames.push("Average")
+
+  };
+
+
+  var buildBase = function(){
+
+      var viz = d3.select("#chart_container")
+          .append('svg:svg')
+          .attr('width', w)
+          .attr('height', h)
+          .attr('class', 'vizSvg');
+
+      viz.append("svg:rect")
+          .attr('id', 'axis-separator')
+          .attr('x', 0)
+          .attr('y', 0)
+          .attr('height', 0)
+          .attr('width', 0)
+          .attr('height', 0);
       
-        var dataPoint = 0
-      
-        //brand l
-        for (var l = 0; l < 6; l++){
+      vizBody = viz.append("svg:g")
+          .attr('id', 'body');
 
-            dataPoint += Number(series[l][k])
-
-        }
-
-      dataPoint = round2(dataPoint/6)
-      String(dataPoint).length < 2 ? dataPoint = String(dataPoint) + ".00" : null
-
-      console.log(dataPoint)
-      average.push(dataPoint)
-
-    }
-
-    series.push(average)
-    brandNames.push("Average")
-
-};
+  };
 
 
-var buildBase = function(){
+  var setScales = function () {
+    var heightCircleConstraint,
+        widthCircleConstraint,
+        circleConstraint,
+        centerXPos,
+        centerYPos;
 
-    var viz = d3.select("#chart_container")
-        .append('svg:svg')
-        .attr('width', w)
-        .attr('height', h)
-        .attr('class', 'vizSvg');
+    //need a circle so find constraining dimension
+    heightCircleConstraint = h - vizPadding.top - vizPadding.bottom;
+    widthCircleConstraint = w - vizPadding.left - vizPadding.right;
+    circleConstraint = d3.min([
+        heightCircleConstraint, widthCircleConstraint]);
 
-    viz.append("svg:rect")
-        .attr('id', 'axis-separator')
-        .attr('x', 0)
-        .attr('y', 0)
-        .attr('height', 0)
-        .attr('width', 0)
-        .attr('height', 0);
-    
-    vizBody = viz.append("svg:g")
-        .attr('id', 'body');
+    radius = d3.scale.linear().domain([minVal, maxVal])
+        .range([0, (circleConstraint / 2)]);
+    radiusLength = radius(maxVal);
 
-};
+    //attach everything to the group that is centered around middle
+    centerXPos = widthCircleConstraint / 2 + vizPadding.left;
+    centerYPos = heightCircleConstraint / 2 + vizPadding.top;
 
-
-var setScales = function () {
-  var heightCircleConstraint,
-      widthCircleConstraint,
-      circleConstraint,
-      centerXPos,
-      centerYPos;
-
-  //need a circle so find constraining dimension
-  heightCircleConstraint = h - vizPadding.top - vizPadding.bottom;
-  widthCircleConstraint = w - vizPadding.left - vizPadding.right;
-  circleConstraint = d3.min([
-      heightCircleConstraint, widthCircleConstraint]);
-
-  radius = d3.scale.linear().domain([minVal, maxVal])
-      .range([0, (circleConstraint / 2)]);
-  radiusLength = radius(maxVal);
-
-  //attach everything to the group that is centered around middle
-  centerXPos = widthCircleConstraint / 2 + vizPadding.left;
-  centerYPos = heightCircleConstraint / 2 + vizPadding.top;
-
-  vizBody.attr("transform",
-      "translate(" + centerXPos + ", " + centerYPos + ")");
-};
+    vizBody.attr("transform",
+        "translate(" + centerXPos + ", " + centerYPos + ")");
+  };
 
 
-var addAxes = function () {
-  var radialTicks = radius.ticks(5),
-      i,
-      circleAxes,
-      lineAxes;
+  var addAxes = function () {
+    var radialTicks = radius.ticks(5),
+        i,
+        circleAxes,
+        lineAxes;
 
-  vizBody.selectAll('.circle-ticks').remove();
-  vizBody.selectAll('.line-ticks').remove();
+    vizBody.selectAll('.circle-ticks').remove();
+    vizBody.selectAll('.line-ticks').remove();
 
-  circleAxes = vizBody.selectAll('.circle-ticks')
-      .data(radialTicks)
-      .enter().append('svg:g')
-      .attr("class", "circle-ticks");
+    circleAxes = vizBody.selectAll('.circle-ticks')
+        .data(radialTicks)
+        .enter().append('svg:g')
+        .attr("class", "circle-ticks");
 
-  circleAxes.append("svg:circle")
-      .attr("r", function (d, i) {
-          return radius(d);
-      })
-      .attr("class", "circle")
-      .style("stroke", ruleColor)
-      // .style('opacity', .5)
-      .style("fill", "none");
+    circleAxes.append("svg:circle")
+        .attr("r", function (d, i) {
+            return radius(d);
+        })
+        .attr("class", "circle")
+        .style("stroke", ruleColor)
+        // .style('opacity', .5)
+        .style("fill", "none");
 
-  circleAxes.append("svg:text")
-      .attr("text-anchor", "middle")
-      .attr("dy", function (d) {
-          return -1 * radius(d);
-      })
-      .text(String);
+    circleAxes.append("svg:text")
+        .attr("text-anchor", "middle")
+        .attr("dy", function (d) {
+            return -1 * radius(d);
+        })
+        .text(String);
 
-  lineAxes = vizBody.selectAll('.line-ticks')
-      .data(dimensions)
-      .enter().append('svg:g')
-      .attr("transform", function (d, i) {
-          return "rotate(" + ((i / dimensions.length * 360) - 90) +
-              ")translate(" + radius(maxVal) + ")";
-      })
-      .attr("class", "line-ticks");
+    lineAxes = vizBody.selectAll('.line-ticks')
+        .data(dimensions)
+        .enter().append('svg:g')
+        .attr("transform", function (d, i) {
+            return "rotate(" + ((i / dimensions.length * 360) - 90) +
+                ")translate(" + radius(maxVal) + ")";
+        })
+        .attr("class", "line-ticks");
 
-  lineAxes.append('svg:line')
-      .attr("x2", -1 * radius(maxVal))
-      .style("stroke", ruleColor)
-      .style("fill", "none");
+    lineAxes.append('svg:line')
+        .attr("x2", -1 * radius(maxVal))
+        .style("stroke", ruleColor)
+        .style("fill", "none");
 
-  lineAxes.append('svg:text')
-      .data(dimensionNames)
-      .text(function(d){
-        return d
-      })
-      .attr("text-anchor", function(d, i){
-        if( i === 0 || i === 3){
-          return "middle"
-        } else if (i === 1 || i === 2 ){
-          return "start"
-        } else if (i === 4 || i === 5 ){
-          return "end"
-        }
-      })
-      // .attr("dy", "-1em")
-      .style("font-family", "helvetica")
-      .style("font-size", "10px")
-      .attr("transform", function (d, i) {
-          var rotVal = 90 - (i / dimensions.length * 360)
-          return "rotate(" + rotVal + ")"
-      });
+    lineAxes.append('svg:text')
+        .data(dimensionNames)
+        .text(function(d){
+          return d
+        })
+        .attr("text-anchor", function(d, i){
+          if( i === 0 || i === 3){
+            return "middle"
+          } else if (i === 1 || i === 2 ){
+            return "start"
+          } else if (i === 4 || i === 5 ){
+            return "end"
+          }
+        })
+        // .attr("dy", "-1em")
+        .style("font-family", "helvetica")
+        .style("font-size", "10px")
+        .attr("transform", function (d, i) {
+            var rotVal = 90 - (i / dimensions.length * 360)
+            return "rotate(" + rotVal + ")"
+        });
 
-      d3.selectAll('.line-ticks').select('text')
-          .attr('dy', function(d, i){
-              var deg = (( 360 / 6 ) * i) * (Math.PI/180) 
-              return -Math.cos(deg) * 15
-          })
-          .attr('dx', function(d, i){
-              i === 1 || i === 2 || i === 4 || i === 5 ? i = -i : null 
-              var deg = (( 360 / 6 ) * i) * (Math.PI/180)
-              return -Math.sin(deg) * 15
-          })
-};
+        d3.selectAll('.line-ticks').select('text')
+            .attr('dy', function(d, i){
+                var deg = (( 360 / 6 ) * i) * (Math.PI/180) 
+                return -Math.cos(deg) * 15
+            })
+            .attr('dx', function(d, i){
+                i === 1 || i === 2 || i === 4 || i === 5 ? i = -i : null 
+                var deg = (( 360 / 6 ) * i) * (Math.PI/180)
+                return -Math.sin(deg) * 15
+            })
+  };
 
 
-var draw = function () {
-  var groups,
-      lines,
-      linesToUpdate;
+  var draw = function () {
+    var groups,
+        lines,
+        linesToUpdate;
 
-  highlightedDotSize = 4;
+    highlightedDotSize = 4;
 
-  groups = vizBody.selectAll('.series')
-      .data(series);
-  groups.enter().append("svg:g")
-      .attr('class', 'series')
-      .style('fill', function (d, i) {
-          return colors[i]
-      })
-      .style('stroke', function (d, i) {
-          return colors[i]
-      })
-      .style("display", "none");
-  groups.exit().remove();
+    groups = vizBody.selectAll('.series')
+        .data(series);
+    groups.enter().append("svg:g")
+        .attr('class', 'series')
+        .style('fill', function (d, i) {
+            return colors[i]
+        })
+        .style('stroke', function (d, i) {
+            return colors[i]
+        })
+        .style("display", "none");
+    groups.exit().remove();
 
-  lines = groups.append('svg:path')
-      .attr("class", "line")
-      .style("stroke-width", 3)
-      .style("fill", "none")
+    lines = groups.append('svg:path')
+        .attr("class", "line")
+        .style("stroke-width", 3)
+        .style("fill", "none")
 
-  //************** BRAND SCORE LABELS ************** 
-  groups.selectAll(".label")
-      .data(function (d) {
-          return d.slice(0, 6);
-      })
-      .enter().append("svg:text")
-      .text(function(d){ return d })
-      .attr("class", "label")
-      .attr('dy', function(d, i){
-          var deg = (( 360 / 6 ) * i) * (Math.PI/180) 
-          return -Math.cos(deg) * ( radius(d) + 5 )
-      })
-      .attr('dx', function(d, i){
-          i === 1 || i === 2 || i === 4 || i === 5 ? i = -i : null 
-          var deg = (( 360 / 6 ) * i) * (Math.PI/180)
-          return -Math.sin(deg) * ( radius(d) + 5 )
-      })
-      .attr("text-anchor", function(d, i){
-        if( i === 0 || i === 3){
-          return "middle"
-        } else if (i === 1 || i === 2 ){
-          return "start"
-        } else if (i === 4 || i === 5 ){
-          return "end"
-        }
-      })
-      .style('display', 'none')
-      .style('stroke', '#fff')
+    //************** BRAND SCORE LABELS ************** 
+    groups.selectAll(".label")
+        .data(function (d) {
+            return d.slice(0, 6);
+        })
+        .enter().append("svg:text")
+        .text(function(d){ return d })
+        .attr("class", "label")
+        .attr('dy', function(d, i){
+            var deg = (( 360 / 6 ) * i) * (Math.PI/180) 
+            return -Math.cos(deg) * ( radius(d) + 5 )
+        })
+        .attr('dx', function(d, i){
+            i === 1 || i === 2 || i === 4 || i === 5 ? i = -i : null 
+            var deg = (( 360 / 6 ) * i) * (Math.PI/180)
+            return -Math.sin(deg) * ( radius(d) + 5 )
+        })
+        .attr("text-anchor", function(d, i){
+          if( i === 0 || i === 3){
+            return "middle"
+          } else if (i === 1 || i === 2 ){
+            return "start"
+          } else if (i === 4 || i === 5 ){
+            return "end"
+          }
+        })
+        .style('display', 'none')
+        .style('stroke', '#fff')
 
-  lines.attr("d", d3.svg.line.radial()
-      .radius(function (d) {
-          return radius(d);
-      })
-      .angle(function (d, i) {
-          if (i === 6) {
-              i = 0;
-          } //close the line
-          return (i / 6) * 2 * Math.PI;
-      }));
-};
+    lines.attr("d", d3.svg.line.radial()
+        .radius(function (d) {
+            return radius(d);
+        })
+        .angle(function (d, i) {
+            if (i === 6) {
+                i = 0;
+            } //close the line
+            return (i / 6) * 2 * Math.PI;
+        }));
+  };
 
-function round2(num){
-    return Math.round( Number(num) * 100 ) / 100 
+  function round2(num){
+      return Math.round( Number(num) * 100 ) / 100 
+  }
+
+  loadViz()
+
 }
 
 var Controls = {
@@ -477,5 +483,7 @@ var Controls = {
 
     }
 }
+
+
 
 

@@ -10,10 +10,10 @@ requirejs.config({
 
 var likeData = undefined
 
-require([ "jquery", "d3", "handlebars", 
-		  "data/ranking", "data/reportRankings", "charts/radar", 
+require([ "jquery", "d3", "handlebars", "helpers/brandObjs",
+		  "data/ranking", "data/reportRankings", "charts/engagement", "charts/radar", 
 		  "app/researchReports", "app/spiderChart", "app/engagementChart", 
-		   ], function($, d3, bars, ranking, rranking, radar, rr, sc ) {	
+		   ], function($, d3, bars, brandObjs, ranking, rranking, engagement, radar, rr, sc, ec ) {	
 
 	$('.series').eq(1).show()
 
@@ -45,7 +45,8 @@ require([ "jquery", "d3", "handlebars",
 
 	$('#engagement_chart_li').click( function() {
 
-		EngagementView.renderView()		
+		EngagementView.renderView()
+		EngagementView.renderChart( engagementChart )		
 
 	})
 

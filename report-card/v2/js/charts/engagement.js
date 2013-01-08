@@ -1,4 +1,4 @@
-function engagementChart(data, brandId, el){
+var engagementChart = function(data, brandId, el){
 
 	function Comparator(a,b){
 		if (a[2] > b[2]) return -1;
@@ -10,7 +10,7 @@ function engagementChart(data, brandId, el){
 
 	/******************** STATIC ELEMENTS ******************/ 
 
-	var w = 527,
+	var w = 806,
 		h = 390,
 		padding = 60;
 
