@@ -1,0 +1,29 @@
+#page_heading{
+	background-color: #DDD;
+	height:40px;
+	width:820px;
+	margin: 30px auto 0px auto
+
+}
+
+#line_chart {
+	background-color: #DDD;
+	position: relative;
+	margin: 0px auto 30px auto; 
+}
+
+#line_chart{
+	width: 806px;
+	height: 630px;
+}
+
+#visualization {
+	width: 806px;
+	height: 430px;
+}
+
+#selector {
+	width: 806px;
+	height: 200px;
+}
+
