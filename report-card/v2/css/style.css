@@ -1,0 +1,329 @@
+body {
+	height: 1000px;
+	margin: 0px;
+	font-family: Arial;
+	/*background-color: rgba(200,200,200,.3)*/
+}
+
+#content {
+	height: 100%;
+	width: 960px;
+	margin: 0px auto;
+}
+
+#header{
+	width: 100%;
+	height: 120px;
+	margin-bottom:5px;
+	background-color: rgb(155,188, 77);
+}
+
+#nav {
+	width: 115px;
+	height: 100%;
+	float: left;
+	margin-right: 5px;
+}
+
+#report_card_container{
+	width: 820px;
+	/*height: 100%;*/
+	float: left;
+	/*background-color: rgba(200,200,200, .5);*/
+}
+
+#member_brand h1{
+	margin: 0px;
+	padding: 2px;
+	height:60px;
+	line-height: 190%;
+	text-align: center;
+	width:98%;
+	margin:1%;
+	background-color: rgba(200,200,200, .8);
+	border-radius: 3px;
+	border: 1px solid #CCC;
+	box-shadow: 1px 1px 9px #DDD;
+}
+
+.module {
+	margin:1%;
+	width:98%;
+	background-color: white;
+	float: left;
+	text-align: center;
+	border: 1px solid rgba(200,200,200, .8);
+	box-shadow: 0px 1px 9px rgba(200,200,200, .8);
+	border-radius: 3px; 
+}
+
+#module_container p {
+	text-align: left;
+	font-size: 25px;
+	margin: 20px 0px 10px 20px;
+}
+
+#module_container ul, #nav ul {
+	list-style-type: none;
+	-webkit-padding-start: 0px;
+}
+
+#nav li {
+	margin:10px 5px;
+	color: #3EA549;
+	font-size: 18px;
+}
+
+#subnav li{
+	font-size:12px;
+}
+
+#module_container #reports li {
+	position: relative;
+	/*height:240px;*/
+	height:100px;
+	width:96%;
+	margin-left: 10px;
+	padding: 10px 0px 10px 10px ;
+	color: black;
+	overflow:hidden;
+
+}
+
+#reports{
+	float: left;
+	width: 450px;
+}
+
+.report-cover{
+	width:15%;
+	height:100px;
+	float:left;
+}
+
+.cover-image{
+	background-image: url('../v2/images/fashion-2012.jpeg');
+	width: 100%;
+	height: 85px;
+	margin-top: 8px;
+}
+
+#module_container .rank p {
+	font-size:76px;
+	margin: 5px 20px;
+	text-align: center;
+}
+
+#module_container .rank .sub-heading,  #module_container .report-details .sub-heading{
+	font-size:12px;
+	font-weight: normal;
+	margin: 0px 20px;
+}
+
+.report-info{
+	height: 100px;
+	width: 90%;
+	float: left;
+	margin-left: 2%;
+}
+
+.report-details {
+	float: left;
+	width: 272px;
+}
+
+.report-name {
+	font-size: 25px;
+	margin-bottom:2px;
+	text-align: left;
+}
+
+.report-date {
+	text-align: left;
+	font-size: 20px;
+	color: #3EA549;
+}
+
+.rank {
+	display: inline-block;
+	float: left;
+	width: 30%;
+}
+
+.arrow{
+	background-image: url('../images/smallarrow.png');
+	width: 8%;
+	height: 100px;
+	float: left;
+	display: none;
+}
+
+.detail-support{
+	display: inline-block;
+	border-right: 1px solid #DDD;
+}
+
+.details-shown{
+	border: 1px solid #DDD;
+	border-radius: 5px 0px 0px 5px;
+}
+
+.gray{
+	background-color: #DDD;
+}
+
+#report_pane{
+	float: left;
+	width: 41%;
+	height:481px;
+	background-color: #DDD;
+	margin-top: 15px;
+	display:none;
+}
+
+#report_pane img { width:300px; overflow:hidden; }
+#report_pane h2 { 
+	font-size:25px; 
+	margin: 20px 20px 0px 20px; 
+	text-align:left; 
+}
+#report_pane ul { 
+	-webkit-padding-start: 0px; 
+	margin: 0px 10px 5px 0px;
+	float: left;
+}
+
+#report_pane li { 
+	position:relative;
+	font-size: 14px;
+	margin: 5px 0px 5px 20px;
+	width:110px;
+	text-align:left;
+}
+
+#report_pane #cover { 
+	background-image: url('../images/fashion-2012.jpeg');
+	height:100px;
+	width:300px;
+	overflow:hidden;
+	min-width:300px;
+	margin:20px auto 10px auto;
+}
+
+#top_10_wrapper{
+	overflow-y: auto;
+}
+
+#chart_wrapper{
+	height:520px;
+}
+
+#spider_chart p {
+	text-align: left;
+	font-size: 25px;
+	margin: 20px;
+}
+
+#chart_container{
+	float: left;
+}
+
+.label text {
+	stroke: #fff;
+}
+
+#spider_controls {
+	width:200px;
+	height:100%;
+	margin: 10px 10px 10px 30px;
+	float: left;
+}
+
+#brand_toggle{
+	position:relative;
+	top:50px;
+}
+
+.brand-control{
+	list-style:none;
+	margin-bottom:5px;
+	font-size:20px;
+	font-weight:300;
+	font-family:arial;
+	-webkit-transition:all .5s;
+	height:25px;
+	text-align: left;
+}
+
+.brand-control:hover{
+	cursor:pointer;
+}
+
+.brand-name{
+	display:block;
+	height:30px;
+}
+
+.brand-info{
+	display:none;
+	height:60px;
+	padding-top:10px;
+}
+
+.brand-datum{
+	float:left;
+	font-size:13px;
+	width:48%;
+	margin:1%;
+}
+
+#categories{
+	position: relative;
+	top: 50px;
+	margin-top: 30px;
+	height: 200px;
+	text-align: justify;
+}
+
+.diqc{
+	overflow-y:auto;
+	font-size: 11px;
+	border: 1px solid #DDD;
+	padding: 4px;
+	text-align: justify;
+	margin: 3px auto;
+	display: inline-block;
+	border-radius:2px;
+
+}
+
+.included{
+	background-color: #EEE;
+}
+
+#german_chart table{
+	/*border:1px solid gray;*/
+	margin: 0px auto 20px auto;
+	width:750px;
+	font-family:helvetica;
+	font-weight:300;
+	text-align: center;
+}
+
+#german_chart table tr:nth-child(odd){
+	background-color: rgba(200,200,200,.4);
+}
+
+#german_chart table td{
+	padding:2px;
+}
+
+#german_chart th{
+	padding: 2px;
+	font-size:13px;
+	font-weight:bold;
+	/*background-color:rgba(200,200,200, .2);*/
+}
+
+
+
