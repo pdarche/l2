@@ -259,12 +259,13 @@ body {
 .brand-control{
 	list-style:none;
 	margin-bottom:5px;
-	font-size:20px;
+	font-size:12px;
 	font-weight:300;
 	font-family:arial;
 	-webkit-transition:all .5s;
 	height:25px;
 	text-align: left;
+	overflow: hidden:;
 }
 
 .brand-control:hover{

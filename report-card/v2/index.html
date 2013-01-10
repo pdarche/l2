@@ -141,7 +141,16 @@
 <p>Facebook Media Engagement</p>
 <div id="engagement_chart_container"></div>
 <div id="engagement_controls"></div>
+</script>
 
+<script id="spider_brand_list" type="text/x-handlebars-template">
+{{#each data}}
+	<li class="brand-control">
+		<div class="brand-name"> 
+			<input type="checkbox"/> {{rank}} + ' ' + {{brand}}
+		</div>
+	</li>
+{{/#each}}
 </script>
 
 
