@@ -27,9 +27,7 @@ body {
 
 #report_card_container{
 	width: 820px;
-	/*height: 100%;*/
 	float: left;
-	/*background-color: rgba(200,200,200, .5);*/
 }
 
 #member_brand h1{
@@ -76,6 +74,10 @@ body {
 
 #subnav li{
 	font-size:12px;
+}
+
+#subnav li:hover {
+	cursor: pointer;
 }
 
 #module_container #reports li {
@@ -125,6 +127,10 @@ body {
 	width: 90%;
 	float: left;
 	margin-left: 2%;
+}
+
+.report-info :hover {
+	cursor: pointer;
 }
 
 .report-details {
@@ -208,6 +214,12 @@ body {
 	overflow:hidden;
 	min-width:300px;
 	margin:20px auto 10px auto;
+}
+
+#module_container #score_text{
+	margin: 10px 20px 10px 20px;
+	font-size:18px;
+
 }
 
 #top_10_wrapper{
@@ -325,5 +337,23 @@ body {
 	/*background-color:rgba(200,200,200, .2);*/
 }
 
+#engagement_chart_container {
+	width: 786px;
+	margin: 10px;
+}
 
+/****** ENGAGEMENT CHART ******/
+circle {
+	fill: #2F4984;
+	fill-opacity: .4;
+	stroke: #2F4984;
+	stroke-opacity: 1;
+	stroke-width: 2px;
+}
 
+#chart_svg rect {
+	fill: #FFFFFF;
+	stroke-width: 2;
+	stroke: #2F4984;
+	z-index: 100;
+}

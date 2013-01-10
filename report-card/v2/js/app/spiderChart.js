@@ -11,7 +11,7 @@ var SpiderView = {
 
   renderChart : function(){
 
-    radarChart()
+    loadViz()
 
   }
 

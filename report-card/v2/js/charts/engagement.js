@@ -1,5 +1,7 @@
 var engagementChart = function(data, brandId, el){
 
+	console.log( "data", data )
+
 	function Comparator(a,b){
 		if (a[2] > b[2]) return -1;
 		if (a[2] < b[2]) return 1;
@@ -10,7 +12,7 @@ var engagementChart = function(data, brandId, el){
 
 	/******************** STATIC ELEMENTS ******************/ 
 
-	var w = 806,
+	var w = 760,
 		h = 390,
 		padding = 60;
 
@@ -21,20 +23,20 @@ var engagementChart = function(data, brandId, el){
         .attr("id", "chart_svg")		
 		
 	//growth label
-	d3.select('#chart_svg').append('text') //chart_svg
+	d3.select('#chart_svg').append('text')
 			.text("LIKES GROWTH %")
 			.attr('id', 'growth')
 			.attr('class', 'label')
-			.attr('x', h/2 + 30)
+			.attr('x', w/2 - 30)
 			.attr('y', h - 5)
 
 	//interaction label
-	d3.select('#chart_svg').append('text')  //chart_svg
+	d3.select('#chart_svg').append('text')
 			.text("ENGAGEMENT RATE")
 			.attr('transform', 'rotate(-90)')
 			.attr('id', 'interaction')
 			.attr('class', 'label')
-			.attr('x', -w/2)
+			.attr('x', -h/2 - 100)
 			.attr('y', 20)
 
 	d3.select('#chart_svg').append('text')
@@ -42,7 +44,7 @@ var engagementChart = function(data, brandId, el){
 		.style('font-size', '10px')
 		.style('font-style', 'italic')
 		.style('opacity', .7)
-		.attr('x', 220)
+		.attr('x', w - 300)
 		.attr('y', h - 30)
 
 	/************* DATA *************/ 
@@ -54,11 +56,11 @@ var engagementChart = function(data, brandId, el){
 
 
 	/************* DYNAMIC CONTENT *************/ 
-	setScales(svg, data, w, h, maxX, minX, brandId);
+	setScale(svg, data, w, h, maxX, minX, brandId);
 
 }
 
-	function setScales(_svg, _data, _w, _h, maxX, minX, brandId){
+	function setScale(_svg, _data, _w, _h, maxX, minX, brandId){
 
 		var data = _data,	
 			w = _w,
@@ -82,11 +84,11 @@ var engagementChart = function(data, brandId, el){
 		 	    .domain([d3.min(data, function(d) { return d[2]}), d3.max(data, function(d) { return d[2] })])
 		 		.range([20, 80]);       
 
-		setAxes(data, w, h, xScale, yScale, dScale, svg, maxX, minX, linearXScale);
+		setAxess(data, w, h, xScale, yScale, dScale, svg, maxX, minX, linearXScale);
 		updateCircles(data, svg, xScale, yScale, dScale, w, h, linearXScale, range, brandId);
 	}
 
-	function setAxes(_data, _w, _h, _xScale, _yScale, _dScale, _svg, maxX, minX, _linearX){
+	function setAxess(_data, _w, _h, _xScale, _yScale, _dScale, _svg, maxX, minX, _linearX){
 		var data = _data,
 			w = _w,
 			h = _h,
@@ -108,7 +110,7 @@ var engagementChart = function(data, brandId, el){
 
 
 /************* AXES AND TICK MARKS *************/
- 		if(range > 5){
+ 		if( range > 5 ){
  			for (var i = 1; i <= numTicks; i++){
 	      	  	var value = roundNumber( (interval * i)/(21 - (2 * i)), 4); //THIS IS SUPER JANKY FIGURE OUT THE ACTUAL MATH!!!!!!
 	      	  	yValues.push(value);
@@ -122,7 +124,7 @@ var engagementChart = function(data, brandId, el){
               .tickValues(yValues) //[0, log10(1.1), log10(1.3), log10(3), log10(7), log10(20), log10(300)]
               .tickFormat(d3.format(".0%"))             
 
- 		} else{
+ 		} else {
  			var xAxis = d3.svg.axis()
               .scale(linearX)
               .orient("bottom")
@@ -256,6 +258,8 @@ var engagementChart = function(data, brandId, el){
 	}
 
 	function updateCircles(data, svg, xScale, yScale, dScale, w, h, linearX, range, brandId){
+
+		console.log( "update data", data )
 
 		var brand = svg.selectAll(".brand")
 		      .data(data)

@@ -28,8 +28,30 @@ var EngagementView = {
 
         return $.getJSON( url, function(data) {
 
-        	engagementChart(data, 12, '#module_container')
-        	console.log( "callback data", data )
+        	var returnedData = data;
+
+	        var data = [],
+	            minX,
+	            maxX,
+	            minY,
+	            maxY,
+	            numCircles = 5;
+
+            //if there are less than 5 circles, set number of circles to number of brands returned
+            returnedData.length < 5 ? numCircles = returnedData.length : null
+
+        	for ( i = 0; i < numCircles; i++ ) {
+
+		          x = (roundNumber(parseFloat(returnedData[i].likesGrowthPct30), 2)/100),
+		          y = (roundNumber(parseFloat(returnedData[i].FBEngagement), 2)/100),
+		          d = parseInt(returnedData[i].likesTotal.replace(/,/g , "")),
+		          name = returnedData[i].brandName;
+		          id = String(returnedData[i].brandId);
+
+		            data.push([ x, y, d, name, id ])      
+		      }
+
+        	engagementChart(data, 12, '#engagement_chart_container')
 
         } )
 

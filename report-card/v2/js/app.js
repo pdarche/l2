@@ -11,9 +11,10 @@ requirejs.config({
 var likeData = undefined
 
 require([ "jquery", "d3", "handlebars", "helpers/brandObjs",
-		  "data/ranking", "data/reportRankings", "charts/engagement", "charts/radar", 
+		  "data/ranking", "data/reportRankings", "data/fullRanking",
+		  "charts/engagement", "charts/radar", 
 		  "app/researchReports", "app/spiderChart", "app/engagementChart", 
-		   ], function($, d3, bars, brandObjs, ranking, rranking, engagement, radar, rr, sc, ec ) {	
+		   ], function($, d3, bars, brandObjs, ranking, rranking, fullranking, engagement, radar, rr, sc, ec ) {	
 
 	$('.series').eq(1).show()
 
@@ -34,7 +35,7 @@ require([ "jquery", "d3", "handlebars", "helpers/brandObjs",
 	$('#report_card_li').click( function() {
 
 		SpiderView.renderView()
-		SpiderView.renderChart()
+		SpiderView.renderChart( ranking )
 
 		Controls.populateBrands()
 		Controls.highlightBrand()

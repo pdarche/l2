@@ -1,5 +1,3 @@
-var radarChart = function(){
-
   var series, 
       w = 550,
       h = 550
@@ -300,10 +298,6 @@ var radarChart = function(){
   function round2(num){
       return Math.round( Number(num) * 100 ) / 100 
   }
-
-  loadViz()
-
-}
 
 var Controls = {
     brandNames: brandNames,
