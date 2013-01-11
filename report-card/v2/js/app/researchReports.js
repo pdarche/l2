@@ -8,7 +8,7 @@ var RRView = {
 
 	},
 
-	renderReports: function(reports) {
+	renderReports: function( reports ) {
 		
 		var source = $('#report_template').html()	
 		var template = Handlebars.compile( source )

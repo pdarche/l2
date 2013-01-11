@@ -1,6 +1,6 @@
   var series, 
-      w = 550,
-      h = 550
+      w = 590,
+      h = 590
 
   // padding 
   var vizPadding = {
@@ -41,20 +41,19 @@
       subcategories = []
 
 
-  var loadViz = function(){
-    loadData();
+  var loadViz = function( data, categories ){
+    loadData( data, categories );
     buildBase();
     setScales();
     addAxes();
     draw();
   };
 
-  var loadData = function( categories ) {
+  var loadData = function( data, categories ) {
 
-      var categories = ["digital_marketing" , "site", "social_media", "mobile" ],
-          objCount = 0
+      var objCount = 0
 
-      fullRanking.data.forEach(function(obj){
+      data.data.forEach(function(obj){
         var brandName = obj.brand,
             brandData = []            
 
@@ -80,30 +79,7 @@
           series[m].push(series[m][0]);
       }
 
-      average = []
-
-      //attribute k
-      for ( var k = 0; k < 7; k++){
-        
-          var dataPoint = 0
-        
-          //brand l
-          for (var l = 0; l < 6; l++){
-
-              dataPoint += Number(series[l][k])
-
-          }
-
-        dataPoint = round2(dataPoint/6)
-        String(dataPoint).length < 2 ? dataPoint = String(dataPoint) + ".00" : null
-
-        // console.log(dataPoint)
-        average.push(dataPoint)
-
-      }
-
-      series.push(average)
-      brandNames.push("Average")
+      console.log( series )
 
   };
 

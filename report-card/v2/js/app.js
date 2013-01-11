@@ -35,12 +35,10 @@ require([ "jquery", "d3", "handlebars", "helpers/brandObjs",
 	$('#report_card_li').click( function() {
 
 		SpiderView.renderView()
-		SpiderView.renderChart( ranking )
+		SpiderView.initBrands
 
-		Controls.populateBrands()
-		Controls.highlightBrand()
-		Controls.initBrands()
-		Controls.toggleBrand()
+		SpiderEvents.toggleBrand()
+		SpiderEvents.changeCategories()
 
 	})
 

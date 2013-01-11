@@ -7,57 +7,55 @@ var SpiderView = {
     var template = Handlebars.compile( source )
     $('#module_container').html( template )
 
+    SpiderView.initBrands( "Kate Spade" )
+
   },
 
-  renderChart : function(){
+  renderChart : function( data, categories ){
 
-    loadViz()
+    loadViz( data, categories )
+
+  },
+
+  initBrands: function ( brandName ) {
+
+      var initData = SpiderView.getData( brandName )
+
+      var source = $('#spider_brand_list').html()  
+      var template = Handlebars.compile( source )
+      $('#brand_list').html( template( initData ) )
+
+    $('.series').hide()
+
+    var initCategories = [ "social_media", "site", "digital_marketing", "mobile" ]
+
+    SpiderView.renderChart( initData, initCategories )
+
+  },
+
+  getData: function( brandName ){
+
+
+    var brandIndex = undefined,
+        len = fullRanking.data.length
+
+    for ( index in fullRanking.data ) {
+
+        fullRanking.data[index].brand === brandName ? brandIndex = index : null
+
+    }
+
+    return { "data" : [ fullRanking.data[brandIndex], fullRanking.data[len-1] ] }
 
   }
 
 }
 
 
-var Controls = {
+var SpiderEvents = {
   
     brandNames: brandNames,
 
-    populateBrands: function(){
-
-      $.each(this.brandNames, function(i){
-        
-        var brandTemplate = '<li class="brand-control"><div class="brand-name"> <input type="checkbox"/>' + ' ' + (i + 1) + '. ' +  brandNames[i] + '</div>'
-            brandTemplate = brandTemplate + '<div class="brand-info"></div></li>'
-        
-        $('#brand_toggle').append(brandTemplate)
-
-      })
-
-      $('.series').hide()
-
-    },
-    highlightBrand: function(){
-      
-      var ind = undefined
-
-      $('.brand-control').hover(function(){
-        
-        var index = $(this).index()
-        ind = index
-
-        $('.series').eq(index).find('path').css('stroke-width', '8px')
-        $('.series').not($('.series').eq(index)).find('path').css('opacity', '.4')
-        $('.series').eq(ind).find('.label').show()
-
-      }, function() {
-
-        $('.series').eq(ind).find('path').css('stroke-width', '3px')
-        $('.series').find('path').css('opacity', '1')
-        $('.series').eq(ind).find('.label').hide()
-      
-      })
-
-    },
     expandBrand: function(){
       
       $('.brand-control').click(function(){        
@@ -75,6 +73,7 @@ var Controls = {
       })
 
     },
+
     initBrands: function(){
       
       $('.series').hide()
@@ -94,6 +93,7 @@ var Controls = {
       $('.brand-name').eq(0).css('color', colors[0])
 
     },
+
     toggleBrand: function(){
 
       $('.brand-name').find("input").click(function(){
@@ -123,6 +123,7 @@ var Controls = {
       })
         
     },
+
     addRow: function(brand, name){
 
       var newRow = '<tr><td>' + name + '</td><td>' + brand[0]  + '</td><td>' 
@@ -132,6 +133,7 @@ var Controls = {
       $('#german_chart tbody').append(newRow)
 
     },
+
     removeRow: function(name){
 
       $.each($('#german_chart tr'), function(i){
@@ -141,6 +143,37 @@ var Controls = {
               $('#german_chart tr').eq(i).remove()
 
           }
+      })
+
+    },
+
+    changeCategories: function(){
+
+      $('.category').click(function(){
+
+          var boxes = $('.category').find('input[type=checkbox]'),
+              categories = []
+
+          $.each(boxes, function( i, obj ){
+            
+            var id = $( obj ).parent().attr('id')
+
+            $(obj).attr('checked') ? categories.push(id) : console.log( "not checked" ) 
+          
+          })
+
+          $('#chart_container').children().remove()
+
+          var data = SpiderView.getData("Kate Spade")
+
+          console.log( categories )
+
+          series = []
+          brandNames = []
+          subcategories = []
+
+          loadViz( data, categories )
+
       })
 
     }

@@ -245,10 +245,14 @@ body {
 }
 
 #spider_controls {
-	width:200px;
+	width:150px;
 	height:100%;
 	margin: 10px 10px 10px 30px;
 	float: left;
+}
+
+#brand_list {
+	height:150px;
 }
 
 #brand_toggle{
@@ -256,10 +260,10 @@ body {
 	top:50px;
 }
 
-.brand-control{
+.brand-control, .category{
 	list-style:none;
 	margin-bottom:5px;
-	font-size:12px;
+	font-size:15px;
 	font-weight:300;
 	font-family:arial;
 	-webkit-transition:all .5s;

@@ -102,22 +102,16 @@
 <p>Digital IQ Report Card</p> 
 <div id="chart_wrapper">
 	<div id="spider_controls">
-		<div id="brand_toggle"></div>
-		<div id="categories">
-			<div class="diqc">Innovation</div>
-			<div class="diqc">User Generated Content</div>
-			<div class="diqc">Email Marketing</div>
-			<div class="diqc">Digital Marketing</div>
-			<div class="diqc included">Technology</div>
-			<div class="diqc included">Search and Navigation</div>
-			<div class="diqc included">Customer Service</div>
-			<div class="diqc included">Product Page</div>
-			<div class="diqc included">Checkout</div>
-			<div class="diqc included">Account</div>
-			<div class="diqc">Facebook</div>
-			<div class="diqc">Twitter</div>
-			<div class="diqc">Instgram</div>
-			<div class="diqc">Pinterest</div>
+		<div id="brand_toggle">
+			<ul id="brand_list"></ul>
+		</div>
+		<div id="category_total">
+			<ul>
+				<li class="category" id="social_media"><input type="checkbox" checked="checked"/> Social Media</li>
+				<li class="category" id="site"><input type="checkbox" checked="checked"/> Site </li>
+				<li class="category" id="digital_marketing"><input type="checkbox" checked="checked"/> Digital Marketing </li>
+				<li class="category" id="mobile"><input type="checkbox" checked="checked"/> Mobile </li>
+			</ul>
 		</div>
 	</div>
 	<div id="chart_container"></div>
@@ -145,14 +139,14 @@
 
 <script id="spider_brand_list" type="text/x-handlebars-template">
 {{#each data}}
-	<li class="brand-control">
-		<div class="brand-name"> 
-			<input type="checkbox"/> {{rank}} + ' ' + {{brand}}
-		</div>
-	</li>
-{{/#each}}
+<li class="brand-control">
+	<div class="brand-name"> 
+		<input type="checkbox"/>{{brand}}
+	</div>
+</li>
+{{/each}}
+<input type="text" name="member_search" />
 </script>
-
 
 	</body>
 </html>
