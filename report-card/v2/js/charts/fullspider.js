@@ -38,51 +38,17 @@
       ],
       brandNames = [],
       series = [],
-      subcategories = []
+      subcategories = [],
+      groups
 
 
   var loadViz = function( data, categories ){
-    loadData( data, categories );
+    SpiderEvents.loadData( data, categories );
     buildBase();
     setScales();
     addAxes();
     draw();
   };
-
-  var loadData = function( data, categories ) {
-
-      var objCount = 0
-
-      data.data.forEach(function(obj){
-        var brandName = obj.brand,
-            brandData = []            
-
-        brandNames.push( brandName )
-
-        categories.forEach(function(key){
-          var subCatObj = obj[key]          
-            
-          for (key in subCatObj){
-            brandData.push( Number(subCatObj[key]) ) 
-            objCount < 1 ? subcategories.push( key ) : null
-          }
-        
-        })
-
-        series.push( brandData )
-        objCount++
-      
-      })
-
-      //to complete the radial lines
-      for (var m = 0; m < series.length; m++) {
-          series[m].push(series[m][0]);
-      }
-
-      console.log( series )
-
-  };
-
 
   var buildBase = function(){
 
@@ -103,8 +69,10 @@
       vizBody = viz.append("svg:g")
           .attr('id', 'body');
 
-  };
+      groups = vizBody.append('svg:g')
+        .attr('class', 'series-container')
 
+  };
 
   var setScales = function () {
     var heightCircleConstraint,
@@ -153,7 +121,8 @@
         .attr("class", "circle")
         .style("stroke", ruleColor)
         // .style('opacity', .5)
-        .style("fill", "none");
+        .style("fill", "none")
+        .style("stroke-width", 1)
 
     circleAxes.append("svg:text")
         .attr("text-anchor", "middle")
@@ -164,7 +133,8 @@
 
     lineAxes = vizBody.selectAll('.line-ticks')
         .data(subcategories)
-        .enter().append('svg:g')
+
+    lineAxes.enter().append('svg:g')
         .attr("transform", function (d, i) {
             return "rotate(" + ((i / subcategories.length * 360) - 90) +
                 ")translate(" + radius(maxVal) + ")";
@@ -182,16 +152,8 @@
           return d
         })
         .attr("text-anchor", function(d, i){
-          // if( i === 0 || i === 3){
-          //   return "middle"
-          // } else if (i === 1 || i === 2 ){
-          //   return "start"
-          // } else if (i === 4 || i === 5 ){
-          //   return "end"
-          // }
           return "middle"
         })
-        // .attr("dy", "-1em")
         .style("font-family", "helvetica")
         .style("font-size", "10px")
         .attr("transform", function (d, i) {
@@ -209,63 +171,35 @@
                 var deg = (( 360 / subcategories.length ) * i) * (Math.PI/180)
                 return -Math.sin(deg) * 15
             })
+
+      lineAxes.exit()
+          .style('opacity', 0)
+        .transition()
+          .remove()
   };
 
 
   var draw = function () {
-    var groups,
-        lines,
-        linesToUpdate;
+    // var groups,
+      var lines,
+          linesToUpdate;
 
     highlightedDotSize = 4;
 
-    groups = vizBody.selectAll('.series')
-        .data(series);
-    groups.enter().append("svg:g")
-        .attr('class', 'series')
+    lines = groups.selectAll('.series')
+        .data(series)
+
+    lines.enter().append('svg:path')
+        .attr("class", "series")
         .style('fill', function (d, i) {
             return colors[i]
         })
         .style('stroke', function (d, i) {
             return colors[i]
         })
-        .style("display", "none");
-    groups.exit().remove();
-
-    lines = groups.append('svg:path')
-        .attr("class", "line")
         .style("stroke-width", 3)
-        .style("fill", "none")
-
-    //************** BRAND SCORE LABELS ************** 
-    groups.selectAll(".label")
-        .data(function (d) {
-            return d.slice(0, 6);
-        })
-        .enter().append("svg:text")
-        .text(function(d){ return d })
-        .attr("class", "label")
-        .attr('dy', function(d, i){
-            var deg = (( 360 / subcategories.length ) * i) * (Math.PI/180) 
-            return -Math.cos(deg) * ( radius(d) + 5 )
-        })
-        .attr('dx', function(d, i){
-            i === 1 || i === 2 || i === 4 || i === 5 ? i = -i : null 
-            var deg = (( 360 / 6 ) * i) * (Math.PI/180)
-            return -Math.sin(deg) * ( radius(d) + 5 )
-        })
-        .attr("text-anchor", function(d, i){
-          // if( i === 0 || i === 3){
-          //   return "middle"
-          // } else if (i === 1 || i === 2 ){
-          //   return "start"
-          // } else if (i === 4 || i === 5 ){
-          //   return "end"
-          // }
-          return "middle"
-        })
-        .style('display', 'none')
-        .style('stroke', '#fff')
+        // .style("fill", "none")
+        .style('fill-opacity', .2)
 
     lines.attr("d", d3.svg.line.radial()
         .radius(function (d) {
@@ -277,6 +211,11 @@
             } //close the line
             return ( i / subcategories.length ) * 2 * Math.PI;
         }));
+
+    lines.exit()
+          .style('opacity', 0)
+        .transition(1000)
+          .remove()
   };
 
   function round2(num){
