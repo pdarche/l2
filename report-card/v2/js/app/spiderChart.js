@@ -162,7 +162,7 @@ var SpiderEvents = {
           
           })
 
-          $('#chart_container').children().remove()
+          // $('#chart_container').children().remove()
 
           var data = SpiderView.getData("Kate Spade")
 
@@ -172,9 +172,48 @@ var SpiderEvents = {
           brandNames = []
           subcategories = []
 
-          loadViz( data, categories )
+          SpiderEvents.loadData( data, categories )
+
+          // loadViz( data, categories )
+          addAxes()
+          draw()
 
       })
 
-    }
+    },
+
+    loadData : function( data, categories ) {
+
+      var objCount = 0
+
+      data.data.forEach(function(obj){
+        var brandName = obj.brand,
+            brandData = []            
+
+        brandNames.push( brandName )
+
+        categories.forEach(function(key){
+          var subCatObj = obj[key]          
+            
+          for (key in subCatObj){
+            brandData.push( Number(subCatObj[key]) ) 
+            objCount < 1 ? subcategories.push( key ) : null
+          }
+        
+        })
+
+        series.push( brandData )
+        objCount++
+      
+      })
+
+      //to complete the radial lines
+      for (var m = 0; m < series.length; m++) {
+          series[m].push(series[m][0]);
+      }
+
+      console.log( series )
+      console.log( subcategories )
+
+  }
 }
