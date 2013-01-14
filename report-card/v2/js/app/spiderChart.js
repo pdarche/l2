@@ -13,11 +13,12 @@ var SpiderView = {
 
   renderBrandList : function() {
 
-    // console.log( fullRanking )
-
     var source = $('#benchmark_list_partial').html() 
     var template = Handlebars.compile( source )
     $('#b_brand_list').html( template( fullRanking ) )
+
+    $('.brand-name').eq(0).css('color', colors[0])
+    $('.brand-name').eq(1).css('color', colors[1])
 
   },
 
@@ -29,7 +30,7 @@ var SpiderView = {
 
   initBrands: function ( brandName ) {
 
-    var initData = SpiderView.getData( brandName )
+    var initData = SpiderView.getData( [brandName] )
 
     var source = $('#spider_brand_list').html()  
     var template = Handlebars.compile( source )
@@ -43,19 +44,29 @@ var SpiderView = {
 
   },
 
-  getData: function( brandName ){
+  getData: function( brandNames ){
 
+    console.log( brandNames )
 
     var brandIndex = undefined,
-        len = fullRanking.data.length
+        len = fullRanking.data.length,
+        brands = []
 
-    for ( index in fullRanking.data ) {
+    for (brandName in brandNames ){
 
-        fullRanking.data[index].brand === brandName ? brandIndex = index : null
+      console.log("brandname", brandName)
+
+        for ( index in fullRanking.data ) {
+
+            fullRanking.data[index].brand === brandNames[brandName] ? brands.push( fullRanking.data[index] ) : null
+
+        }
 
     }
 
-    return { "data" : [ fullRanking.data[brandIndex], fullRanking.data[len-1] ] }
+    brands.push( fullRanking.data[len-1] )
+
+    return { "data" : brands }
 
   }
 
@@ -66,49 +77,52 @@ var SpiderEvents = {
   
     brandNames: brandNames,
 
-    expandBrand: function(){
-      
-      $('.brand-control').click(function(){        
+    addBrand: function(){
+    
+      $('.brand-list-li').click(function(){
+
         var index = $(this).index(),
-            currBrand = $(this)        
-        
-        $(this).css('height', '100px')
-        
-        $.each(series, function(i){
-          currBrand.find('.brand-info').append('<div class="brand-datum">' + dimensions[i] + ': ' + series[i][index] + '</div>')
-        })
+            data = { "data" : [ fullRanking.data[index] ] }
 
-        $(this).find('.brand-info').delay(400).fadeIn()
-          
+        var source = $('#spider_brand_list').html()  
+        var template = Handlebars.compile( source )
+        $('#brand_list').append( template( data ) )
+        
+        $('#benchmark_brand_list_container p').html('+ Add Brand Benchmark')
+        $('#b_brand_list').delay(50).hide()
+        $('.benchmark_brand_list').removeClass('expanded')
+
+
+        var brandList = [ $('.brand-name').eq(0).html(), $('.brand-name').eq(2).html() ]
+
+        var chartData = SpiderView.getData( brandList )
+
+        var categories = [ "social_media", "site", "digital_marketing", "mobile" ] 
+
+        series = []
+        brandNames = []
+        subcategories = []
+
+        SpiderEvents.loadData( chartData, categories )
+
+        // addAxes()
+        draw()
+
+        $('.brand-name').eq(2).css('color', colors[2])
+
+        SpiderEvents.toggleBrand()
+
       })
-
-    },
-
-    initBrands: function(){
-      
-      $('.series').hide()
-      
-      $('.series').eq(6).show()
-      $('.brand-name').eq(6).find("input").attr("checked", true)
-      brand = d3.selectAll('.series').filter(function(d,i){ return i == 6}).classed('shown', true)
-      Controls.addRow(series[6], brandNames[6])
-      // $('.brand-name').eq(6).parent().css('border-bottom', '2px solid ' + colors[6])
-      $('.brand-name').eq(6).css('color', colors[6])
-
-      $('.series').eq(0).show()
-      $('.brand-name').eq(0).find("input").attr("checked", true)
-      brand = d3.selectAll('.series').filter(function(d,i){ return i == 0}).classed('shown', true)
-      Controls.addRow(series[0], brandNames[0])
-      // $('.brand-name').eq(0).parent().css('border-bottom', '2px solid ' + colors[0])
-      $('.brand-name').eq(0).css('color', colors[0])
 
     },
 
     toggleBrand: function(){
 
-      $('.brand-name').find("input").click(function(){
+      $('.brand-name').unbind()
+
+      $('.brand-name').click(function(){
         
-        var index = $(this).parent().parent().index(),
+        var index = $(this).parent().index(),
             brand = d3.selectAll('.series').filter(function(d,i){ return i == index})
 
         if ( brand.classed('shown') ) {
@@ -142,6 +156,8 @@ var SpiderEvents = {
 
       $('#german_chart tbody').append(newRow)
 
+      $('.benchmark_brand_list').removeClass('expanded')
+
     },
 
     removeRow: function(name){
@@ -174,7 +190,7 @@ var SpiderEvents = {
 
           // $('#chart_container').children().remove()
 
-          var data = SpiderView.getData("Kate Spade")
+          var data = SpiderView.getData( ["Kate Spade"] )
 
           series = []
           brandNames = []
@@ -192,15 +208,17 @@ var SpiderEvents = {
 
     toggleBenchmarkContainer : function(){
 
-      $('#benchmark_brand_list_container').click(function(){
+      $('#benchmark_brand_list_container p').click(function(){
 
         if ( $('.benchmark_brand_list').hasClass('expanded') ) {
 
+          $(this).html('+ Add Brand Benchmark')
           $('#b_brand_list').delay(50).hide()
           $('.benchmark_brand_list').removeClass('expanded')
 
         } else {
 
+          $(this).html('- Add Brand Benchmark')
           $('.benchmark_brand_list').addClass('expanded')
           $('#b_brand_list').delay(150).fadeIn()
 
@@ -240,6 +258,8 @@ var SpiderEvents = {
       for (var m = 0; m < series.length; m++) {
           series[m].push(series[m][0]);
       }
+
+      console.log( series )
 
   }
 }

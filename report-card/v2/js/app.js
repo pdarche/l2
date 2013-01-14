@@ -42,6 +42,7 @@ require([ "jquery", "d3", "handlebars", "helpers/brandObjs",
 		SpiderEvents.toggleBrand()
 		SpiderEvents.changeCategories()
 		SpiderEvents.toggleBenchmarkContainer()
+		SpiderEvents.addBrand()
 
 	})
 

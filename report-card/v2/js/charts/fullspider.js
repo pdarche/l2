@@ -22,7 +22,7 @@
   // arrays 
   var ruleColor = "#CCC",
       colors = [ 
-              "#C5DE97", "#88C9BF", "#D1D2D4", "#90C086", "#F9AF88", "#B2DBB6", 
+              "#C5DE97", "#88C9BF", "#90C086", "#D1D2D4", "#F9AF88", "#B2DBB6", 
               "#8775B1", "#F3879E", "#DED6B3", "#ECDC66", "#8DB9C0", "#C5DE97", 
               "#88C9BF", "#D1D2D4", "#90C086", "#F9AF88", "#B2DBB6", "#8775B1",
               "#F3879E", "#DED6B3", "#ECDC66", "#8DB9C0" 
@@ -101,6 +101,7 @@
 
 
   var addAxes = function () {
+
     var radialTicks = radius.ticks(5),
         i,
         circleAxes,
@@ -190,7 +191,7 @@
         .data(series)
 
     lines.enter().append('svg:path')
-        .attr("class", "series")
+        .attr("class", "series shown")
         .style('fill', function (d, i) {
             return colors[i]
         })

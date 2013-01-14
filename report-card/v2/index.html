@@ -103,9 +103,10 @@
 <div id="chart_wrapper">
 	<div id="spider_controls">
 		<div id="brand_toggle">
+			<p class="control-subheading">Brands</p>
 			<ul id="brand_list"></ul>
 			<div id="benchmark_brand_list_container">
-				<p>Select Benchmark Brand</p>
+				<p> + Add Benchmark Brand</p>
 				<div class="benchmark_brand_list">
 					<ul id="b_brand_list">
 						<li>test 1</li>
@@ -116,6 +117,7 @@
 
 		</div>
 		<div id="category_total">
+			<p class="control-subheading">Categories</p>
 			<ul>
 				<li class="category" id="social_media"><input type="checkbox" checked="checked"/> Social Media</li>
 				<li class="category" id="site"><input type="checkbox" checked="checked"/> Site </li>
@@ -144,16 +146,14 @@
 <script id="spider_brand_list" type="text/x-handlebars-template">
 {{#each data}}
 <li class="brand-control">
-	<div class="brand-name"> 
-		<input type="checkbox" checked="checked"/>{{brand}}
-	</div>
+	<div class="brand-name">{{brand}}</div>
 </li>
 {{/each}}
 </script>
 
 <script id="benchmark_list_partial" type="text/x-handlebars-template">
 {{#each data}}
-<li>{{rank}} {{brand}}</li>
+<li class="brand-list-li">{{rank}} {{brand}}</li>
 {{/each}}
 </script>
 

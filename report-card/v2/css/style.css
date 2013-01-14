@@ -245,14 +245,24 @@ body {
 }
 
 #spider_controls {
-	width:150px;
+	width:165px;
 	height:100%;
-	margin: 10px 10px 10px 30px;
+	margin: 10px 15px 10px 20px;
 	float: left;
+	border-right: 1px solid #DDD;
+}
+
+#module_container .control-subheading {
+	font-size: 18px;
+	margin: 0px 0px 10px 0px; 
 }
 
 #brand_toggle{
 	position:relative;
+}
+
+#brand_list {
+	margin:0px;
 }
 
 .brand-control, .category{
@@ -265,31 +275,46 @@ body {
 	height:25px;
 	text-align: left;
 	overflow: hidden:;
+	border-bottom: 1px solid #DDD;
+	line-height: 150%;
 }
 
 #benchmark_brand_list_container {
 	overflow-y: auto;
+	height: 30px;
+	margin: 0px 0px 30px 0px;
 	-webkit-transition: all linear .5s;
 }
 
 #benchmark_brand_list_container p {
-	font-size: 14px;
+	font-size: 12px;
 	margin:0px;
+	line-height: 199%;
+	color: gray;
 }
 
+#benchmark_brand_list_container:hover {
+	cursor: pointer;
+}
+
+
 .benchmark_brand_list {
-	background-color: rgb(200,200,200);
+	background-color: #DDD;
 	position: absolute;
 	width:0px;
-	height:400px;
+	height:480px;
 	float:left;
 	-webkit-transition: all linear .15s;
+	top: 87px;
+	left: 165px
 }
 
 .expanded {
 	position:absolute;
 	width: 750px;
 	height: 480px;
+	top: 87px;
+	left: 165px
 	-webkit-box-shadow: 1px 0px 12px;
 	/*display: inline-block;*/
 }
