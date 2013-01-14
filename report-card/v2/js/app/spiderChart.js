@@ -11,6 +11,16 @@ var SpiderView = {
 
   },
 
+  renderBrandList : function() {
+
+    // console.log( fullRanking )
+
+    var source = $('#benchmark_list_partial').html() 
+    var template = Handlebars.compile( source )
+    $('#b_brand_list').html( template( fullRanking ) )
+
+  },
+
   renderChart : function( data, categories ){
 
     loadViz( data, categories )
@@ -19,11 +29,11 @@ var SpiderView = {
 
   initBrands: function ( brandName ) {
 
-      var initData = SpiderView.getData( brandName )
+    var initData = SpiderView.getData( brandName )
 
-      var source = $('#spider_brand_list').html()  
-      var template = Handlebars.compile( source )
-      $('#brand_list').html( template( initData ) )
+    var source = $('#spider_brand_list').html()  
+    var template = Handlebars.compile( source )
+    $('#brand_list').html( template( initData ) )
 
     $('.series').hide()
 
@@ -166,8 +176,6 @@ var SpiderEvents = {
 
           var data = SpiderView.getData("Kate Spade")
 
-          console.log( categories )
-
           series = []
           brandNames = []
           subcategories = []
@@ -177,6 +185,27 @@ var SpiderEvents = {
           // loadViz( data, categories )
           addAxes()
           draw()
+
+      })
+
+    },
+
+    toggleBenchmarkContainer : function(){
+
+      $('#benchmark_brand_list_container').click(function(){
+
+        if ( $('.benchmark_brand_list').hasClass('expanded') ) {
+
+          $('#b_brand_list').delay(50).hide()
+          $('.benchmark_brand_list').removeClass('expanded')
+
+        } else {
+
+          $('.benchmark_brand_list').addClass('expanded')
+          $('#b_brand_list').delay(150).fadeIn()
+
+        } 
+        
 
       })
 
@@ -211,9 +240,6 @@ var SpiderEvents = {
       for (var m = 0; m < series.length; m++) {
           series[m].push(series[m][0]);
       }
-
-      console.log( series )
-      console.log( subcategories )
 
   }
 }

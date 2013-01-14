@@ -104,6 +104,16 @@
 	<div id="spider_controls">
 		<div id="brand_toggle">
 			<ul id="brand_list"></ul>
+			<div id="benchmark_brand_list_container">
+				<p>Select Benchmark Brand</p>
+				<div class="benchmark_brand_list">
+					<ul id="b_brand_list">
+						<li>test 1</li>
+						<li>test 2</li>
+					</ul>
+				</div>
+			</div>
+
 		</div>
 		<div id="category_total">
 			<ul>
@@ -131,12 +141,6 @@
 </div>
 </script>
 
-<script id="engagement_view" type="text/x-handlebars-template">
-<p>Facebook Media Engagement</p>
-<div id="engagement_chart_container"></div>
-<div id="engagement_controls"></div>
-</script>
-
 <script id="spider_brand_list" type="text/x-handlebars-template">
 {{#each data}}
 <li class="brand-control">
@@ -145,7 +149,18 @@
 	</div>
 </li>
 {{/each}}
-<input type="text" name="member_search" />
+</script>
+
+<script id="benchmark_list_partial" type="text/x-handlebars-template">
+{{#each data}}
+<li>{{rank}} {{brand}}</li>
+{{/each}}
+</script>
+
+<script id="engagement_view" type="text/x-handlebars-template">
+<p>Facebook Media Engagement</p>
+<div id="engagement_chart_container"></div>
+<div id="engagement_controls"></div>
 </script>
 
 	</body>

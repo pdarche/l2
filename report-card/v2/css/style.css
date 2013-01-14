@@ -251,13 +251,8 @@ body {
 	float: left;
 }
 
-#brand_list {
-	height:150px;
-}
-
 #brand_toggle{
 	position:relative;
-	top:50px;
 }
 
 .brand-control, .category{
@@ -270,6 +265,46 @@ body {
 	height:25px;
 	text-align: left;
 	overflow: hidden:;
+}
+
+#benchmark_brand_list_container {
+	overflow-y: auto;
+	-webkit-transition: all linear .5s;
+}
+
+#benchmark_brand_list_container p {
+	font-size: 14px;
+	margin:0px;
+}
+
+.benchmark_brand_list {
+	background-color: rgb(200,200,200);
+	position: absolute;
+	width:0px;
+	height:400px;
+	float:left;
+	-webkit-transition: all linear .15s;
+}
+
+.expanded {
+	position:absolute;
+	width: 750px;
+	height: 480px;
+	-webkit-box-shadow: 1px 0px 12px;
+	/*display: inline-block;*/
+}
+
+#b_brand_list {
+	display: none;
+}
+
+#b_brand_list li{
+	width: 120px;
+	height: 30px;
+	font-size: 12px;
+	float: left;
+	text-align: left;
+	padding:3px 14px;
 }
 
 .brand-control:hover{

@@ -36,9 +36,12 @@ require([ "jquery", "d3", "handlebars", "helpers/brandObjs",
 
 		SpiderView.renderView()
 		SpiderView.initBrands
+		SpiderView.renderBrandList()
+
 
 		SpiderEvents.toggleBrand()
 		SpiderEvents.changeCategories()
+		SpiderEvents.toggleBenchmarkContainer()
 
 	})
 
