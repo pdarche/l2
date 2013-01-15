@@ -99,7 +99,15 @@
 </script>
 
 <script id="spider_view" type="text/x-handlebars-template">
-<p>Digital IQ Report Card</p> 
+<div id="report_card_image">
+<img src="images/fashion-2012.jpeg"/>
+</div>
+<div>
+	<p id="report_card">REPORT CARD</p>
+	<p id="report_title">Digital IQ Index&#174: Fashion 2012</p> 
+	<p id="data_note">Data is based on 9/12/12 through 12/12/12</p>
+</div>
+
 <div id="chart_wrapper">
 	<div id="spider_controls">
 		<div id="brand_toggle">
@@ -118,12 +126,22 @@
 		</div>
 		<div id="category_total">
 			<p class="control-subheading">Categories</p>
-			<ul>
+			<ul id="category_list">
 				<li class="category" id="social_media"><input type="checkbox" checked="checked"/> Social Media</li>
 				<li class="category" id="site"><input type="checkbox" checked="checked"/> Site </li>
 				<li class="category" id="digital_marketing"><input type="checkbox" checked="checked"/> Digital Marketing </li>
 				<li class="category" id="mobile"><input type="checkbox" checked="checked"/> Mobile </li>
 			</ul>
+		</div>
+
+		<div>
+			<p class="control-subheading">Deep Dives</p>
+			<ul id="deep_dive_ul">
+				<li>
+				<img src="images/pdf.gif"/><a href="#">Deep Dive 12/18/12</a>
+				</li>
+			</ul>
+			<p id="dd_latin">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation. </p>
 		</div>
 	</div>
 	<div id="chart_container"></div>
@@ -158,6 +176,12 @@
 </script>
 
 <script id="engagement_view" type="text/x-handlebars-template">
+<p>Facebook Media Engagement</p>
+<div id="engagement_chart_container"></div>
+<div id="engagement_controls"></div>
+</script>
+
+<script id="german_chart_row" type="text/x-handlebars-template">
 <p>Facebook Media Engagement</p>
 <div id="engagement_chart_container"></div>
 <div id="engagement_controls"></div>

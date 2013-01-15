@@ -58,7 +58,7 @@ body {
 #module_container p {
 	text-align: left;
 	font-size: 25px;
-	margin: 20px 0px 10px 20px;
+	margin: 20px 0px 0px 20px;
 }
 
 #module_container ul, #nav ul {
@@ -89,6 +89,15 @@ body {
 	padding: 10px 0px 10px 10px ;
 	color: black;
 	overflow:hidden;
+
+}
+
+#report_card_image {
+	width: 165px;
+	height: 68px;
+	overflow: hidden;
+	margin: 20px;
+	float: left;
 
 }
 
@@ -216,6 +225,21 @@ body {
 	margin:20px auto 10px auto;
 }
 
+#module_container #report_card {
+
+}
+
+#module_container  #report_title {
+	margin-top:0px;
+}
+
+#module_container #data_note{
+	font-size:12px;
+	margin-top: 0px;
+	margin-bottom: 16px;
+	font-size:12px;
+}
+
 #module_container #score_text{
 	margin: 10px 20px 10px 20px;
 	font-size:18px;
@@ -252,6 +276,21 @@ body {
 	border-right: 1px solid #DDD;
 }
 
+#module_container #dd_latin{
+	font-size: 11px;
+	margin: 0px 15px 0px 0px;
+}
+
+#module_container #deep_dive_ul li{
+	font-size:12px;
+	text-align:left;
+}
+
+#module_container #deep_dive_ul li img{
+	width:14px;
+	margin-right:10px;
+}
+
 #module_container .control-subheading {
 	font-size: 18px;
 	margin: 0px 0px 10px 0px; 
@@ -277,6 +316,10 @@ body {
 	overflow: hidden:;
 	border-bottom: 1px solid #DDD;
 	line-height: 150%;
+}
+
+#category_list {
+	margin-bottom: 40px;
 }
 
 #benchmark_brand_list_container {

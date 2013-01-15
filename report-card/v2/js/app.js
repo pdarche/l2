@@ -35,9 +35,8 @@ require([ "jquery", "d3", "handlebars", "helpers/brandObjs",
 	$('#report_card_li').click( function() {
 
 		SpiderView.renderView()
-		SpiderView.initBrands
+		// SpiderView.initBrands()
 		SpiderView.renderBrandList()
-
 
 		SpiderEvents.toggleBrand()
 		SpiderEvents.changeCategories()

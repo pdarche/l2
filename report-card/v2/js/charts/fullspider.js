@@ -22,8 +22,8 @@
   // arrays 
   var ruleColor = "#CCC",
       colors = [ 
-              "#C5DE97", "#88C9BF", "#90C086", "#D1D2D4", "#F9AF88", "#B2DBB6", 
-              "#8775B1", "#F3879E", "#DED6B3", "#ECDC66", "#8DB9C0", "#C5DE97", 
+              "#90C086", "#88C9BF", "#F3879E", "#90C086", "#D1D2D4", "#F9AF88", 
+              "#8775B1", "#F3879E", "#DED6B3", "#90C086", "#8DB9C0", "#C5DE97", 
               "#88C9BF", "#D1D2D4", "#90C086", "#F9AF88", "#B2DBB6", "#8775B1",
               "#F3879E", "#DED6B3", "#ECDC66", "#8DB9C0" 
       ],
@@ -31,11 +31,33 @@
               "technology", "search_nav", "customer_service", 
               "product_page", "account", "checkout" 
       ],
-      dimensionNames = [ 
-              "Technology", "Search and Nav",
-              "Customer Service", "Product Page", 
-              "Account", "Checkout"
-      ],
+      nameMapping = { 
+
+              "technology" : "Technology", 
+              "search_nav" : "Search and Nav",
+              "customer_service" : "Customer Service", 
+              "product_page" : "Product Page",               
+              "account" : "Account", 
+              "checkout" : "Checkout",
+              "digital_marketing_total" : "Digital Marketing",
+              "email_marketing" : "Email Marketing",
+              "search" : "Search",
+              "site_score_total" : "Site Score",
+              "user_generated_content" : "User Generated Content",
+              "web_advertising_innovation_total" : "Web Ad Innovation",
+              "mobile_total" : "Mobile",
+              "total_ios" : "iOS",
+              "total_mobile_site" : "Mobile Site",
+              "total_mobile_innovation" : "Mobile Innovation",
+              "mobile_total" : "Mobile",
+              "emergin_social_media" : "Emergin Social",
+              "facebook" : "Facebook",
+              "social_media_total" : "Social",
+              "twitter" : "Twitter",
+              "youtube" : "YouTube"
+      
+      },
+
       brandNames = [],
       series = [],
       subcategories = [],
@@ -150,7 +172,7 @@
     lineAxes.append('svg:text')
         .data(subcategories)
         .text(function(d){
-          return d
+          return nameMapping[d]
         })
         .attr("text-anchor", function(d, i){
           return "middle"
@@ -165,12 +187,12 @@
         d3.selectAll('.line-ticks').select('text')
             .attr('dy', function(d, i){
                 var deg = (( 360 / subcategories.length ) * i) * (Math.PI/180) 
-                return -Math.cos(deg) * 15
+                return -Math.cos(deg) * 30
             })
             .attr('dx', function(d, i){
-                i === 1 || i === 2 || i === 4 || i === 5 ? i = -i : null 
+                                                
                 var deg = (( 360 / subcategories.length ) * i) * (Math.PI/180)
-                return -Math.sin(deg) * 15
+                return Math.sin(deg) * 15
             })
 
       lineAxes.exit()
@@ -225,116 +247,7 @@
 
 var Controls = {
     brandNames: brandNames,
-    init: function(){
 
-      var categories = [ 
-
-          { name: "Social Media", x: 0, y: 0, tx: 10, ty: 20 }, 
-          { name: "Site", x: 350, y: 0, tx: 660, ty: 20 },
-          { name: "Mobile", x: 0, y: 350, tx: 10, ty: 690},
-          { name: "Digital Marketing", x: 350, y: 350, tx: 600, ty: 690 } 
-      
-      ]
-
-      d3.select('#body').selectAll('.category')
-          .data(categories)
-        .enter().append("g")
-          .attr("transform", "translate(-350, -350)")
-          .attr('class', 'category')
-          .append('rect')
-            .attr('width', 350)
-            .attr('height', 350)
-            .attr('x', function(data){
-                return data.x              
-            })
-            .attr('y', function(data){
-               return data.y
-            })
-            .attr('fill', '#999')
-            .style('opacity', 0)
-
-
-      d3.selectAll('.category').append('text')
-            .data(categories)
-            .attr('x', function(d){
-                return d.tx
-            })
-            .attr('y', function(d){
-                return d.ty
-            })
-            .text(function(d){
-                return d.name
-            })
-            .style('font-family', 'helvetica')
-            .style('font-size', 10)
-            .style('color', '#999')
-              
-      d3.selectAll('.category').select('text')
-          .on('mouseover', function(){
-            d3.select(this.previousSibling)
-                .style('opacity', .4)
-          })
-          .on('mouseout', function(d){
-            d3.select(this.previousSibling)
-                .style('opacity', 0)
-          })
-
-    },
-    populateBrands: function(){
-
-      $.each(this.brandNames, function(i){
-        
-        var brandTemplate = '<li class="brand-control"><div class="brand-name"> <input type="checkbox"/>' + ' ' + (i + 1) + '. ' +  brandNames[i] + '</div>'
-            brandTemplate = brandTemplate + '<div class="brand-info"></div></li>'
-        
-        $('#brand_list').append(brandTemplate)
-
-        // $('.brand-name').eq(i).css('border-bottom', '2px solid ' + colors[i])
-
-      })
-
-      $('.series').hide()
-
-    },
-    highlightBrand: function(){
-      
-      var ind = undefined
-
-      $('.brand-control').hover(function(){
-        
-        var index = $(this).index()
-        ind = index
-
-        $('.series').eq(index).find('path').css('stroke-width', '8px')
-        $('.series').not($('.series').eq(index)).find('path').css('opacity', '.4')
-        $('.series').eq(ind).find('.label').show()
-
-      }, function() {
-
-        $('.series').eq(ind).find('path').css('stroke-width', '3px')
-        $('.series').find('path').css('opacity', '1')
-        $('.series').eq(ind).find('.label').hide()
-      
-      })
-
-    },
-    expandBrand: function(){
-      
-      $('.brand-control').click(function(){        
-        var index = $(this).index(),
-            currBrand = $(this)        
-        
-        $(this).css('height', '100px')
-        
-        $.each(series, function(i){
-          currBrand.find('.brand-info').append('<div class="brand-datum">' + dimensions[i] + ': ' + series[i][index] + '</div>')
-        })
-
-        $(this).find('.brand-info').delay(400).fadeIn()
-          
-      })
-
-    },
     initBrands: function(){
       
       $('.series').hide()

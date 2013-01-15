@@ -30,7 +30,7 @@ var SpiderView = {
 
   initBrands: function ( brandName ) {
 
-    var initData = SpiderView.getData( [brandName] )
+    var initData = SpiderView.getData( [brandName, "Average"] )
 
     var source = $('#spider_brand_list').html()  
     var template = Handlebars.compile( source )
@@ -46,15 +46,11 @@ var SpiderView = {
 
   getData: function( brandNames ){
 
-    console.log( brandNames )
-
     var brandIndex = undefined,
         len = fullRanking.data.length,
         brands = []
 
     for (brandName in brandNames ){
-
-      console.log("brandname", brandName)
 
         for ( index in fullRanking.data ) {
 
@@ -64,7 +60,7 @@ var SpiderView = {
 
     }
 
-    brands.push( fullRanking.data[len-1] )
+    $.inArray("Average", brandNames ) ? null : brands.push( fullRanking.data[len-1] )
 
     return { "data" : brands }
 
@@ -78,41 +74,44 @@ var SpiderEvents = {
     brandNames: brandNames,
 
     addBrand: function(){
-    
-      $('.brand-list-li').click(function(){
 
-        var index = $(this).index(),
-            data = { "data" : [ fullRanking.data[index] ] }
+      if ( $('.brand-name').length < 3 ){  
 
-        var source = $('#spider_brand_list').html()  
-        var template = Handlebars.compile( source )
-        $('#brand_list').append( template( data ) )
-        
-        $('#benchmark_brand_list_container p').html('+ Add Brand Benchmark')
-        $('#b_brand_list').delay(50).hide()
-        $('.benchmark_brand_list').removeClass('expanded')
+          $('.brand-list-li').click(function(){
+
+            var index = $(this).index(),
+                data = { "data" : [ fullRanking.data[index] ] }
+
+            var source = $('#spider_brand_list').html()  
+            var template = Handlebars.compile( source )
+            $('#brand_list').append( template( data ) )
+            
+            $('#benchmark_brand_list_container p').html('+ Add Brand Benchmark')
+            $('#b_brand_list').delay(50).hide()
+            $('.benchmark_brand_list').removeClass('expanded')
 
 
-        var brandList = [ $('.brand-name').eq(0).html(), $('.brand-name').eq(2).html() ]
+            var brandList = [ $('.brand-name').eq(0).html(), "Average", $('.brand-name').eq(2).html() ]
 
-        var chartData = SpiderView.getData( brandList )
+            var chartData = SpiderView.getData( brandList )
 
-        var categories = [ "social_media", "site", "digital_marketing", "mobile" ] 
+            var categories = [ "social_media", "site", "digital_marketing", "mobile" ] 
 
-        series = []
-        brandNames = []
-        subcategories = []
+            series = []
+            brandNames = []
+            subcategories = []
 
-        SpiderEvents.loadData( chartData, categories )
+            SpiderEvents.loadData( chartData, categories )
 
-        // addAxes()
-        draw()
+            addAxes()
+            draw()
 
-        $('.brand-name').eq(2).css('color', colors[2])
+            $('.brand-name').eq(2).css('color', colors[2])
 
-        SpiderEvents.toggleBrand()
+            SpiderEvents.toggleBrand()
 
-      })
+          })
+      }
 
     },
 
@@ -190,7 +189,9 @@ var SpiderEvents = {
 
           // $('#chart_container').children().remove()
 
-          var data = SpiderView.getData( ["Kate Spade"] )
+          var brandList = [ $('.brand-name').eq(0).html(), "Average", $('.brand-name').eq(2).html() ]
+
+          var data = SpiderView.getData( brandList )
 
           series = []
           brandNames = []
@@ -198,9 +199,10 @@ var SpiderEvents = {
 
           SpiderEvents.loadData( data, categories )
 
-          // loadViz( data, categories )
           addAxes()
           draw()
+
+          // SpiderEvents.toggleBrand()
 
       })
 
@@ -258,8 +260,6 @@ var SpiderEvents = {
       for (var m = 0; m < series.length; m++) {
           series[m].push(series[m][0]);
       }
-
-      console.log( series )
 
   }
 }
