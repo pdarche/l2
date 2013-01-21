@@ -1,4 +1,5 @@
 //JSFIDDLE FOR POPUP LOCATED AT: http://jsfiddle.net/hqEhZ/7/
+//JSFIDDLE FOR QUERY TESTS LOCATED AT: http://jsfiddle.net/jwMVj/
 
 /******************** TEST QUERIES ********************/
 var getUserFavorites = {
@@ -14,13 +15,15 @@ var getAllBrands = {
 }
  
 var oneMonthSingleBrandSingleMetricTimeConstraint = {
-    "brands" = [ { "brand_id" : "74" } ],
-    "brand_daily" = {
+    "brands" : [ { "brand_id" : "74" } ],
+    "fact_brand_daily" : {
         "metrics" : [
-            "facebook_likes_count_total"
+            "facebook_likes_count_total",
+            "youtube_video_views_count_total",
+            "youtube_video_views_growth_today"
         ],
         "constraints" : {
-            "time" : { "start" : 20120912 , "end" : 20121012 }
+            "time" : { "start_date" : "20120912" , "end_date" : "20121012" }
         }
     }
 }
@@ -43,7 +46,7 @@ var threeMonthMultiBrandFacebookMultiConstraint = {
             "faceook_shares_interaction_rate",
         ],
         "constraints" : {
-            "time" : { "start" : 20120912, "end" : 20121212 },
+            "time" : { "start_date" : 20120912, "end_date" : 20121212 },
             "facebook_checkins_count_total" : {
                 "min" : 0,
                 "max" : 1000,       
@@ -109,7 +112,7 @@ var oneYearMultiBrandMultiPlatformMultiConstraint = {
             "youtube_video_views_growth_today"    
         ],
         "constraints" : {
-            "time" : { "start" : 20111212, "end" : 20121212 },
+            "time" : { "start_date" : 20111212, "end_date" : 20121212 },
             "facebook_likes_count_total" : {
                 "min" : 100,
                 "max" : 50000, 
@@ -158,7 +161,7 @@ var oneYearMultiBrandMultiPlatformMultiConstraint = {
                 "agg" : "sum"
             },
         }
-    },
+    }
 }
 
 var oneYearMultiBrandMultiMetricWithConstraints = {
@@ -166,7 +169,7 @@ var oneYearMultiBrandMultiMetricWithConstraints = {
     "fb_posts" : {
         "metrics" : [ "likes_per_post_average" ],
         "constraints" : {
-            "time" : { "start" : 20111212, "end" : 20121212 },
+            "time" : { "start_date" : 20111212, "end_date" : 20121212 },
             "likes_per_post_average" : {
                 "min" : 0.2,
                 "max" : 5
@@ -192,7 +195,7 @@ var oneYearSingleBrandMultiMetric = {
             "youtube_video_views_growth_30"        //NOT IN SPEC 
         ],
         "constraints" : {
-            "time" : { "start" : 20111212, "end" : 20121212 }
+            "time" : { "start_date" : 20111212, "end_date" : 20121212 }
         }
     },
 }
@@ -202,7 +205,7 @@ var oneYearSingleBrandEngagementData = {
     "fb_posts" : {
         "metrics" : [ "likes_per_post_average" ],
         "constraints" : {
-            "time" : { "start" : 20111212, "end" : 20121212 }
+            "time" : { "start_date" : 20111212, "end_date" : 20121212 }
         }
     }
 }
@@ -222,7 +225,7 @@ var oneYearTopEightBrandsByCategory = {
             "youtube_video_views_growth_30"
         ],
         "constraints" : {
-            "time" : { "start" : 20111212, "end" : 20121212 },            
+            "time" : { "start_date" : 20111212, "end_date" : 20121212 },            
             "facebook_likes_count_total" : {
                 "top" : 8,
                 "agg" : "max" // NOT AN AGGRIGATED VALUE?  HOW SHOULD THESE BE HANDLED?
@@ -263,7 +266,7 @@ var oneYearTopEightBrandsByCategory = {
     "fb_posts" : {
         "metrics" : [ "likes_per_post_average" ],
         "constraints" : {
-            "time" : { "start" : 20111212, "end" : 20121212 },
+            "time" : { "start_date" : 20111212, "end_date" : 20121212 },
             "likes_per_post_average" : {
                 "top" : 8 
             }
@@ -288,7 +291,7 @@ var topFiveBarCharts = {
             "youtube_video_views_growth_30"            
         ],
         "constraints" : {
-            "time" : { "start" : 20121201, "end" : 20130101 },
+            "time" : { "start_date" : 20121201, "end_date" : 20130101 },
             "facebook_likes_count_total" : {
                 "top" : 5,              // NOT AN AGGRIGATED VALUE?  HOW SHOULD THESE BE HANDLED?
                 // "agg" : "max"
@@ -335,7 +338,7 @@ var oneMonthtopFiveEngagement = {
     "fb_posts" : {
         "metrics" : [ "likes_per_post_average" ],
         "constraints" : {
-            "time" : { "start" : 20121201, "end" : 20130101 },
+            "time" : { "start_date" : 20121201, "end_date" : 20130101 },
             "likes_per_post_average" : {
                 "top" : 5, 
                 "agg" : "max"
@@ -352,7 +355,7 @@ var topFiveEngagement = {
             "facebook_likes_growth_30days" 
         ],
         "constraints" : {
-            "time" : { "start" : 20121212 , "end" : 20130101 },
+            "time" : { "start_date" : 20121212 , "end_date" : 20130101 },
             "facebook_likes_count_total" : {
                 "top" : 5,
                 "agg" : "max"
@@ -366,7 +369,7 @@ var singleBrandEngagement = {
     "fb_posts" : {
         "metrics" : [ "likes_per_post_average" ],
         "constraints" : {
-            "time" : { "start" : 20121212, "end" : 20130101 },
+            "time" : { "start_date" : 20121212, "end_date" : 20130101 },
             "likes_per_post_average" : {
                 "top" : 5, 
                 "agg" : "max"
@@ -383,7 +386,7 @@ var singleBrandEngagement = {
             "facebook_likes_growth_30days" 
         ],
         "constraints" : {
-            "time" : { "start" : 20121212 , "end" : 20130101 },
+            "time" : { "start_date" : 20121212 , "end_date" : 20130101 },
             "facebook_likes_count_total" : {
                 "top" : 5,
                 "agg" : "max"
@@ -394,12 +397,12 @@ var singleBrandEngagement = {
 
 
 /******************** DATA RETRIEVAL FUNCTION ********************/
-function getData( refOrData, queryObject, callback ){
+function getData( db, queryObject, callback ){
 
   //build query
 
-  var baseURL = "http://l2ws-dev.elasticbeanstalk.com/",
-      db = refOrData + "?format=json&q=",
+  var baseURL = "http://l2ds.elasticbeanstalk.com/",
+      db = db + "?format=json&q=",
       queryString = JSON.stringify( queryObject ),
       query = encodeURI( baseURL + db + queryString )
   
