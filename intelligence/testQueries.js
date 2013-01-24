@@ -1,6 +1,8 @@
 //JSFIDDLE FOR POPUP LOCATED AT: http://jsfiddle.net/hqEhZ/7/
 //JSFIDDLE FOR QUERY TESTS LOCATED AT: http://jsfiddle.net/jwMVj/
 
+//http://l2ds.elasticbeanstalk.com/data?availablemetrics
+
 /******************** TEST QUERIES ********************/
 var getUserFavorites = {
   "user" : "peterd@l2thinktank.com"
@@ -213,7 +215,7 @@ var oneYearSingleBrandEngagementData = {
 // for category benchmarks
 var oneYearTopEightBrandsByCategory = {
     "brands" : [ RETURNED BRAND IDS FROM getAllBrandsForCategory ],
-    "brand_daily" : {
+    "fact_brand_daily" : {
         "metrics": [
             "twitter_follower_count_total",
             "twitter_follower_count_today",
@@ -281,20 +283,21 @@ var topFiveBarCharts = {
     "brand_daily" : {
         "metrics": [
             "facebook_likes_count_total",
-            "facebook_likes_count_today",
-            "facebook_likes_count_growth_30",
+            // "facebook_likes_count_today",
+            // "facebook_likes_count_growth_30",
             "twitter_follower_count_total",
-            "twitter_follower_count_today",
-            "twitter_follower_count_growth_30",
-            "youtube_video_views_count_total" : "",
-            "youtube_uploads_count_total",
-            "youtube_video_views_growth_30"            
+            // "twitter_follower_count_today",
+            // "twitter_follower_count_growth_30",
+            "youtube_videos_views_count_total",
+            // "youtube_uploads_count_total",
+            // "youtube_videos_views_growth_30"         
         ],
         "constraints" : {
-            "time" : { "start_date" : 20121201, "end_date" : 20130101 },
+            "start_date" : 20121201, 
+            "end_date" : 20130101,
+            "aggregation" : 
             "facebook_likes_count_total" : {
-                "top" : 5,              // NOT AN AGGRIGATED VALUE?  HOW SHOULD THESE BE HANDLED?
-                // "agg" : "max"
+                "top" : 5,              
             },
             "facebook_likes_count_today" : {
                 "top" : 5, 
@@ -331,6 +334,58 @@ var topFiveBarCharts = {
         }
     }
 },
+
+// top five bar chart
+var topFiveBarCharts = {
+    "brands" : brands,
+    "facts_brand_daily" : {
+        "metrics": [
+            "facebook_likes_count_total",
+            "twitter_follower_count_total",
+            "youtube_videos_views_count_total",
+        ],
+        "constraints" : {
+            "start_date" : "20121201", 
+            "end_date" : "20130101",
+            "aggregation" : [ "entity" ]
+            "facebook_likes_count_total" : {
+                "top" : 5,              
+            },
+            "twitter_follower_count_total" : {
+                "top" : 5,              
+            },
+            "youtube_video_views_count_total" : {
+                "top" : 5,              
+            }
+        }
+    }
+}
+
+var topFiveBarCharts = {
+    "brands" : brands,
+    "facts_brand_daily" : {
+        "metrics": [
+            "facebook_likes_count_today",
+            "twitter_follower_count_today",
+            "youtube_videos_views_count_today",
+        ],
+        "constraints" : {
+            "start_date" : "20121201", 
+            "end_date" : "20130101",
+            "aggregation" : [ "entity" ]
+            "facebook_likes_count_total" : {
+                "top" : 5,              
+            },
+            "twitter_follower_count_total" : {
+                "top" : 5,              
+            },
+            "youtube_video_views_count_total" : {
+                "top" : 5             
+            }
+        }
+    }
+}
+
 
 // top five engaegment
 var oneMonthtopFiveEngagement = {
