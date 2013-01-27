@@ -27,6 +27,7 @@
 							<li id="reports_li"> Research Reports </li>
 							<li id="report_card_li"> Digital IQ Report Card </li>
 							<li id="engagement_chart_li"> Engagement </li>
+							<li id="timeseries_chart_li"> Timeseries </li>
 						</ul>
 					</li>
 					<li>Videos</li>
@@ -187,5 +188,97 @@
 <div id="engagement_controls"></div>
 </script>
 
+<script id="timeseries_view" type="text/x-handlebars-template">
+	<!-- metric control container -->
+  	<div id="metric_control_container">
+        <div id="fb_metrics" class="platform-toggle facebook">
+          	<img class="metric-image" src="/wp-content/themes/l2/images/intelligencePage/Facebook.png"/>
+            <div id="likes" class="facebook-metric facebook metric m1 active">"LIKES"</div>
+            <div id="likes/day" class="facebook-metric facebook metric m1">"LIKES"/DAY</div>
+            <div id="engagement" original-title="test" class="facebook-metric facebook metric m1">ENGAGEMENT</div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div id="twitter_metrics" class="platform-toggle twitter">
+          	<img class="metric-image" src="/wp-content/themes/l2/images/intelligencePage/Twitter.png"/>
+            <div id="followers" class="twitter-metric twitter metric m1">FOLLOWERS</div>
+            <div id="followers/day" class="twitter-metric twitter metric m1">FOLLOWERS/DAY</div>
+            <div id="tweets" class="twitter-metric twitter metric m1">TWEETS/DAY</div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div id="yt_metrics" class="platform-toggle youTube">
+          	<img class="metric-image" src="/wp-content/themes/l2/images/intelligencePage/YouTube.png"/>
+            <div id="views" class="yt-metric youTube metric m1">VIEWS</div>
+            <div id="views/day" class="yt-metric youTube metric m1"># VIDEOS</div>
+            <div id="views_growth%" class="yt-metric youTube metric m1">30 DAY VIEWS GROWTH %
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+
+    <!-- chart container -->
+	<div id="chart_container"></div>
+	<div style="clear: both;"></div>              
+
+	<div id="benchmark_heading_wrapper">
+	    <h2>Compare your brand:</h2>
+	    <div id="reset_button">RESET</div>
+	<div style="clear: both;"></div>
+	</div>              
+
+	<!-- benchmark control container -->
+	<div id="benchmark_control_container">
+
+		<div id="search_and_favorite_benchmarks_container">
+
+			<div id="search_benchmarks">				
+				<div id="search_benchmarks_heading">
+				  	<input id="benchmark_search_input" name="benchmark_search_input" type="text" value="Search brands">
+				  	<ul id="benchmark_search_results_list"></ul>
+				  	<div style="clear: both;"></div>
+				</div>
+				<div id="search_benchmarks_results"></div>
+			</div>
+			
+			<div id="favorite_benchmarks">
+				<div "favorite_benchmarks_heading">			
+					<img class="favorite-title-icon" src="/wp-content/themes/l2/images/intelligencePage/clickedStar.png"/>
+					<p class="favorites-title benchmark-subheading">Favorites</p>
+				</div>
+				<div id="favorite_benchmarks_results"></div>
+			</div>			
+		</div>
+
+		<div id="category_benchmarks_container">
+			
+			<div id="category_benchmark_controls">
+
+				<!-- <div id="category_benchmarks_instruction_wrapper">
+		            <div class="checkbox-icon"></div><p> to add to chart</p>
+		            <p> <img id="m1_favorite_instruction_icon" src="/wp-content/themes/l2/images/intelligencePage/clickedStar.png"/> to add/remove favorites </p>
+		            <p> <span id="m1_reset_link_text">links</span> to visit brand pages</p>
+		        </div>-->
+
+	        	<p class="benchmark-drop-title benchmark-subheading">Category leaders  (<span id="m1_brand_list">see list</span>)</p>
+
+				<select id="category_benchmark_drop">
+		          <option value="18">L2 100</option>
+		          <option value="3">Beauty & Skincare</option>
+		          <option value="4">Fashion & Leather</option>
+		          <option value="12">Retail</option>
+		          <option value="13">Spirits & Champagnes</option>
+		          <option value="15">Travel</option>
+		          <option value="17">Watches & Jewelry</option>
+		        </select>
+		        <div style="clear: both;"></div> 
+			</div>
+			<div id="category_benchmark_results"></div>
+		</div>
+		<div style="clear: both;"></div>
+    </div> 
+
+</script>
 	</body>
 </html>

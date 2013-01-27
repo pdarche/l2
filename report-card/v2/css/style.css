@@ -465,3 +465,84 @@ circle {
 	stroke: #2F4984;
 	z-index: 100;
 }
+
+/************** timeseries **************/
+
+#metric_control_container, #chart_container, #benchmark_control_container, #benchmark_heading_wrapper {
+	display: block;
+	width:803px;
+	border: 1px solid black;
+}
+
+.platform-toggle, .metric, .metric-image {
+	float:left;
+	font-size: 10px;
+}
+
+.metric, .metric-image {
+	margin: 5px 2px;
+	padding:2px;
+	height:20px;
+	border: 1px dotted gray;
+	line-height: 230%;
+}
+
+#chart_container {
+	height:400px;
+}
+
+#search_and_favorite_benchmarks_container, #category_benchmarks_container {
+	float:left;
+	border: 1px dashed gray;
+	width:49%;
+}
+
+#search_and_favorite_benchmarks_container {
+	margin: 1% 0% 1% .7%; 
+}
+
+#category_benchmarks_container {
+	margin: 1% .7% 1% 0%; 	
+}
+
+#benchmark_heading_wrapper h2 {
+	margin: 18px 0px 10px 10px;
+	font-size: 14px;
+	font-weight:normal;
+	float: left;
+}
+
+#reset_button {
+	margin:5px 10px;
+	padding:8px;
+	float: right;
+}
+
+#search_benchmarks, #favorite_benchmarks, #category_benchmark_controls, #category_benchmark_results {
+	margin: 5px;
+	border: 1px dotted gray;
+}
+
+#search_benchmarks {
+	border-bottom: 1px solid black;
+}
+
+#benchmark_control_container .benchmark-subheading{
+	margin:0px;
+	font-size: 14px;
+}
+
+#category_benchmark_drop, #benchmark_search_input {
+	float: left;
+	width: 200px;
+}
+
+#category_benchmark_results{
+	min-height: 100px
+}
+
+.favorite-title-icon {
+	float: left;
+	margin-right: 5px;
+}
+

@@ -13,8 +13,8 @@ var likeData = undefined
 require([ "jquery", "d3", "handlebars", "helpers/brandObjs",
 		  "data/ranking", "data/reportRankings", "data/fullRanking",
 		  "charts/engagement", "charts/fullspider", 
-		  "app/researchReports", "app/spiderChart", "app/engagementChart", 
-		   ], function($, d3, bars, brandObjs, ranking, rranking, fullranking, engagement, radar, rr, sc, ec ) {	
+		  "app/researchReports", "app/spiderChart", "app/engagementChart", "app/timeseries"
+		   ], function($, d3, bars, brandObjs, ranking, rranking, fullranking, engagement, radar, rr, sc, ec, ts ) {	
 
 	$('.series').eq(1).show()
 
@@ -49,6 +49,12 @@ require([ "jquery", "d3", "handlebars", "helpers/brandObjs",
 
 		EngagementView.renderView()
 		EngagementView.renderChart( engagementChart )		
+
+	})
+
+	$('#timeseries_chart_li').click( function() {
+
+		TimeseriesView.renderView()	
 
 	})
 
