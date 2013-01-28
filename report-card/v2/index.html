@@ -7,6 +7,7 @@
 		<!-- STYLESHEETS -->
 
 		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css">
 
 		<!-- JAVASCRIPT -->
 
@@ -219,7 +220,7 @@
     </div>
 
     <!-- chart container -->
-	<div id="chart_container"></div>
+	<div id="timeseries_chart_container"></div>
 	<div style="clear: both;"></div>              
 
 	<div id="benchmark_heading_wrapper">
@@ -235,7 +236,7 @@
 
 			<div id="search_benchmarks">				
 				<div id="search_benchmarks_heading">
-				  	<input id="benchmark_search_input" name="benchmark_search_input" type="text" value="Search brands">
+				  	<input id="benchmark_search_input" type="text" placeholder="fetching brands... please wait"/>
 				  	<ul id="benchmark_search_results_list"></ul>
 				  	<div style="clear: both;"></div>
 				</div>
@@ -280,5 +281,12 @@
     </div> 
 
 </script>
+
+<script id="brand_partial" type="text/x-handlebars-template">
+{{#each brands}}
+	<div class="brand-name">{{brandfamily_name}} - {{geography_name}} {{extra_modifier}}</div>
+{{/each}}
+</script>
+
 	</body>
 </html>

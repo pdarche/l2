@@ -10,11 +10,11 @@ requirejs.config({
 
 var likeData = undefined
 
-require([ "jquery", "d3", "handlebars", "helpers/brandObjs",
-		  "data/ranking", "data/reportRankings", "data/fullRanking",
-		  "charts/engagement", "charts/fullspider", 
+require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highcharts",
+		  "date", "data/ranking", "data/reportRankings", "data/fullRanking",
+		  "charts/engagement", "charts/fullspider", "charts/line",
 		  "app/researchReports", "app/spiderChart", "app/engagementChart", "app/timeseries"
-		   ], function($, d3, bars, brandObjs, ranking, rranking, fullranking, engagement, radar, rr, sc, ec, ts ) {	
+		   ], function($, jQuery, d3, bars, brandObjs, highcharts, date, ranking, rranking, fullranking, engagement, radar, line, rr, sc, ec, ts ) {	
 
 	$('.series').eq(1).show()
 
@@ -54,7 +54,10 @@ require([ "jquery", "d3", "handlebars", "helpers/brandObjs",
 
 	$('#timeseries_chart_li').click( function() {
 
-		TimeseriesView.renderView()	
+		TimeseriesView.init()		
+		TimeseriesView.bindEvents()
+		var lineChart = Highcharts.Chart(config)
+		
 
 	})
 

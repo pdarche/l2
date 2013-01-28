@@ -40,7 +40,7 @@ body {
 	margin:1%;
 	background-color: rgba(200,200,200, .8);
 	border-radius: 3px;
-	border: 1px solid #CCC;
+	/*border: 1px solid #CCC;*/
 	box-shadow: 1px 1px 9px #DDD;
 }
 
@@ -50,7 +50,7 @@ body {
 	background-color: white;
 	float: left;
 	text-align: center;
-	border: 1px solid rgba(200,200,200, .8);
+	/*border: 1px solid rgba(200,200,200, .8);*/
 	box-shadow: 0px 1px 9px rgba(200,200,200, .8);
 	border-radius: 3px; 
 }
@@ -175,11 +175,11 @@ body {
 
 .detail-support{
 	display: inline-block;
-	border-right: 1px solid #DDD;
+	/*border-right: 1px solid #DDD;*/
 }
 
 .details-shown{
-	border: 1px solid #DDD;
+	/*border: 1px solid #DDD;*/
 	border-radius: 5px 0px 0px 5px;
 }
 
@@ -273,7 +273,7 @@ body {
 	height:100%;
 	margin: 10px 15px 10px 20px;
 	float: left;
-	border-right: 1px solid #DDD;
+	/*border-right: 1px solid #DDD;*/
 }
 
 #module_container #dd_latin{
@@ -314,7 +314,7 @@ body {
 	height:25px;
 	text-align: left;
 	overflow: hidden:;
-	border-bottom: 1px solid #DDD;
+	/*border-bottom: 1px solid #DDD;*/
 	line-height: 150%;
 }
 
@@ -408,7 +408,7 @@ body {
 .diqc{
 	overflow-y:auto;
 	font-size: 11px;
-	border: 1px solid #DDD;
+	/*border: 1px solid #DDD;*/
 	padding: 4px;
 	text-align: justify;
 	margin: 3px auto;
@@ -422,7 +422,7 @@ body {
 }
 
 #german_chart table{
-	/*border:1px solid gray;*/
+	border:1px solid gray;
 	margin: 0px auto 20px auto;
 	width:750px;
 	font-family:helvetica;
@@ -468,10 +468,14 @@ circle {
 
 /************** timeseries **************/
 
-#metric_control_container, #chart_container, #benchmark_control_container, #benchmark_heading_wrapper {
+#metric_control_container, #timeseries_chart_container, #benchmark_control_container, #benchmark_heading_wrapper {
 	display: block;
 	width:803px;
-	border: 1px solid black;
+	/*border: 1px solid black;*/
+}
+
+#metric_control_container {
+	border-bottom: 1px solid black;
 }
 
 .platform-toggle, .metric, .metric-image {
@@ -480,14 +484,28 @@ circle {
 }
 
 .metric, .metric-image {
-	margin: 5px 2px;
-	padding:2px;
+	margin: 10px 2px;
+	padding: 0px 3px;
 	height:20px;
-	border: 1px dotted gray;
-	line-height: 230%;
+	line-height: 210%;
 }
 
-#chart_container {
+.facebook-metric {
+	background-color:rgba(47,73,132,.9);
+	color: white;
+}
+
+.twitter-metric {
+	background-color:rgb(92, 174, 220);
+	color: white;
+}
+
+.yt-metric {
+	background-color: #D6005A;
+	color: white;
+}
+
+#timeseries_chart_container {
 	height:400px;
 }
 
@@ -506,16 +524,19 @@ circle {
 }
 
 #benchmark_heading_wrapper h2 {
-	margin: 18px 0px 10px 10px;
+	margin: 10px 0px 0px 10px;
 	font-size: 14px;
 	font-weight:normal;
 	float: left;
 }
 
 #reset_button {
-	margin:5px 10px;
+	margin:0px 10px;
 	padding:8px;
+	font-size:10px;
 	float: right;
+	background-color: #A2CE53;
+	color: white;
 }
 
 #search_benchmarks, #favorite_benchmarks, #category_benchmark_controls, #category_benchmark_results {
@@ -524,7 +545,7 @@ circle {
 }
 
 #search_benchmarks {
-	border-bottom: 1px solid black;
+	/*border-bottom: 1px solid black;*/
 }
 
 #benchmark_control_container .benchmark-subheading{
@@ -537,8 +558,24 @@ circle {
 	width: 200px;
 }
 
+#benchmark_search_input {
+	height: 25px;
+}
+
 #category_benchmark_results{
-	min-height: 100px
+	min-height: 120px
+}
+
+#search_benchmarks {
+	min-height: 100px;
+}
+
+#favorite_benchmarks_results {
+	min-height: 50px
+}
+
+#search_benchmarks ul {
+	margin: 0px;
 }
 
 .favorite-title-icon {
