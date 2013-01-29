@@ -67,15 +67,15 @@ var config = {
       },
       line: {
           events: {
-            legendItemClick: function () {
+            // legendItemClick: function () {
                         
-              if(clickedBenchmarks.length > 1){
+              // if(clickedBenchmarks.length > 1){
 
-                removeChartSeries(this.name)
-              } 
-              return false; // <== returning false will cancel the default action
-          }
+              //   removeChartSeries(this.name)
+              // } 
+              // return false; // <== returning false will cancel the default action
+          // }
         }
       }
-  }
+    }
  }

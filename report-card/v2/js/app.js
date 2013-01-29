@@ -10,7 +10,7 @@ requirejs.config({
 
 var likeData = undefined
 
-require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highcharts",
+require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highcharts/js/highcharts.src",
 		  "date", "data/ranking", "data/reportRankings", "data/fullRanking",
 		  "charts/engagement", "charts/fullspider", "charts/line",
 		  "app/researchReports", "app/spiderChart", "app/engagementChart", "app/timeseries"
@@ -56,8 +56,6 @@ require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highc
 
 		TimeseriesView.init()		
 		TimeseriesView.bindEvents()
-		var lineChart = Highcharts.Chart(config)
-		
 
 	})
 

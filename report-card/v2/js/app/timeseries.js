@@ -9,18 +9,24 @@ TimeseriesView = {
 	    //fetch top 8 facebook likes
 	    $.when(TimeseriesView.fetch("GET", "data", fbLikesTopEight, this))
 	    	.done( TimeseriesView.formatRankingData )
-	    	.done( TimeseriesView.renderBrands )
+	    	.done( TimeseriesView.renderCategoryBenchmarks )
 
 	    //populate brands for brand search functionality 
 		$.when(TimeseriesView.fetch("GET", "ref", getAllBrands, this)).done( TimeseriesView.bindAutocomplete )
 
 		//fetch member brand data 
-		$.when( TimeseriesView.formatBrandQuery("74") )
-			.done( TimeseriesView.fetch("GET", "data", brandData, this) )
-			// .done( TimeseriesView.formatBrandData )
-			// .done()
-
+		TimeseriesView.formatBrandQuery("74")
+        $.when( TimeseriesView.fetch("GET", "data", brandData, this) )			
+			.done( TimeseriesView.renderChart )
+            .done( TimeseriesView.addSeries )
+            
 	},
+
+    renderChart : function(){
+
+        TimeseriesView.lineChart = new Highcharts.Chart(config)
+
+    },
 	//bind events
 	bindEvents : function() {
 
@@ -32,10 +38,18 @@ TimeseriesView = {
 
 		})
 
+        $('.metric').click(function(){
+
+            var categoryId = $(this).val()
+
+            TimeseriesView.categoryTopEight( categoryId, "facebook_likes_count_total")
+
+        })
+
 	},
 
 	fetch : function( method, db, queryObject, context ){
-		  
+
 		//build query
 		var baseURL = "http://l2ds.elasticbeanstalk.com/",
 			db = db + "?format=json&q=",
@@ -53,22 +67,37 @@ TimeseriesView = {
 
     },
 
+    addSeries : function( data ){
+
+        //var metric = active class
+
+        console.log("this is the fucking chart: ", data)
+
+        TimeseriesView.lineChart.addSeries({
+             name: data.brands[0].brandfamily_name,
+             data: data.brands[0]["facebook_likes_count_total"]
+             // color: colors[clickedBenchmarks.length]
+          });
+
+        TimeseriesView.lineChart.redraw() 
+
+    },
+
     categoryTopEight : function( categoryId, metric ){
 
     	TimeseriesView.configureCategoryBenchmarkObject( categoryId, metric )
 
     	$('#category_benchmark_results').empty()
+        
+        $.when(TimeseriesView.fetch("GET", "data", categoryBenchmarksQueryObject, this))
+            .done( TimeseriesView.formatRankingData )
+            .done( TimeseriesView.renderCategoryBenchmarks )
 
-		$.when(TimeseriesView.configureCategoryBenchmarkObject( categoryId, metric ))
-			.done(TimeseriesView.fetch("GET", "data", categoryBenchmarksQueryObject, this))
-	    	.done( TimeseriesView.formatRankingData )
-	    	.done( TimeseriesView.renderCategoryBenchmarks )
+        console.log("done it")
 
     },
 
     configureCategoryBenchmarkObject : function( categoryId, metric ){
-
-    	console.log("here goes nothin")
 
     	categoryBenchmarksQueryObject.brands[0].category_id = categoryId
     	categoryBenchmarksQueryObject.fact_brand_daily.metrics[0] = metric
@@ -76,7 +105,7 @@ TimeseriesView = {
   		categoryBenchmarksQueryObject.fact_brand_daily.constraints.end_date = Date.today().toString("yyyyMMdd")
   		categoryBenchmarksQueryObject.fact_brand_daily.constraints[metric] = {"top" : 8}
 
-  		// return brandData
+        return categoryBenchmarksQueryObject
 
     },
 
@@ -124,7 +153,6 @@ TimeseriesView = {
         $('#benchmark_search_input').attr("placeholder", "type to select brand")
         $('#benchmark_search_input').prop("disabled", false)
 
-        console.log("autcomplete done loading")
     },
     //
     formatBrandQuery : function( brandId ) {
@@ -139,29 +167,29 @@ TimeseriesView = {
     //this should be the model!!!!
     formatBrandData : function( data ){
 
+        conosle.log("this is the brand data: ", data)
+
 	    var brand = {
 
-	          name: data[0].brands[0].brandfamily_name,
-	          id: data[0].brands[0].brand_id,
-	          categoryId: data[0].brands[0].category_id,
-	          categoryName: data[0].brands[0].category_name,
-	          likes: data[0].brands[0].facebook_likes_count_total, 
-	          likesPerDay: data[0].brands[0].facebook_likes_count_today,
-	          likesPerDayAvg: data[0].brands[0].facebook_likes_count_today,
-	          likesGrowth: data[0].brands[0].facebook_likes_count_total_growth30,
-	          FBEngagement: data[1].brands[0].facebook_post_likes_interaction_rate,
-	          followers: data[0].brands[0].twitter_follower_count_total,
-	          followersDay: data[0].brands[0].twitter_follower_count_today,
-	          followersPerDayAvg: data[0].brands[0].twitter_follower_count_today, 
-	          tweets: data[0].brands[0].twitter_tweets_count_today, 
-	          uploads: data[0].brands[0].youtube_uploads_count_today,
-	          views: data[0].brands[0].youtube_videos_views_count_total,
-	          viewsGrowth: data[0].brands[0].youtube_videos_views_count_total_growth30,
+	          name: data.brands[0].brandfamily_name,
+	          id: data.brands[0].brand_id,
+	          categoryId: data.brands[0].category_id,
+	          categoryName: data.brands[0].category_name,
+	          likes: data.brands[0].facebook_likes_count_total,
+	          likesPerDay: data.brands[0].facebook_likes_count_today,
+	          likesPerDayAvg: data.brands[0].facebook_likes_count_today,
+	          likesGrowth: data.brands[0].facebook_likes_count_total_growth30,
+	          FBEngagement: data.brands[0].facebook_post_likes_interaction_rate,
+	          followers: data.brands[0].twitter_follower_count_total,
+	          followersDay: data.brands[0].twitter_follower_count_today,
+	          followersPerDayAvg: data.brands[0].twitter_follower_count_today, 
+	          tweets: data.brands[0].twitter_tweets_count_today, 
+	          uploads: data.brands[0].youtube_uploads_count_today,
+	          views: data.brands[0].youtube_videos_views_count_total,
+	          viewsGrowth: data.brands[0].youtube_videos_views_count_total_growth30,
 	          links : { facebook : "", twitter : "", youtube : "" }
 	    
 	    }
-
-	    console.log( brand )
 
 	    return brand
     },
@@ -175,8 +203,6 @@ TimeseriesView = {
 	      sortedBrands.reverse()
 
 	      var rankedBrands = { "data" : sortedBrands }
-
-	      console.log("ranked brands:", rankedBrands)
 
 	      return rankedBrands
 
@@ -199,7 +225,8 @@ var brandData = {
         ],
         "constraints" : {
             "start_date" : "",
-            "end_date" : ""
+            "end_date" : "",
+            "timeseries" : true
         }
     }
 }
@@ -212,12 +239,12 @@ var getAllBrands = {
 }
 
 var categoryBenchmarksQueryObject = {
-    "brands" : [ { "category_id" : "" }],
+    "brands" : [ { "category_id" : "74" }],
     "fact_brand_daily" : {
         "metrics": [],
         "constraints" : {
-            "start_date" : "", 
-            "end_date" : "",
+            "start_date" : "20120101", 
+            "end_date" : "20130101",
             "timeseries" : false
         }
     }
