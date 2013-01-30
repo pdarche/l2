@@ -58,5 +58,6 @@ require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highc
 		TimeseriesView.bindEvents()
 
 	})
+	
 
 });

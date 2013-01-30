@@ -194,25 +194,25 @@
   	<div id="metric_control_container">
         <div id="fb_metrics" class="platform-toggle facebook">
           	<img class="metric-image" src="/wp-content/themes/l2/images/intelligencePage/Facebook.png"/>
-            <div id="likes" class="facebook-metric facebook metric m1 active">"LIKES"</div>
-            <div id="likes/day" class="facebook-metric facebook metric m1">"LIKES"/DAY</div>
-            <div id="engagement" original-title="test" class="facebook-metric facebook metric m1">ENGAGEMENT</div>
+            <div id="facebook_likes_count_total" class="facebook-metric facebook metric active">"LIKES"</div>
+            <div id="facebook_likes_count_today" class="facebook-metric facebook metric">"LIKES"/DAY</div>
+            <div id="engagement" class="facebook-metric facebook metric">ENGAGEMENT</div>
             <div style="clear: both;"></div>
         </div>
 
         <div id="twitter_metrics" class="platform-toggle twitter">
           	<img class="metric-image" src="/wp-content/themes/l2/images/intelligencePage/Twitter.png"/>
-            <div id="followers" class="twitter-metric twitter metric m1">FOLLOWERS</div>
-            <div id="followers/day" class="twitter-metric twitter metric m1">FOLLOWERS/DAY</div>
-            <div id="tweets" class="twitter-metric twitter metric m1">TWEETS/DAY</div>
+            <div id="twitter_follower_count_total" class="twitter-metric twitter metric">FOLLOWERS</div>
+            <div id="twitter_follower_count_today" class="twitter-metric twitter metric">FOLLOWERS/DAY</div>
+            <div id="twitter_tweets_count_today" class="twitter-metric twitter metric">TWEETS/DAY</div>
             <div style="clear: both;"></div>
         </div>
 
         <div id="yt_metrics" class="platform-toggle youTube">
           	<img class="metric-image" src="/wp-content/themes/l2/images/intelligencePage/YouTube.png"/>
-            <div id="views" class="yt-metric youTube metric m1">VIEWS</div>
-            <div id="views/day" class="yt-metric youTube metric m1"># VIDEOS</div>
-            <div id="views_growth%" class="yt-metric youTube metric m1">30 DAY VIEWS GROWTH %
+            <div id="youtube_videos_views_count_total" class="yt-metric youTube metric">VIEWS</div>
+            <div id="youtube_uploads_count_today" class="yt-metric youTube metric"># VIDEOS</div>
+            <div id="youtube_videos_views_count_total_growth30" class="yt-metric youTube metric">30 DAY VIEWS GROWTH %
             </div>
             <div style="clear: both;"></div>
         </div>
@@ -236,7 +236,7 @@
 
 			<div id="search_benchmarks">				
 				<div id="search_benchmarks_heading">
-				  	<input id="benchmark_search_input" type="text" placeholder="fetching brands... please wait"/>
+				  	<input id="benchmark_search_input" type="text" placeholder="fetching brands... please wait" disabled="True"/>
 				  	<ul id="benchmark_search_results_list"></ul>
 				  	<div style="clear: both;"></div>
 				</div>
@@ -258,11 +258,11 @@
 
 				<!-- <div id="category_benchmarks_instruction_wrapper">
 		            <div class="checkbox-icon"></div><p> to add to chart</p>
-		            <p> <img id="m1_favorite_instruction_icon" src="/wp-content/themes/l2/images/intelligencePage/clickedStar.png"/> to add/remove favorites </p>
-		            <p> <span id="m1_reset_link_text">links</span> to visit brand pages</p>
+		            <p> <img id=_favorite_instruction_icon" src="/wp-content/themes/l2/images/intelligencePage/clickedStar.png"/> to add/remove favorites </p>
+		            <p> <span id=_reset_link_text">links</span> to visit brand pages</p>
 		        </div>-->
 
-	        	<p class="benchmark-drop-title benchmark-subheading">Category leaders  (<span id="m1_brand_list">see list</span>)</p>
+	        	<p class="benchmark-drop-title benchmark-subheading">Category leaders</p>
 
 				<select id="category_benchmark_drop">
 		          <option value="18">L2 100</option>
@@ -284,7 +284,7 @@
 
 <script id="brand_partial" type="text/x-handlebars-template">
 {{#each brands}}
-	<div class="brand-name">{{brandfamily_name}} - {{geography_name}} {{extra_modifier}}</div>
+	<div class="brand {{brand_id}}">{{brandfamily_name}} - {{geography_name}} {{extra_modifier}}</div>
 {{/each}}
 </script>
 
