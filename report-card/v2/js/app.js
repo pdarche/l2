@@ -16,11 +16,36 @@ require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highc
 		  "app/researchReports", "app/spiderChart", "app/engagementChart", "app/timeseries"
 		   ], function($, jQuery, d3, bars, brandObjs, highcharts, date, ranking, rranking, fullranking, engagement, radar, line, rr, sc, ec, ts ) {	
 
-	$('.series').eq(1).show()
+	var userEmail = $('#user_email').html()
+	window.user = undefined
 
-	RRView.renderView()
-	RRView.renderReports( reportRankings )
-	RREvents.bind()
+	var configureUserQuery = function( email ){
+	
+		getUserFavorites.users[0].user_email = email
+	
+	}
+
+	var checkUserStatus = function( data ){
+
+		// if user default brand isn't set, send them to the registration page
+		if ( data.users.length === 0 || data.users[0].default_brand.brand_id === null ) {
+			//render 
+			alert("please set your brand")
+
+		// else send them to the line chart
+		} else {
+
+			user = data
+
+			TimeseriesView.init()		
+			TimeseriesView.bindEvents()
+		}
+	}
+
+	configureUserQuery( userEmail )
+    $.when(TimeseriesView.fetch("GET", "ref", getUserFavorites, this))
+        .done( checkUserStatus )
+
 
 	$('#reports_li').click( function() {
 

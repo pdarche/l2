@@ -24,6 +24,7 @@ TimeseriesView = {
 
 
         //fetch favorites
+        TimeseriesView.renderFavoriteBrands( user.users[0].favorite_brands)
             
 	},
     //render chart
@@ -61,13 +62,18 @@ TimeseriesView = {
 
         })
 
-        $('#category_benchmark_results').delegate('.brand', 'click', function(){
+        $('#category_benchmark_results').delegate('.brand-check', 'click', function(){
             var id = $(this).attr('class').split(" ")[1]
             
-            //if brand is not added 
-            TimeseriesView.addBrand( id )
-            //else removebrand
+            if ( $(this).is(':checked') ){
+                
+                TimeseriesView.addBrand( id )
 
+            } else {
+
+                TimeseriesView.removeBrand( id )
+
+            }
         })
 
         $('#reset_button').click(function(){
@@ -111,6 +117,9 @@ TimeseriesView = {
 
         TimeseriesView.lineChart.redraw(true)
 
+        console.log(TimeseriesView.clickedBenchmarks)
+        console.log("chart series: ", TimeseriesView.lineChart.series)
+
         return data
 
     },
@@ -133,8 +142,6 @@ TimeseriesView = {
         TimeseriesView.removeAllSeries()
 
         $.each(TimeseriesView.clickedBenchmarks, function(key, value){
-            
-            console.log("active metric is: ", metric )
 
             if(key === 0){
 
@@ -176,6 +183,25 @@ TimeseriesView = {
             .done( TimeseriesView.addSeries )
             .done( TimeseriesView.renderSearchBrand )
 
+        var brandSelector = '.' + brandId
+        $(brandSelector).attr('checked', true)
+
+    },
+
+    removeBrand : function( brandId ) {
+
+        var brandIndex = undefined
+
+        $.each(TimeseriesView.clickedBenchmarks, function(i,v){
+            v.brands[0].brand_id === brandId ? brandIndex = i : null
+        })
+
+        //remove brand index from series 
+        TimeseriesView.lineChart.series[brandIndex].remove();
+        //remove brand index from clickedBenchmarks
+        TimeseriesView.clickedBenchmarks.remove( brandIndex )
+        console.log(TimeseriesView.clickedBenchmarks)
+
     },
 
     categoryTopEight : function( categoryId, metric ){
@@ -211,14 +237,25 @@ TimeseriesView = {
 		var template = Handlebars.compile( source )
 		$('#category_benchmark_results').html( template(brands) )
 
+        $('#category_benchmark_results').children().hide().fadeIn(150)
+
     },
 
     renderSearchBrand : function( brands ){
+        console.log("brands", brands)
 
         var source = $('#brand_partial').html() 
         var template = Handlebars.compile( source )
-        $('#search_benchmarks_results').append( template(brands) )
+       $('#search_benchmarks_results').append( template(brands) )
 
+    },
+
+    renderFavoriteBrands : function( brands ) {
+        var favs = { "brands" : brands }  
+
+        var source = $('#brand_partial').html() 
+        var template = Handlebars.compile( source )
+        $('#favorite_benchmarks_results').append( template(favs) )   
     },
 
     bindAutocomplete : function(data){
@@ -247,8 +284,6 @@ TimeseriesView = {
                 var targetId = ui.item.value
 
                 TimeseriesView.addSearchBrand( targetId )
-
-                console.log("the id of the clicked brand ", targetId)
 
             }
         })
@@ -313,7 +348,7 @@ TimeseriesView = {
 
         return rankedBrands
 
-    }
+    },
 }
 
 var brandData = {
@@ -375,3 +410,14 @@ var fbLikesTopEight = {
     }
 }
 
+var getUserFavorites = {
+    "users" : [
+        { "user_email" : "" }
+    ]
+}
+
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};

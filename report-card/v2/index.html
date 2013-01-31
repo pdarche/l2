@@ -15,7 +15,7 @@
 
 	</head>
 	<body>
-
+		<div id="user_email" style="display:none;">peterd@l2thinktank.com</div>
 		<div id="header"></div>
 
 		<div id="content">
@@ -284,9 +284,20 @@
 
 <script id="brand_partial" type="text/x-handlebars-template">
 {{#each brands}}
-	<div class="brand {{brand_id}}">{{brandfamily_name}} - {{geography_name}} {{extra_modifier}}</div>
+	<div class="brand {{brand_id}}">
+		<img class="favorite-icon" src="favorite_icon"/>
+		<input type="checkbox" class="brand-check {{brand_id}}"/>
+		<p class="brand-name">{{brandfamily_name}} - {{geography_name}} {{extra_modifier}}</p>
+	</div>
 {{/each}}
 </script>
+
+<script id="landing_page_view" type="text/x-handlebars-template">
+<div>
+	The landing page will be here
+</div>
+</script>
+
 
 	</body>
 </html>
