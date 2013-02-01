@@ -15,7 +15,7 @@
 
 	</head>
 	<body>
-		<div id="user_email" style="display:none;">peterd@l2thinktank.com</div>
+		<div id="user_email" style="display:none;">jack@l2thinktank.com</div>
 		<div id="header"></div>
 
 		<div id="content">
@@ -245,7 +245,7 @@
 			
 			<div id="favorite_benchmarks">
 				<div "favorite_benchmarks_heading">			
-					<img class="favorite-title-icon" src="/wp-content/themes/l2/images/intelligencePage/clickedStar.png"/>
+					<img class="favorite-title-icon" src="images/clickedStar.png"/>
 					<p class="favorites-title benchmark-subheading">Favorites</p>
 				</div>
 				<div id="favorite_benchmarks_results"></div>
@@ -258,8 +258,8 @@
 
 				<!-- <div id="category_benchmarks_instruction_wrapper">
 		            <div class="checkbox-icon"></div><p> to add to chart</p>
-		            <p> <img id=_favorite_instruction_icon" src="/wp-content/themes/l2/images/intelligencePage/clickedStar.png"/> to add/remove favorites </p>
-		            <p> <span id=_reset_link_text">links</span> to visit brand pages</p>
+		            <p> <img id="favorite_instruction_icon" src="/wp-content/themes/l2/images/intelligencePage/clickedStar.png"/> to add/remove favorites </p>
+		            <p> <span id="reset_link_text">links</span> to visit brand pages</p>
 		        </div>-->
 
 	        	<p class="benchmark-drop-title benchmark-subheading">Category leaders</p>
@@ -285,7 +285,7 @@
 <script id="brand_partial" type="text/x-handlebars-template">
 {{#each brands}}
 	<div class="brand {{brand_id}}">
-		<img class="favorite-icon" src="favorite_icon"/>
+		<img class="favorite-icon" src="images/emptyStar.png"/>
 		<input type="checkbox" class="brand-check {{brand_id}}"/>
 		<p class="brand-name">{{brandfamily_name}} - {{geography_name}} {{extra_modifier}}</p>
 	</div>

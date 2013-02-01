@@ -2,6 +2,8 @@ TimeseriesView = {
 
     clickedBenchmarks : [],
 
+    brandList : [],
+
 	init : function() {
 
 		var source = $('#timeseries_view').html() 
@@ -62,17 +64,13 @@ TimeseriesView = {
 
         })
 
-        $('#category_benchmark_results').delegate('.brand-check', 'click', function(){
+        $('#category_benchmark_results, #favorite_benchmarks_results, #search_benchmarks_results').delegate('.brand-check', 'click', function(){
             var id = $(this).attr('class').split(" ")[1]
             
             if ( $(this).is(':checked') ){
-                
                 TimeseriesView.addBrand( id )
-
             } else {
-
                 TimeseriesView.removeBrand( id )
-
             }
         })
 
@@ -82,9 +80,44 @@ TimeseriesView = {
 
         })
 
+        $('#category_benchmark_results, #favorite_benchmarks_results, #search_benchmarks_results').delegate('.favorite-icon', 'click', function(){
+
+            var updateUserObject = function( data ){
+
+                user.users[0].favorite_brands.push( data.brands[0] )
+                console.log( user )
+                
+
+            }
+
+            if ( $(this).hasClass('favorite') ){
+                $(this).attr('src', 'images/emptyStar.png').removeClass('favorite')
+
+                //find brand in brandlist and append it to user object.  then use user object for queries
+                //when query is returned reset user object and rerender favorites
+
+
+            } else {
+                $(this).attr('src', 'images/clickedStar.png').addClass('favorite')
+                
+                var brandId = $(this).next().attr('class').split(" ")[1]
+
+                //configure the query object
+                getBrand.brands[0].brand_id = brandId
+
+                $.when( TimeseriesView.fetch("GET", "ref", getBrand, this))
+                    .done( updateUserObject )
+
+                //remove favorite brand from user favorites,
+                //post new object, on response reset user object and rerender favorites
+            }
+
+
+        })
+
 	},
 
-	fetch : function( method, db, queryObject, context ){
+	fetch : function( method, db, queryObject, postData ){
 
 		//build query
 		var baseURL = "http://l2ds.elasticbeanstalk.com/",
@@ -97,8 +130,7 @@ TimeseriesView = {
 			return $.getJSON( query )
 		}
 		else if ( method === "POST" ){			
-			var data = null
-			$.post( query, data, callback, 'json' )
+			$.post( query, postData, callback, 'json' )
 		}
 
     },
@@ -178,13 +210,18 @@ TimeseriesView = {
 
     addSearchBrand : function( brandId ){
 
+        var checkBrand = function(){
+            
+            var brandSelector = '.' + brandId
+            $(brandSelector).attr('checked', true)
+
+        }
+
         TimeseriesView.configureBrandQuery( brandId )
         $.when( TimeseriesView.fetch("GET", "data", brandData, this) )          
             .done( TimeseriesView.addSeries )
             .done( TimeseriesView.renderSearchBrand )
-
-        var brandSelector = '.' + brandId
-        $(brandSelector).attr('checked', true)
+            .done( checkBrand )
 
     },
 
@@ -269,13 +306,15 @@ TimeseriesView = {
 	          brandElement = String( brandName + ' - ' + brandGeo),
 	          brandId = data.brands[i].brand_id
 
-	      brandMod !== ''? brandElement += ' - ' + brandMod : null
+	      brandMod !== '' ? brandElement += ' - ' + brandMod : null
 
 	      var brandObject = { label : brandElement, value : brandId }
 	           
 	      brandList.push( brandObject )
 	    })
         
+        TimeseriesView.brandList = brandList
+
         $('#benchmark_search_input').autocomplete({
             source : brandList,
             select : function(evet, ui){
@@ -409,6 +448,8 @@ var fbLikesTopEight = {
         }
     }
 }
+
+var getBrand = { "brands" : [ { "brand_id" : ""} ] }
 
 var getUserFavorites = {
     "users" : [

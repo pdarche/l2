@@ -608,12 +608,18 @@ circle {
 .favorite-title-icon {
 	float: left;
 	margin-right: 5px;
+	width: 15px;
 }
 
 /****** brand styling ******/
 
 #module_container .brand, #module_container .brand .brand-name, #module_container .brand .brand-check, #module_container .brand .favorite-icon{
 	float: left;
+}
+
+.favorite-icon {
+	width: 15px;
+	margin-top:1px;
 }
 
 #module_container .brand .brand-check {
@@ -634,6 +640,12 @@ circle {
 	overflow-y: hidden;
 	line-height: 149%;
 	height: 30px;
+}
+
+.favorites-title {
+	height: 20px;
+	margin-bottom: 5px;
+
 }
 
 
