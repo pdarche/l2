@@ -6,6 +6,7 @@ TimeseriesView = {
 
 	init : function() {
 
+        // render the module view
 		var source = $('#timeseries_view').html() 
 	    var template = Handlebars.compile( source )
 	    $('#module_container').html( template )
@@ -24,9 +25,9 @@ TimeseriesView = {
             .done( TimeseriesView.renderChart )
             .done( TimeseriesView.addSeries )
 
-
         //fetch favorites
-        TimeseriesView.renderFavoriteBrands( user.users[0].favorite_brands)
+        $.when( TimeseriesView.renderFavoriteBrands( user.users[0].favorite_brands) )
+            .done( TimeseriesView.synchFavorites )
             
 	},
     //render chart
@@ -61,7 +62,7 @@ TimeseriesView = {
 
             //change displayed metrics
             TimeseriesView.toggleMetric()
-
+                
         })
 
         $('#category_benchmark_results, #favorite_benchmarks_results, #search_benchmarks_results').delegate('.brand-check', 'click', function(){
@@ -83,22 +84,35 @@ TimeseriesView = {
         $('#category_benchmark_results, #favorite_benchmarks_results, #search_benchmarks_results').delegate('.favorite-icon', 'click', function(){
 
             var updateUserObject = function( data ){
-
                 user.users[0].favorite_brands.push( data.brands[0] )
-                console.log( user )
-                
-
             }
 
             if ( $(this).hasClass('favorite') ){
-                $(this).attr('src', 'images/emptyStar.png').removeClass('favorite')
+                //remove 'favorite' class
+                $(this).removeClass('favorite')
 
-                //find brand in brandlist and append it to user object.  then use user object for queries
-                //when query is returned reset user object and rerender favorites
+                //get the brand id
+                var brandId = $(this).next().attr('class').split(" ")[1]
 
+                //make array of current favorites
+                var favorites_ids = []
+                $.each(user.users[0].favorite_brands, function(i){
+                    favorites_ids.push(user.users[0].favorite_brands[i].brand_id)
+                })
+
+                // find the index of the to-remove brand
+                var index = $.inArray( brandId, favorites_ids )
+
+                //remove it from the query object
+                user.users[0].favorite_brands.remove(index)
+
+                $.when( TimeseriesView.fetch( "POST", "ref", user, this) )
+                    .done( TimeseriesView.renderFavoriteBrands )
+                    .done( TimeseriesView.synchFavorites )
 
             } else {
-                $(this).attr('src', 'images/clickedStar.png').addClass('favorite')
+                //add 'favorite' class
+                $(this).addClass('favorite')
                 
                 var brandId = $(this).next().attr('class').split(" ")[1]
 
@@ -107,12 +121,11 @@ TimeseriesView = {
 
                 $.when( TimeseriesView.fetch("GET", "ref", getBrand, this))
                     .done( updateUserObject )
+                    .done( TimeseriesView.fetch( "POST", "ref", user, this) )
+                    .done( TimeseriesView.renderFavoriteBrands )
+                    .done( TimeseriesView.synchFavorites )
 
-                //remove favorite brand from user favorites,
-                //post new object, on response reset user object and rerender favorites
             }
-
-
         })
 
 	},
@@ -129,8 +142,13 @@ TimeseriesView = {
 		if ( method === "GET" ){
 			return $.getJSON( query )
 		}
-		else if ( method === "POST" ){			
-			$.post( query, postData, callback, 'json' )
+		else if ( method === "POST" ){
+            console.log("trying to post")
+
+            // return $.post( query, function(data){
+            //     console.log(data)
+            // }, 'json')
+            return "done"
 		}
 
     },
@@ -204,7 +222,7 @@ TimeseriesView = {
         TimeseriesView.configureBrandQuery( brandId)
         $.when( TimeseriesView.fetch("GET", "data", brandData, this) )          
             .done( TimeseriesView.addSeries )
-            // .done( function(){console.log( "clickedBenchmarks", TimeseriesView.clickedBenchmarks )})
+            .done( TimeseriesView.synchChecks )
 
     },
 
@@ -222,6 +240,8 @@ TimeseriesView = {
             .done( TimeseriesView.addSeries )
             .done( TimeseriesView.renderSearchBrand )
             .done( checkBrand )
+            .done( TimeseriesView.synchFavorites )
+            .done( TimeseriesView.synchChecks )
 
     },
 
@@ -236,8 +256,8 @@ TimeseriesView = {
         //remove brand index from series 
         TimeseriesView.lineChart.series[brandIndex].remove();
         //remove brand index from clickedBenchmarks
-        TimeseriesView.clickedBenchmarks.remove( brandIndex )
-        console.log(TimeseriesView.clickedBenchmarks)
+        $.when( TimeseriesView.clickedBenchmarks.remove( brandIndex ) )            
+            .done( TimeseriesView.synchChecks )
 
     },
 
@@ -246,10 +266,12 @@ TimeseriesView = {
     	TimeseriesView.configureCategoryBenchmarkObject( categoryId, metric )
 
     	$('#category_benchmark_results').empty()
-        
+
         $.when(TimeseriesView.fetch("GET", "data", categoryBenchmarksQueryObject, this))
             .done( TimeseriesView.formatRankingData )
             .done( TimeseriesView.renderCategoryBenchmarks )
+            .done( TimeseriesView.synchFavorites )
+            .done( TimeseriesView.synchChecks )
 
     },
 
@@ -287,12 +309,63 @@ TimeseriesView = {
 
     },
 
-    renderFavoriteBrands : function( brands ) {
+    renderFavoriteBrands : function() { //brands
+        $('#favorite_benchmarks_results').children().remove()
+
+        var brands = user.users[0].favorite_brands
+
         var favs = { "brands" : brands }  
 
         var source = $('#brand_partial').html() 
         var template = Handlebars.compile( source )
-        $('#favorite_benchmarks_results').append( template(favs) )   
+        $('#favorite_benchmarks_results').append( template(favs) )
+            .children().find('.favorite-icon')
+            .addClass('favorite')
+
+    },
+
+    synchFavorites : function() {
+        console.log("synching favorites")
+
+        var favorites = $('.favorite')
+        $.each( favorites, function(i){
+            //get brand id and make sure it has the favorite class
+            var selector = '.' + $(this).next().attr('class').split(" ")[1]
+            $(selector).prev().addClass('favorite')
+
+            if ( $(selector).prev().attr('src') === 'images/emptyStar.png' ){
+                $(selector).prev().attr('src', 'images/clickedStar.png')
+            }
+        })
+
+        var non_favorites = $('.favorite-icon').not('.favorite')
+        $.each( non_favorites, function(i){
+            if ( $(this).attr('src') === 'images/clickedStar.png' ){
+                $(this).attr('src', 'images/emptyStar.png')
+            }
+        })
+
+    },
+
+    synchChecks : function() {
+        console.log("synching checks")
+
+        var checked = $('inupt:checked')
+        $.each( TimeseriesView.clickedBenchmarks, function(i){
+            var selector = '.' + this.brands[0].brand_id
+            $(selector).attr('checked', true)
+        })
+
+        var displayedIds = []
+        $.each( TimeseriesView.clickedBenchmarks, function(i){
+            displayedIds.push( this.brands[0].brand_id )
+        })
+
+        $.each( $('input[type=checkbox]'), function(i){
+            var id = $(this).attr('class').split(" ")[1]
+            $.inArray(id, displayedIds) === -1 ? $(this).attr('checked', false) : null
+        })
+
     },
 
     bindAutocomplete : function(data){
@@ -456,6 +529,9 @@ var getUserFavorites = {
         { "user_email" : "" }
     ]
 }
+
+var testUser = {"users":[{"favorite_companies":[],"default_brandfamily":[],"default_brand":[{"geography_name":"Global","geography_id":"3","brandfamily_id":"376","category_name":"Retail","brandfamily_name":"Abercrombie & Fitch","is_active":true,"brand_id":"6155","category_id":"12","extra_modifier":""}],"default_company":[],"favorite_brands":[{"geography_name":"Global","geography_id":"3","brandfamily_id":"376","category_name":"Retail","brandfamily_name":"Abercrombie & Fitch","is_active":true,"brand_id":"6155","category_id":"12","extra_modifier":""}],"default_brandfamily_id":null,"user_id":"u1","default_company_id":null,"favorite_brandfamilies":[],"default_brand_id":"6155","user_email":"jack@l2thinktank.com"}]}
+
 
 Array.prototype.remove = function(from, to) {
   var rest = this.slice((to || from) + 1 || this.length);

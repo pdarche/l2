@@ -490,6 +490,11 @@ circle {
 	line-height: 210%;
 }
 
+.metric-image {
+	margin-top: 12px;
+	height: 15px;
+}
+
 .facebook-metric {
 	background-color:rgba(47,73,132,.9);
 	color: white;
@@ -647,6 +652,7 @@ circle {
 	margin-bottom: 5px;
 
 }
+
 
 
 
