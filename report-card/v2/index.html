@@ -29,6 +29,7 @@
 							<li id="report_card_li"> Digital IQ Report Card </li>
 							<li id="engagement_chart_li"> Engagement </li>
 							<li id="timeseries_chart_li"> Timeseries </li>
+							<li id="top_ten_li"> Social Leaders </li>
 						</ul>
 					</li>
 					<li>Videos</li>
@@ -39,7 +40,7 @@
 			<div id="report_card_container">
 
 				<div id="member_brand">
-					<h1>Kate Spade</h1>
+					<h1></h1>
 				</div>
 				<div id="module_container" class="module"></div>
 		
@@ -178,9 +179,64 @@
 </script>
 
 <script id="engagement_view" type="text/x-handlebars-template">
-<p>Facebook Media Engagement</p>
+<!-- <p>Facebook Media Engagement</p> -->
 <div id="engagement_chart_container"></div>
-<div id="engagement_controls"></div>
+	<div id="benchmark_control_container">
+
+		<div id="search_and_favorite_benchmarks_container">
+
+			<div id="search_benchmarks">				
+				<div id="search_benchmarks_heading">
+				  	<input id="benchmark_search_input" type="text" placeholder="fetching brands... please wait" disabled="True"/>
+				  	<ul id="benchmark_search_results_list"></ul>
+				  	<div style="clear: both;"></div>
+				</div>
+				<div id="search_benchmarks_results"></div>
+			</div>
+			
+			<div id="favorite_benchmarks">
+				<div "favorite_benchmarks_heading">			
+					<img class="favorite-title-icon" src="images/clickedStar.png"/>
+					<p class="favorites-title benchmark-subheading">Favorites</p>
+				</div>
+				<div id="favorite_benchmarks_results"></div>
+			</div>			
+		</div>
+
+		<div id="category_benchmarks_container">
+			
+			<div id="category_benchmark_controls">
+
+				<!-- <div id="category_benchmarks_instruction_wrapper">
+		            <div class="checkbox-icon"></div><p> to add to chart</p>
+		            <p> <img id="favorite_instruction_icon" src="/wp-content/themes/l2/images/intelligencePage/clickedStar.png"/> to add/remove favorites </p>
+		            <p> <span id="reset_link_text">links</span> to visit brand pages</p>
+		        </div>-->
+
+	        	<p class="benchmark-drop-title benchmark-subheading" id="cat_heading">Category leaders</p>
+	        	<p class="benchmark-subheading" id="com_size_heading">Community size</p>
+
+				<select id="category_benchmark_drop">
+		          <option value="18">L2 100</option>
+		          <option value="3">Beauty & Skincare</option>
+		          <option value="4">Fashion & Leather</option>
+		          <option value="12">Retail</option>
+		          <option value="13">Spirits & Champagnes</option>
+		          <option value="15">Travel</option>
+		          <option value="17">Watches & Jewelry</option>
+		        </select>
+		        <select id="community_size_drop">
+		          <option value="1">20k - 100k</option>
+		          <option value="2">100k - 500k</option>
+		          <option value="3">500k - 1M</option>
+		          <option value="4">1M+</option>
+		        </select>
+		        <div style="clear: both;"></div> 
+			</div>
+			<div id="category_benchmark_results"></div>
+		</div>
+		<div style="clear: both;"></div>
+    </div> 
 </script>
 
 <script id="german_chart_row" type="text/x-handlebars-template">
@@ -297,7 +353,63 @@
 	The landing page will be here
 </div>
 </script>
+<script id="top_ten_view" type="text/x-handlebars-template">
+  <div id="top_10_header">
+    <div id="top_five_title">
+      <p id="service_icon"><img src="images/Facebook.png"/></p>
+      <p id="service_title">Top 5 <span id="top_five"></span> By Category: </p>
+      
+      <div id="benchmark_category_drop_wrapper">
+        <select id="category_benchmark_drop">
+          <option value="18">L2 100</option>
+          <!-- <option value="2">Automotive</option> -->
+          <option value="3">Beauty & Skincare</option>
+          <option value="4">Fashion & Leather</option>
+          <!-- <option value="7">Media</option> -->
+          <option value="12">Retail</option>
+          <option value="13">Spirits & Champagnes</option>
+          <option value="15">Travel</option>
+          <option value="17">Watches & Jewelry</option>
+        </select>
+      </div>
+    </div>
 
+    <div id="toggle_wrapper">
+      <div id="fb_toggle" class="facebook-metric top-10-metric">Facebook</div>
+      <div id="twitter_toggle" class="twitter-metric top-10-metric">Twitter</div>
+      <div id="yt_toggle" class="yt-metric top-10-metric">YouTube</div>
+    </div>
+  </div>
+  <div style="clear: both;"></div>
+
+    <div id="top_five_wrapper" class="gray chart-wrapper">
+      <div id="top_five_all_time">
+        <div id="top_five_all_time_title" class="m2_title">
+          <p>ALL TIME</p>
+        </div>
+        <div id="top_five_all_time_chart_container" class="top_five_chart"></div>
+      </div>
+    </div>
+
+    <div id="top_five_perday_wrapper" class="gray chart-wrapper">
+      <div id="top_five_perday">
+        <div id="top_five_perday_title" class="m2_title">
+          <p>30 DAYS</p>
+        </div>
+        <div id="top_five_perday_chart_container" class="top_five_chart"></div>
+      </div>
+    </div>
+
+    <div id="top_five_growth_wrapper" class="gray chart-wrapper">
+      <div id="top_five_growth">
+        <div id="top_five_growth_title" class="m2_title">
+          <p>30 DAYS</p>
+        </div>
+        <div id="top_five_growth_chart_container" class="top_five_chart"></div>
+      </div>
+    </div>
+
+</script>
 
 	</body>
 </html>

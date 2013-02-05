@@ -16,14 +16,30 @@ TimeseriesView = {
 	    	.done( TimeseriesView.formatRankingData )
 	    	.done( TimeseriesView.renderCategoryBenchmarks )
 
-	    //populate brands for brand search functionality 
-		$.when(TimeseriesView.fetch("GET", "ref", getAllBrands, this)).done( TimeseriesView.bindAutocomplete )
+	    //if the brandList is populated, bind the autocomplete,
+        //else, fetch brands, set the brand list and then bind 
+		if ( brandList.length > 0 ){
+            
+            TimeseriesView.bindAutocomplete()
+
+        } else {
+            console.log("not yet set, setting")
+
+            $.when(TimeseriesView.fetch("GET", "ref", getAllBrands, this))
+                .done( TimeseriesView.setBrandList )
+                .done( TimeseriesView.bindAutocomplete )
+
+        }
+
+        //set dropdown category
+
 
 		//fetch member brand data 
-        TimeseriesView.configureBrandQuery( "74" )
+        TimeseriesView.configureBrandQuery( user.users[0].default_brand_id )
         $.when( TimeseriesView.fetch("GET", "data", brandData, this) )          
             .done( TimeseriesView.renderChart )
             .done( TimeseriesView.addSeries )
+            .done( TimeseriesView.synchChecks )
 
         //fetch favorites
         $.when( TimeseriesView.renderFavoriteBrands( user.users[0].favorite_brands) )
@@ -143,13 +159,41 @@ TimeseriesView = {
 			return $.getJSON( query )
 		}
 		else if ( method === "POST" ){
-            console.log("trying to post")
+            console.log("trying to post", queryObject)
 
-            // return $.post( query, function(data){
-            //     console.log(data)
-            // }, 'json')
-            return "done"
+            return $.ajax({
+                type: "POST",
+                url: "http://l2ds.elasticbeanstalk.com/ref",
+                // contentType: 'application/json',
+                data: queryString,
+                dataType : "json",
+                success: function(r) {
+                    console.log("favorite saved", r)
+                },
+                error : function(e) {
+
+                }
+            });
+
 		}
+
+    },
+
+    setBrandList : function( data ) {
+        
+        $.each(data.brands, function(i){
+          var brandName = data.brands[i].brandfamily_name,
+              brandGeo = data.brands[i].geography_name,
+              brandMod = data.brands[i].extra_modifier,
+              brandElement = String( brandName + ' - ' + brandGeo),
+              brandId = data.brands[i].brand_id
+
+          brandMod !== '' ? brandElement += ' - ' + brandMod : null
+
+          var brandObject = { label : brandElement, value : brandId }
+               
+          brandList.push( brandObject )
+        })
 
     },
 
@@ -369,24 +413,6 @@ TimeseriesView = {
     },
 
     bindAutocomplete : function(data){
-
-    	var brandList = []
-        
-	    $.each(data.brands, function(i){
-	      var brandName = data.brands[i].brandfamily_name,
-	          brandGeo = data.brands[i].geography_name,
-	          brandMod = data.brands[i].extra_modifier,
-	          brandElement = String( brandName + ' - ' + brandGeo),
-	          brandId = data.brands[i].brand_id
-
-	      brandMod !== '' ? brandElement += ' - ' + brandMod : null
-
-	      var brandObject = { label : brandElement, value : brandId }
-	           
-	      brandList.push( brandObject )
-	    })
-        
-        TimeseriesView.brandList = brandList
 
         $('#benchmark_search_input').autocomplete({
             source : brandList,

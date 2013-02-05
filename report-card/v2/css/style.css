@@ -445,12 +445,30 @@ body {
 	/*background-color:rgba(200,200,200, .2);*/
 }
 
+/****** ENGAGEMENT CHART ******/
 #engagement_chart_container {
-	width: 786px;
+	width: 803px;
+	height:400px;
 	margin: 10px;
 }
 
-/****** ENGAGEMENT CHART ******/
+#community_size_drop{
+	width: 100px;
+	float: left;
+	margin-left: 10px;
+}
+
+#cat_heading, #com_size_heading {
+	width:48%;
+	margin:0px;
+	float: left;
+}
+
+#com_size_heading {
+	width: 30%;
+	padding-left: 25px
+}
+
 circle {
 	fill: #2F4984;
 	fill-opacity: .4;
@@ -654,8 +672,35 @@ circle {
 }
 
 
+/*******  TOP TEN *******/
 
+.chart-wrapper {
+	width: 30%;
+	height: 400px;
+	float: left;
+	margin-left: 3%;
 
+}
 
+.top-10-metric {
+	float: left;
+	padding:5px;
+	margin-left: 10px;
+
+}
+
+#toggle_wrapper{
+	width: 30%;
+}
+
+#top_10_header {
+	overflow-y: auto
+}
+
+#module_container #top_five_title p {
+	font-size: 14px;
+	margin: 5px;
+	float: left;
+}
 
 

@@ -13,11 +13,12 @@ var likeData = undefined
 require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highcharts/js/highcharts.src",
 		  "date", "data/ranking", "data/reportRankings", "data/fullRanking",
 		  "charts/engagement", "charts/fullspider", "charts/line",
-		  "app/researchReports", "app/spiderChart", "app/engagementChart", "app/timeseries"
-		   ], function($, jQuery, d3, bars, brandObjs, highcharts, date, ranking, rranking, fullranking, engagement, radar, line, rr, sc, ec, ts ) {	
+		  "app/researchReports", "app/spiderChart", "app/engagementChart", "app/timeseries", "app/topTen"
+		   ], function($, jQuery, d3, bars, brandObjs, highcharts, date, ranking, rranking, fullranking, engagement, radar, line, rr, sc, ec, ts, tt ) {	
 
 	var userEmail = $('#user_email').html()
 	window.user = undefined
+	window.brandList = []
 
 	var configureUserQuery = function( email ){
 	
@@ -37,6 +38,7 @@ require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highc
 
 			user = data
 
+			$('#member_brand h1').html( user.users[0].default_brand.brandfamily_name)
 			TimeseriesView.init()		
 			TimeseriesView.bindEvents()
 		}
@@ -72,7 +74,7 @@ require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highc
 
 	$('#engagement_chart_li').click( function() {
 
-		EngagementView.renderView()
+		EngagementView.init()
 		EngagementView.renderChart( engagementChart )		
 
 	})
@@ -81,6 +83,12 @@ require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highc
 
 		TimeseriesView.init()		
 		TimeseriesView.bindEvents()
+
+	})
+
+	$('#top_ten_li').click( function() {
+
+		TopTenView.init()
 
 	})
 	
