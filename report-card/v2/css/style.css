@@ -675,32 +675,62 @@ circle {
 /*******  TOP TEN *******/
 
 .chart-wrapper {
-	width: 30%;
-	height: 400px;
+	width: 31%;
+	height: 500px;
 	float: left;
-	margin-left: 3%;
+	margin-left: .9%;
+	padding:5px;
 
 }
 
-.top-10-metric {
+.top-ten-metric {
 	float: left;
-	padding:5px;
+	padding:5px 10px;
 	margin-left: 10px;
 
 }
 
 #toggle_wrapper{
-	width: 30%;
+	width: 35%;
 }
 
-#top_10_header {
-	overflow-y: auto
+#top_ten_header {
+	margin: 1.8%;
 }
 
-#module_container #top_five_title p {
+#top_ten_header, #top_ten_title, #category_drop_wrpper, #toggle_wrapper {
+	overflow-y: auto;
+}
+
+#top_ten_title, #category_drop_wrapper {
+	float:left;
+}
+
+#toggle_wrapper{
+	float: right;
+}
+
+#module_container #top_ten_title p {
 	font-size: 14px;
 	margin: 5px;
 	float: left;
 }
+
+#top_ten_chart_container {
+	overflow-y: auto;
+	margin-bottom: 20px;
+}
+
+#module_container .chart-wrapper p {
+	font-size: 14px;
+	margin:5px 10px;
+}
+
+.chart-wrapper {
+
+}
+
+
+
 
 

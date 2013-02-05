@@ -1,4 +1,4 @@
-TimeseriesView = {
+    TimeseriesView = {
 
     clickedBenchmarks : [],
 
@@ -100,6 +100,7 @@ TimeseriesView = {
         $('#category_benchmark_results, #favorite_benchmarks_results, #search_benchmarks_results').delegate('.favorite-icon', 'click', function(){
 
             var updateUserObject = function( data ){
+                console.log("updating ", user)
                 user.users[0].favorite_brands.push( data.brands[0] )
             }
 
@@ -135,12 +136,19 @@ TimeseriesView = {
                 //configure the query object
                 getBrand.brands[0].brand_id = brandId
 
-                $.when( TimeseriesView.fetch("GET", "ref", getBrand, this))
-                    .done( updateUserObject )
-                    .done( TimeseriesView.fetch( "POST", "ref", user, this) )
-                    .done( TimeseriesView.renderFavoriteBrands )
-                    .done( TimeseriesView.synchFavorites )
+                // $.when( TimeseriesView.fetch("GET", "ref", getBrand, this))
+                //     .done( updateUserObject )
+                //     .done( TimeseriesView.fetch( "POST", "ref", user, this) )
+                //     .done( TimeseriesView.renderFavoriteBrands )
+                //     .done( TimeseriesView.synchFavorites )
 
+                $.when( TimeseriesView.fetch("GET", "ref", getBrand, this))
+                    .done( [ 
+                            updateUserObject, 
+                            TimeseriesView.fetch( "POST", "ref", user, this ), 
+                            TimeseriesView.synchFavorites
+                        ] 
+                    )
             }
         })
 
@@ -156,10 +164,12 @@ TimeseriesView = {
 
 		//make request
 		if ( method === "GET" ){
+            console.log("getting")
 			return $.getJSON( query )
 		}
 		else if ( method === "POST" ){
-            console.log("trying to post", queryObject)
+            console.log("posting")
+            console.log( "this is the queryString: ", queryString)
 
             return $.ajax({
                 type: "POST",
@@ -169,9 +179,6 @@ TimeseriesView = {
                 dataType : "json",
                 success: function(r) {
                     console.log("favorite saved", r)
-                },
-                error : function(e) {
-
                 }
             });
 
@@ -564,3 +571,4 @@ Array.prototype.remove = function(from, to) {
   this.length = from < 0 ? this.length + from : from;
   return this.push.apply(this, rest);
 };
+

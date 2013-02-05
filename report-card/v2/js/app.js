@@ -12,9 +12,9 @@ var likeData = undefined
 
 require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highcharts/js/highcharts.src",
 		  "date", "data/ranking", "data/reportRankings", "data/fullRanking",
-		  "charts/engagement", "charts/fullspider", "charts/line",
+		  "charts/engagement", "charts/fullspider", "charts/line", "charts/topten",
 		  "app/researchReports", "app/spiderChart", "app/engagementChart", "app/timeseries", "app/topTen"
-		   ], function($, jQuery, d3, bars, brandObjs, highcharts, date, ranking, rranking, fullranking, engagement, radar, line, rr, sc, ec, ts, tt ) {	
+		   ], function($, jQuery, d3, bars, brandObjs, highcharts, date, ranking, rranking, fullranking, engagement, radar, line, topten, rr, sc, ec, ts, tt ) {	
 
 	var userEmail = $('#user_email').html()
 	window.user = undefined
