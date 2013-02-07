@@ -719,6 +719,7 @@ circle {
 #top_ten_chart_container {
 	overflow-y: auto;
 	margin-bottom: 20px;
+	height: 100%;
 }
 
 #module_container .chart-wrapper p {
@@ -731,6 +732,12 @@ circle {
 }
 
 
+#module_container .top-ten-metric {
+	opacity: .4;
+}
 
+#module_container .active {
+	opacity: 1;
+}
 
 

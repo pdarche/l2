@@ -1,60 +1,147 @@
 
 var TopTenView = {
 
+  metrics : { 
+        "facebook" : [
+            "facebook_likes_count_total",
+            "facebook_likes_count_today",
+            "facebook_likes_count_total_growth30"
+        ],
+        "twitter" : [
+            "twitter_follower_count_total",
+            "twitter_follower_count_today",
+            "twitter_follower_count_total_growth30"
+        ],
+        "youtube" : [
+            "youtube_channel_views_count_total",
+            "youtube_channel_views_count_today",
+            "youtube_channel_views_count_total_growth30"
+        ]
+  },
+
 	init : function() {
 
-		var source = $('#top_ten_view').html() 
-	    var template = Handlebars.compile( source )
-	    $('#module_container').html( template )
+  		var source = $('#top_ten_view').html() 
+      var template = Handlebars.compile( source )
+      $('#module_container').html( template )
 
-	    $.when( TopTenView.fetch("GET", "data", likesTopTen, this))
-	    	.done( TopTenView.formatRankingData )
-	    	.done( TopTenView.renderLikes )
-	    	// .done( function(data){console.log(data)} )
+  	  TopTenView.renderCharts()
 
+      TopTenView.populateCharts( "3" )
+
+      TopTenView.bindEvents()
 
 	},
 
-	renderLikes : function( data ) {
+  bindEvents : function() {
 
-	    TopTenView.likes = new Highcharts.Chart( likesConfig )		
+      $('#category_benchmark_drop').on('change', function(){
+          var categoryId = $(this).val()
 
-	    while (TopTenView.likes.series.length > 0){
-            TopTenView.likes.series[0].remove(true)
-            // TopTenView.likesPerDay.series[0].remove(true)
-            // TopTenView.growth.series[0].remove(true)
-      	}
+          TopTenView.populateCharts( categoryId )
 
-      	console.log(" the returned data is ", data.brands[0] )
+      })
 
-	    TopTenView.likes.addSeries({
+      $('.top-ten-metric').click( function(){
+          $('.active').removeClass('active')
+
+          $(this).addClass('active')
+
+          var categoryId = $('#category_benchmark_drop').val()
+
+          TopTenView.populateCharts( categoryId )
+
+      })
+
+  },
+
+	renderCharts : function() {
+
+		TopTenView.likes = new Highcharts.Chart( likesConfig )
+		TopTenView.likesDay = new Highcharts.Chart( likesPerDayConfig )
+		TopTenView.growth = new Highcharts.Chart( growthConfig )
+
+	},
+
+	clearSeries : function() {
+
+		while ( TopTenView.likes.series.length > 0 ){
+
+        TopTenView.likes.series[0].remove(true)
+        TopTenView.likesPerDay.series[0].remove(true)
+        TopTenView.growth.series[0].remove(true)
+
+    }
+
+	},
+
+  populateCharts : function( categoryId ){
+
+      var platform = $('.active').attr('class').split(" ")[0]
+
+      $.when( TopTenView.configQuery( categoryId, TopTenView.metrics[platform][0] ) )
+        .done(
+          function( data, textStatus, jqXHR ) { 
+              $.when ( TopTenView.fetch("GET", "data", data, this) )
+                .done( function( data, textStatus, jqXHR ){
+                  TopTenView.formatRankingData( data, "facebook_likes_count_total" ) 
+                })
+                .done( function( data, textStatus, jqXHR ) {            
+                  TopTenView.renderLikes( data, TopTenView.likes, TopTenView.metrics[platform][0] )
+                })
+              }
+        )
+
+      $.when( TopTenView.configQuery( categoryId, TopTenView.metrics[platform][1] ) )
+        .done(
+            function(data, textStatus, jqXHR) {
+              $.when ( TopTenView.fetch("GET", "data", data, this) )
+                .done( function( data, textStatus, jqXHR ){
+                  TopTenView.formatRankingData( data, "facebook_likes_count_today" ) 
+                })
+                .done( function( data, textStatus, jqXHR ) {            
+                  TopTenView.renderLikes( data, TopTenView.likesDay, TopTenView.metrics[platform][1] )
+                })
+            }
+        )
+
+      $.when( TopTenView.configQuery( categoryId, TopTenView.metrics[platform][2] ) )
+        .done(
+            function(data, textStatus, jqXHR) {
+              $.when ( TopTenView.fetch("GET", "data", data, this) )
+                .done( function( data, textStatus, jqXHR ){
+                  TopTenView.formatRankingData( data, "facebook_likes_count_total_growth30" ) 
+                })
+                .done( function( data, textStatus, jqXHR ) {            
+                  TopTenView.renderLikes( data, TopTenView.growth, TopTenView.metrics[platform][2] )
+                })
+            }
+        )
+  },
+
+	renderLikes : function( data, chart, metric ) {    
+
+    console.log( "this is the chart: ", chart )
+
+    var brandData = [],
+        brandNames = []
+
+    $.each( data.brands, function(i) {
+      brandData.push( data.brands[i][metric][0][1] )
+      brandNames.push( data.brands[i].brandfamily_name + ' - ' + data.brands[i].geography_name )
+      // console.log(data.brands[i].brandfamily_name)
+    })
+
+	    chart.addSeries({
            stacking: 'normal',
-           data: [ 
-              data.brands[0].facebook_likes_count_total[0][1], 
-              data.brands[1].facebook_likes_count_total[0][1], 
-              data.brands[2].facebook_likes_count_total[0][1], 
-              data.brands[3].facebook_likes_count_total[0][1], 
-              data.brands[4].facebook_likes_count_total[0][1],
-              data.brands[5].facebook_likes_count_total[0][1],
-              data.brands[6].facebook_likes_count_total[0][1],
-              data.brands[7].facebook_likes_count_total[0][1],
-              data.brands[8].facebook_likes_count_total[0][1],
-              data.brands[9].facebook_likes_count_total[0][1],
-           ],
+           data: brandData,
            color: '#2F4984',
            pointWidth: 17
         });
 
-	},
+      // chart.xAxis[0].setCategories( brandNames )
 
-	renderLikesDay : function() {
-
-		var likesDay = new Highcharts.Chart( likesDayConfig )		
-	},
-
-	renderGrowth : function() {
-
-		var growth = new Highcharts.Chart( growthConfig )
+      chart.redraw(true)
 
 	},
 
@@ -67,59 +154,51 @@ var TopTenView = {
 			query = encodeURI( baseURL + db + queryString )
 
 		//make request
-		if ( method === "GET" ){
-			return $.getJSON( query )
-		}
-		else if ( method === "POST" ){            
+		return $.getJSON( query )
 
-            return $.ajax({
-                type: "POST",
-                url: "http://l2ds.elasticbeanstalk.com/ref",
-                // contentType: 'application/json',
-                data: queryString,
-                dataType : "json",
-                success: function(r) {
-                    console.log("favorite saved", r)
-                }
-            });
+  },
 
-		}
+	formatRankingData : function( data, metric ){
 
-    },
-
-	formatRankingData : function( data ){
-
-		var facebook = [ "facebook_likes_count_total", "facebook_likes_count_today" ]
-
-        var metric = $('.active').attr('id')
+        // var metric = $('.active').attr('id')
 
         var sortedBrands = data.brands.sort(function(a,b){
-                      return( a["facebook_likes_count_total"][0][1] - b["facebook_likes_count_total"][0][1] )
+                      return( a[metric][0][1] - b[metric][0][1] )
                   })
 
         sortedBrands.reverse()
 
-        var rankedBrands = { "data" : sortedBrands }
+        return sortedBrands
 
-        return rankedBrands
+    },
 
+    configQuery : function ( categoryId, metric ) {
+
+        var clone = $.extend( true, {}, topTenQueryObject )
+
+        clone.brands[0].category_id = categoryId
+        clone.fact_brand_daily["metrics"][0] = metric
+        clone["fact_brand_daily"]["constraints"][metric] = { "top" : 10 }
+
+        return clone
     },
 
 }
 
-var likesTopTen = {
-    "brands" : [ { "category_id" : "3" }],
+var topTenQueryObject = {
+    "brands" : [ { "category_id" : "" }],
     "fact_brand_daily" : {
         "metrics": [
-            "facebook_likes_count_total",
+            "",
         ],
         "constraints" : {
-            "start_date" : "20120101", 
-            "end_date" : "20130101",
-            "timeseries" : false,
-            "facebook_likes_count_total" : {
-                "top" : 10
-            }
+            "start_date" : (3).days().ago().toString("yyyyMMdd"), 
+            "end_date" : (2).days().ago().toString("yyyyMMdd"),
+            "timeseries" : false
         }
     }
 }
+
+
+
+

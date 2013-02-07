@@ -1,6 +1,6 @@
 var likesConfig = {
      chart: {
-        renderTo: 'top_five_all_time_chart_container',
+        renderTo: 'top_ten_all_time_chart_container',
         type: 'bar',     
      },
      title: {
@@ -67,7 +67,7 @@ var likesConfig = {
 
 var likesPerDayConfig = {
      chart: {
-        renderTo: 'top_five_perday_chart_container',
+        renderTo: 'top_ten_perday_chart_container',
         type: 'bar'
      },
      credits: {
@@ -134,7 +134,7 @@ var likesPerDayConfig = {
 
 var growthConfig = {
      chart: {
-        renderTo: 'top_five_growth_chart_container',
+        renderTo: 'top_ten_growth_chart_container',
         type: 'bar'
      },
      legend: {
