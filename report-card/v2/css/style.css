@@ -676,7 +676,7 @@ circle {
 
 .chart-wrapper {
 	width: 31%;
-	height: 500px;
+	height: 600px;
 	float: left;
 	margin-left: .9%;
 	padding:5px;
@@ -740,4 +740,10 @@ circle {
 	opacity: 1;
 }
 
+#top_ten_all_time {
+	height: 500px;
+}
 
+#top_ten_all_time_chart_container, #top_ten_perday_chart_container, #top_ten_growth_chart_container {
+	height:570px;
+}

@@ -10,7 +10,7 @@ requirejs.config({
 
 var likeData = undefined
 
-require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highcharts/js/highcharts.src",
+require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highcharts-2.3.5/js/highcharts.src",
 		  "date", "data/ranking", "data/reportRankings", "data/fullRanking",
 		  "charts/engagement", "charts/fullspider", "charts/line", "charts/topten",
 		  "app/researchReports", "app/spiderChart", "app/engagementChart", "app/timeseries", "app/topTen"
@@ -31,16 +31,31 @@ require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highc
 		// if user default brand isn't set, send them to the registration page
 		if ( data.users.length === 0 || data.users[0].default_brand.brand_id === null ) {
 			//render 
-			alert("please set your brand")
+			var source = $('#landing_page_view').html() 
+		    var template = Handlebars.compile( source )
+		    $('#module_container').html( template )
 
 		// else send them to the line chart
 		} else {
 
 			user = data
 
-			$('#member_brand h1').html( user.users[0].default_brand.brandfamily_name)
+			$('#member_brand h1').html( user.users[0])
 			TimeseriesView.init()		
 			TimeseriesView.bindEvents()
+
+			getBrand.brands[0].brand_id = user.users[0].default_brand_id
+
+			console.log(user.users[0].default_brand_id)
+			console.log(getBrand)
+			
+			$.when( fetch( "GET", "ref", getBrand, this ) )
+			.done( 
+				function( data ){
+					user.users[0]["default_category_id"] = data.brands[0].category_id
+				}
+			)
+
 		}
 	}
 
@@ -91,6 +106,37 @@ require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highc
 		TopTenView.init()
 
 	})
+
+	var fetch = function( method, db, queryObject, postData ){
+
+		//build query
+		var baseURL = "http://l2ds.elasticbeanstalk.com/",
+			db = db + "?format=json&q=",
+			queryString = JSON.stringify( queryObject ),
+			query = encodeURI( baseURL + db + queryString )
+
+		//make request
+		if ( method === "GET" ){
+
+			console.log(queryString)
+			return $.getJSON( query )
+		}
+		else if ( method === "POST" ){
+
+            return $.ajax({
+                type: "POST",
+                url: "http://l2ds.elasticbeanstalk.com/ref",
+                // contentType: 'application/json',
+                data: queryString,
+                dataType : "json",
+                success: function(r) {
+                    console.log("favorite saved", r)
+                }
+            });
+
+		}
+
+    }
 	
 
 });

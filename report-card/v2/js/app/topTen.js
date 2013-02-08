@@ -49,7 +49,7 @@ var TopTenView = {
 
           var categoryId = $('#category_benchmark_drop').val()
 
-          TopTenView.populateCharts( categoryId )
+          TopTenView.populateCharts( categoryId, metric )
 
       })
 
@@ -75,7 +75,7 @@ var TopTenView = {
 
 	},
 
-  populateCharts : function( categoryId ){
+  populateCharts : function( categoryId, metric ){
 
       var platform = $('.active').attr('class').split(" ")[0]
 
@@ -139,7 +139,7 @@ var TopTenView = {
            pointWidth: 17
         });
 
-      // chart.xAxis[0].setCategories( brandNames )
+      chart.xAxis[0].setCategories( brandNames )
 
       chart.redraw(true)
 

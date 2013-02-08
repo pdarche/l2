@@ -12,7 +12,7 @@ var engagementChart = function(data, brandId, el){
 
 	/******************** STATIC ELEMENTS ******************/ 
 
-	var w = 760,
+	var w = 780,
 		h = 390,
 		padding = 60;
 
@@ -77,15 +77,16 @@ var engagementChart = function(data, brandId, el){
 	             .range([30, w - 20]);
 
 	    var yScale = d3.scale.linear()
-		        .domain([-.001, d3.max(data, function(d) { return d[1] + d[1]/4 })])
+		        .domain([-(0.5 * d3.max(data, function(d){ return d[1] })), d3.max(data, function(d) { return d[1] + d[1]/4 })])
 		        .range([h - 40, 20]);
 
 		var dScale = d3.scale.linear()
 		 	    .domain([d3.min(data, function(d) { return d[2]}), d3.max(data, function(d) { return d[2] })])
-		 		.range([20, 80]);       
+		 		.range([10, 100]);       
 
 		setAxess(data, w, h, xScale, yScale, dScale, svg, maxX, minX, linearXScale);
 		updateCircles(data, svg, xScale, yScale, dScale, w, h, linearXScale, range, brandId);
+
 	}
 
 	function setAxess(_data, _w, _h, _xScale, _yScale, _dScale, _svg, maxX, minX, _linearX){

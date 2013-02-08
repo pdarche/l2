@@ -17,7 +17,7 @@ var likesConfig = {
             enabled: true,
             align: 'left',
             x: 0,
-            y: 22,
+            y: 15,
             style: {
                 'width' : '300px'
             },
@@ -44,7 +44,7 @@ var likesConfig = {
               enabled: true,
               align: 'right',
               color: 'black',
-              y: -12,
+              y: -15,
               formatter: function(){
                    var nStr = this.y
                    nStr += '';
@@ -81,7 +81,7 @@ var likesPerDayConfig = {
             enabled: true,
             align: 'left',
             x: 0,
-            y: 22,
+            y: 15,
             style: {
                 'width' : '300px'
             }
@@ -111,7 +111,7 @@ var likesPerDayConfig = {
               enabled: true,
               align: 'right',
               color: 'black',
-              y: -12,
+              y: -15,
               formatter: function(){
                    var nStr = this.y
                    nStr += '';
@@ -148,7 +148,7 @@ var growthConfig = {
             enabled: true,
             align: 'left',
             x: 0,
-            y: 22,
+            y: 15,
             style: {
                 'width' : '300px',
                 'overflow' : 'hidden'
@@ -179,7 +179,7 @@ var growthConfig = {
               enabled: true,
               align: 'right',
               color: 'black',
-              y: -12,
+              y: -15,
               formatter: function(){
                    var nStr = this.y
                    nStr += '';

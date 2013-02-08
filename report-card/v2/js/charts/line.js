@@ -1,9 +1,9 @@
 var config = {
-     chart: {
-        renderTo: 'timeseries_chart_container',
-        zoomType: 'x',
-        type: 'line'
-     },
+   chart: {
+      renderTo: 'timeseries_chart_container',
+      zoomType: 'x',
+      type: 'line'
+   },
     subtitle: {
         text: document.ontouchstart === undefined ?
             'Click and drag in the plot area to zoom in' :
@@ -49,9 +49,9 @@ var config = {
      },
      exporting : {
       enabled : true,
-      // buttons : {
-      //   enabled : true
-      // }
+      buttons : {
+        enabled : true
+      }
     },
      plotOptions: {
         series: {
@@ -67,14 +67,14 @@ var config = {
       },
       line: {
           events: {
-            // legendItemClick: function () {
+            legendItemClick: function () {
                         
-              // if(clickedBenchmarks.length > 1){
+              if(TimeseriesView.clickedBenchmarks.length > 1){
 
-              //   removeChartSeries(this.name)
-              // } 
-              // return false; // <== returning false will cancel the default action
-          // }
+                // removeChartSeries(this.name)
+              } 
+              return false; // <== returning false will cancel the default action
+          }
         }
       }
     }

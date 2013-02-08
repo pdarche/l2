@@ -16,6 +16,7 @@
 	    	.done( TimeseriesView.formatRankingData )
 	    	.done( TimeseriesView.renderCategoryBenchmarks )
 
+
 	    //if the brandList is populated, bind the autocomplete,
         //else, fetch brands, set the brand list and then bind 
 		if ( brandList.length > 0 ){
@@ -31,15 +32,19 @@
 
         }
 
-        //set dropdown category
-
 
 		//fetch member brand data 
-        TimeseriesView.configureBrandQuery( user.users[0].default_brand_id )
-        $.when( TimeseriesView.fetch("GET", "data", brandData, this) )          
-            .done( TimeseriesView.renderChart )
-            .done( TimeseriesView.addSeries )
-            .done( TimeseriesView.synchChecks )
+        $.when( TimeseriesView.configureBrandQuery( user.users[0].default_brand_id ) )
+        .done(
+            $.when( TimeseriesView.fetch("GET", "data", brandData, this) )          
+                .done( TimeseriesView.renderChart )
+                .done( TimeseriesView.addSeries )
+                .done( TimeseriesView.synchChecks )
+                .done( function() { 
+                    $('#category_benchmark_drop').val(user.users[0].default_category_id)
+                })
+        )
+
 
         //fetch favorites
         $.when( TimeseriesView.renderFavoriteBrands( user.users[0].favorite_brands) )
@@ -49,7 +54,7 @@
     //render chart
     renderChart : function(){
 
-        TimeseriesView.lineChart = new Highcharts.Chart(config)
+        TimeseriesView.lineChart = new Highcharts.Chart( config )
 
     },
 	//bind events
@@ -214,12 +219,10 @@
              name: data.brands[0].brandfamily_name + ' - ' + data.brands[0].geography_name, //+ ' ' + value.brands[0].extra_modifier,
              data: data.brands[0][metric]
              // color: colors[clickedBenchmarks.length]
-          });
+          }, true);
 
-        TimeseriesView.lineChart.redraw(true)
-
-        console.log(TimeseriesView.clickedBenchmarks)
-        console.log("chart series: ", TimeseriesView.lineChart.series)
+        // console.log(TimeseriesView.clickedBenchmarks)
+        // console.log("chart series: ", TimeseriesView.lineChart.series)
 
         return data
 
@@ -352,7 +355,6 @@
     },
 
     renderSearchBrand : function( brands ){
-        console.log("brands", brands)
 
         var source = $('#brand_partial').html() 
         var template = Handlebars.compile( source )
@@ -376,7 +378,6 @@
     },
 
     synchFavorites : function() {
-        console.log("synching favorites")
 
         var favorites = $('.favorite')
         $.each( favorites, function(i){
@@ -502,7 +503,7 @@ var brandData = {
         "metrics": [
             "facebook_likes_count_total",
             "facebook_likes_count_today",
-            "facebook_likes_count_total_growth30",
+            "facebook_likes_interaction_rate",
             "twitter_follower_count_total",
             "twitter_follower_count_today",
             "twitter_tweets_count_today",
@@ -555,7 +556,7 @@ var fbLikesTopEight = {
     }
 }
 
-var getBrand = { "brands" : [ { "brand_id" : ""} ] }
+var getBrand = { "brands" : [ { "brand_id" : "" }    ] }
 
 var getUserFavorites = {
     "users" : [

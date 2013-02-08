@@ -15,7 +15,7 @@
 
 	</head>
 	<body>
-		<div id="user_email" style="display:none;">jack@l2thinktank.com</div>
+		<div id="user_email" style="display:none;"></div>
 		<div id="header"></div>
 
 		<div id="content">
@@ -225,8 +225,8 @@
 		          <option value="17">Watches & Jewelry</option>
 		        </select>
 		        <select id="community_size_drop">
-		          <option value="1">20k - ten0k</option>
-		          <option value="2">ten0k - 500k</option>
+		          <option value="1">20k - 100k</option>
+		          <option value="2">100k - 500k</option>
 		          <option value="3">500k - 1M</option>
 		          <option value="4">1M+</option>
 		        </select>
@@ -244,6 +244,8 @@
 <div id="engagement_controls"></div>
 </script>
 
+
+
 <script id="timeseries_view" type="text/x-handlebars-template">
 	<!-- metric control container -->
   	<div id="metric_control_container">
@@ -251,7 +253,7 @@
           	<img class="metric-image" src="images/Facebook.png"/>
             <div id="facebook_likes_count_total" class="facebook-metric facebook metric active">"LIKES"</div>
             <div id="facebook_likes_count_today" class="facebook-metric facebook metric">"LIKES"/DAY</div>
-            <div id="engagement" class="facebook-metric facebook metric">ENGAGEMENT</div>
+            <div id="facebook_likes_interaction_rate" class="facebook-metric facebook metric">ENGAGEMENT</div>
             <div style="clear: both;"></div>
         </div>
 
@@ -320,7 +322,7 @@
 	        	<p class="benchmark-drop-title benchmark-subheading">Category leaders</p>
 
 				<select id="category_benchmark_drop">
-		          <option value="18">L2 ten0</option>
+		          <option value="18">L2 100</option>
 		          <option value="3">Beauty & Skincare</option>
 		          <option value="4">Fashion & Leather</option>
 		          <option value="12">Retail</option>
@@ -349,9 +351,34 @@
 
 <script id="landing_page_view" type="text/x-handlebars-template">
 <div>
-	The landing page will be here
+	<p> L2 intelligence tools are designed to allow members to track and benchmark their digital performance</p>
+	<p> Please select your default brand </p>
+	<div>
+		<input type="text"> <div id="submit_favorite">Make Default</div> 
+	</div>
+	<div id="module_icon_container">
+		<ul>
+			<li>
+				<div class="module-icon"></div>
+				<p class="module-title"></p>
+			</li>
+			<li>
+				<div class="module-icon"></div>
+				<p class="module-title"></p>
+			</li>
+			<li>
+				<div class="module-icon"></div>
+				<p class="module-title"></p>
+			</li>
+			<li>
+				<div class="module-icon"></div>
+				<p class="module-title"></p>
+			</li>
+		</ul>
+	</div>
 </div>
 </script>
+
 <script id="top_ten_view" type="text/x-handlebars-template">
   
   <div id="top_ten_header">	    
