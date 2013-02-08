@@ -13,8 +13,8 @@ var likeData = undefined
 require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highcharts-2.3.5/js/highcharts.src",
 		  "date", "data/ranking", "data/reportRankings", "data/fullRanking",
 		  "charts/engagement", "charts/fullspider", "charts/line", "charts/topten",
-		  "app/researchReports", "app/spiderChart", "app/engagementChart", "app/timeseries", "app/topTen"
-		   ], function($, jQuery, d3, bars, brandObjs, highcharts, date, ranking, rranking, fullranking, engagement, radar, line, topten, rr, sc, ec, ts, tt ) {	
+		  "app/researchReports", "app/spiderChart", "app/engagementChart", "app/timeseries", "app/topTen", "app/setDefault"
+ 		   ], function($, jQuery, d3, bars, brandObjs, highcharts, date, ranking, rranking, fullranking, engagement, radar, line, topten, rr, sc, ec, ts, tt, sd ) {	
 
 	var userEmail = $('#user_email').html()
 	window.user = undefined
@@ -31,9 +31,7 @@ require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highc
 		// if user default brand isn't set, send them to the registration page
 		if ( data.users.length === 0 || data.users[0].default_brand.brand_id === null ) {
 			//render 
-			var source = $('#landing_page_view').html() 
-		    var template = Handlebars.compile( source )
-		    $('#module_container').html( template )
+			SetDefaultView.init()
 
 		// else send them to the line chart
 		} else {
@@ -45,9 +43,6 @@ require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highc
 			TimeseriesView.bindEvents()
 
 			getBrand.brands[0].brand_id = user.users[0].default_brand_id
-
-			console.log(user.users[0].default_brand_id)
-			console.log(getBrand)
 			
 			$.when( fetch( "GET", "ref", getBrand, this ) )
 			.done( 
@@ -55,49 +50,46 @@ require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highc
 					user.users[0]["default_category_id"] = data.brands[0].category_id
 				}
 			)
-
 		}
 	}
 
 	configureUserQuery( userEmail )
-    $.when(TimeseriesView.fetch("GET", "ref", getUserFavorites, this))
+    $.when( TimeseriesView.fetch("GET", "ref", getUserFavorites, this))
         .done( checkUserStatus )
 
 
-	$('#reports_li').click( function() {
+	// $('#reports_li').click( function() {
 
-		$('#module_container').empty()
+	// 	$('#module_container').empty()
 
-		RRView.renderView()
-		RRView.renderReports( reportRankings )
-		RREvents.bind()
+	// 	RRView.renderView()
+	// 	RRView.renderReports( reportRankings )
+	// 	RREvents.bind()
 
-	})
+	// })
 
-	$('#report_card_li').click( function() {
+	// $('#report_card_li').click( function() {
 
-		SpiderView.renderView()
-		// SpiderView.initBrands()
-		SpiderView.renderBrandList()
+	// 	SpiderView.renderView()
+	// 	// SpiderView.initBrands()
+	// 	SpiderView.renderBrandList()
 
-		SpiderEvents.toggleBrand()
-		SpiderEvents.changeCategories()
-		SpiderEvents.toggleBenchmarkContainer()
-		SpiderEvents.addBrand()
+	// 	SpiderEvents.toggleBrand()
+	// 	SpiderEvents.changeCategories()
+	// 	SpiderEvents.toggleBenchmarkContainer()
+	// 	SpiderEvents.addBrand()
 
-	})
+	// })
 
 	$('#engagement_chart_li').click( function() {
 
-		EngagementView.init()
-		EngagementView.renderChart( engagementChart )		
+		EngagementView.init()	
 
 	})
 
 	$('#timeseries_chart_li').click( function() {
 
 		TimeseriesView.init()		
-		TimeseriesView.bindEvents()
 
 	})
 
@@ -118,7 +110,6 @@ require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highc
 		//make request
 		if ( method === "GET" ){
 
-			console.log(queryString)
 			return $.getJSON( query )
 		}
 		else if ( method === "POST" ){
@@ -126,16 +117,13 @@ require([ "jquery", "jquery-ui", "d3", "handlebars", "helpers/brandObjs", "highc
             return $.ajax({
                 type: "POST",
                 url: "http://l2ds.elasticbeanstalk.com/ref",
-                // contentType: 'application/json',
                 data: queryString,
                 dataType : "json",
                 success: function(r) {
                     console.log("favorite saved", r)
                 }
             });
-
 		}
-
     }
 	
 

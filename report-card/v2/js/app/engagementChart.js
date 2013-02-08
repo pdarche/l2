@@ -66,7 +66,6 @@ var EngagementView = {
             }
         )
 
-
         //populate/bind brand list
 		if ( brandList.length > 0 ){
             
@@ -97,6 +96,7 @@ var EngagementView = {
         $.when( TimeseriesView.renderFavoriteBrands( user.users[0].favorite_brands) )
             .done( TimeseriesView.synchFavorites )
 
+        Engagement.renderChart()
         EngagementView.bindEvents()
 
 	},
@@ -178,7 +178,7 @@ var EngagementView = {
 	renderChart : function( engagementData ) {
 
         $('#engagement_chart_container').children().remove()
-        engagementChart(engagementData, 12, '#engagement_chart_container')
+        engagementChart( engagementData, 12, '#engagement_chart_container' )
         $('#engagement_chart_container').children().hide().fadeIn()
 
 	},

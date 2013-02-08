@@ -1,4 +1,4 @@
-    TimeseriesView = {
+var TimeseriesView = {
 
     clickedBenchmarks : [],
 
@@ -49,6 +49,8 @@
         //fetch favorites
         $.when( TimeseriesView.renderFavoriteBrands( user.users[0].favorite_brands) )
             .done( TimeseriesView.synchFavorites )
+
+        TimeseriesView.bindEvents()
             
 	},
     //render chart
@@ -169,12 +171,11 @@
 
 		//make request
 		if ( method === "GET" ){
-            console.log("getting")
-			return $.getJSON( query )
+			
+            return $.getJSON( query )
+
 		}
 		else if ( method === "POST" ){
-            console.log("posting")
-            console.log( "this is the queryString: ", queryString)
 
             return $.ajax({
                 type: "POST",
@@ -452,8 +453,6 @@
 
     //this should be the model!!!!
     formatBrandData : function( data ){
-
-        conosle.log("this is the brand data: ", data)
 
 	    var brand = {
 

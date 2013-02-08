@@ -81,7 +81,7 @@ var TopTenView = {
 
       $.when( TopTenView.configQuery( categoryId, TopTenView.metrics[platform][0] ) )
         .done(
-          function( data, textStatus, jqXHR ) { 
+          function( data, textStatus, jqXHR ) {
               $.when ( TopTenView.fetch("GET", "data", data, this) )
                 .done( function( data, textStatus, jqXHR ){
                   TopTenView.formatRankingData( data, "facebook_likes_count_total" ) 

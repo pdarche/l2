@@ -1,0 +1,576 @@
+<?php
+session_start();
+if($_SESSION['redirect_url'])
+{
+echo '<script>location.href="'.$_SESSION['redirect_url'].'"</script>';
+}
+
+/**
+ * Template Name: Members Only page Template
+ *
+ * A custom page template without sidebar.
+ *
+ * The "Template Name:" bit above allows this to be selectable
+ * from a dropdown menu on the edit page screen.
+ *
+ * @package WordPress
+ * @subpackage Twenty_Ten
+ * @since Twenty Ten 1.0
+ */
+wp_enqueue_style('tipsy', get_template_directory_uri() . '/css/tipsy.css',false,'1.1','all');
+wp_enqueue_style('intelligencePage', get_template_directory_uri() . '/css/intelligencePage.css',false,'1.1','all');
+
+wp_enqueue_script('Highcharts', get_template_directory_uri() . '/js/intelligencePage/vendor/Highcharts-2.2.3/js/highcharts.js',false,'1.1', 'all'); // this file WILL NOT be used in production
+// wp_enqueue_script('Highcharts.src', get_template_directory_uri() . '/js/intelligencePage/Highcharts-2.2.3/js/highcharts.src.js',false,'1.1', 'all') //this file WILL be used in production
+
+//vendor
+wp_enqueue_script('BrowserDetect', get_template_directory_uri() . '/js/intelligencePage/vendor/browser_detect.js',false,'1.1', 'all'); 
+wp_enqueue_script('d3.v2.min', get_template_directory_uri() . '/js/intelligencePage/vendor/d3.v2.min.js',false,'1.1', 'all');
+wp_enqueue_script('date', get_template_directory_uri() . '/js/intelligencePage/vendor/date.js',false,'1.1', 'all');
+wp_enqueue_script('jquery-ui-1.8.21.custom.min', get_template_directory_uri() . '/js/intelligencePage/vendor/jquery-ui-1.8.21.custom.min.js');
+wp_enqueue_script('jquery.tipsy', get_template_directory_uri() . '/js/intelligencePage/vendor/jquery.tipsy.js');
+wp_enqueue_script('Exporting.src', get_template_directory_uri() . '/js/intelligencePage/vendor/Highcharts-2.2.3/js/modules/exporting.src.js', false, '1.1', 'all');
+
+//query objects 
+wp_enqueue_script('module_one_queries', get_template_directory_uri() . '/js/intelligencePage/data/m1_query_objects.js',false,'1.1', 'all');
+wp_enqueue_script('module_two_queries', get_template_directory_uri() . '/js/intelligencePage/data/m2_query_objects.js',false,'1.1', 'all');
+wp_enqueue_script('module_three_queries', get_template_directory_uri() . '/js/intelligencePage/data/m3_query_objects.js',false,'1.1', 'all');
+
+//charts 
+wp_enqueue_script('line_chart', get_template_directory_uri() . '/js/intelligencePage/charts/line_chart.js',false,'1.1', 'all');
+wp_enqueue_script('engagementChart', get_template_directory_uri() . '/js/intelligencePage/charts/engagementChart.js');
+
+//app
+wp_enqueue_script('intelligencePage', get_template_directory_uri() . '/js/intelligencePage/intelligencePage.js');
+
+//wp_enqueue_script('research_reports', get_template_directory_uri() . '/js/intelligencePage/research_reports.js');
+// wp_enqueue_script('Exporting', get_template_directory_uri() . '/js/intelligencePage/Highcharts-2.2.3/js/modules/exporting.js',false, '1.1', 'all');
+
+get_header(); 
+
+?>
+
+<script type="text/javascript" >
+$(document).ready(function(){
+	//js links in menu
+	//set a click function on the class that is assigned to the menu item in WP
+	$(".engagement-menu-click a").click(function() {
+		//do whatever needs to be done here.  		ex: $('#job_post_success').trigger('click'); 
+	});
+	$(".sm-bench-menu-click a").click(function() {
+		//do whatever needs to be done here.  		ex: $('#job_post_success').trigger('click'); 
+	});
+	$(".sm-leaders-menu-click a").click(function() {
+		//do whatever needs to be done here.  		ex: $('#job_post_success').trigger('click'); 
+	});
+	$(".l2-100-menu-click a").click(function() {
+		//do whatever needs to be done here.  		ex: $('#job_post_success').trigger('click'); 
+	});
+	$(".l2-research-menu-click a").click(function() {
+		//do whatever needs to be done here.  		ex: $('#job_post_success').trigger('click'); 
+	});
+
+/*
+Engagement - the engagement chart that is currently at the bottom of the intellgence dashboard that Peter will expand to full 820 wide so it takes the full page width
+Social Media Benchmarking - the line graph that is currently at the top of the Intelligence dashboard
+Social Media Leaders - the 3 bar graphs
+L2 100 - Manuella's visualization
+L2 Research
+*/
+
+})
+</script>
+
+<?php 
+
+global $current_user; 
+$uid=$current_user->ID;
+if($uid=="") $uid=0;
+?>
+<input type="hidden" id="u" name="u" value="<?php echo($uid);?>">
+<?php
+$userIsMember = ($uid>0 ? "on" : "off");
+if($userIsMember!="on"){
+	//non-members section
+?> 
+<section id="body_container">
+  <section class="heading_section">
+    <h2>Intelligence</h2>
+    <?php display_search_box(); ?>
+    <?php dynamic_sidebar('fourth-footer-widget-area'); ?>
+  </section>
+  <!-- left section -->
+  <section class="inner_left_section">
+    <nav>
+      <?php wp_nav_menu(array('menu' => 'menu' , 'container' => '')); ?>
+    </nav>
+
+  </section>
+  <!-- left section ends -->
+  <!-- right section -->
+  <section class="inner_right_section">
+    <div class="content_left no_bor">
+		  <section>
+			  <h3 style="font-family: Arial, Helvetica, sans-serif; font-style: bold;font-size:18px; line-height:24px; color:#000;text-decoration:none;">L2 Intelligence data is for L2 Members only<br/><a href="/L2-100" style="font-size:16px;">Preview the L2 100.</a></h3> 
+				<p style="font-family: Arial, Helvetica, sans-serif; font-style: bold;font-size:13px; line-height:18px; color:#000;text-decoration:none;">To inquire about Membership contact <a href="#form_contact_membership" id="form_contact_membership_a" style="color:#a0cd55;">membership@l2thinktank.com</a>.<br/>
+				<br/>
+				If you are a member please log-in above right.<br/>
+				Members with questions about their web log-in please contact <a href="mailto:Cameron@l2thinktank.com" style="color:#a0cd55;">Cameron@l2thinktank.com</a></p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+			  <h3 style="font-family: Arial, Helvetica, sans-serif; font-style: bold;font-size:18px; line-height:24px; color:#000;text-decoration:none;">L2 Intelligence data</h3> 
+	      <p><iframe src="http://player.vimeo.com/video/51282765" width="754" height="425" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></p>
+	      <div id="footer">
+	      </div>
+  		</section>
+    </div>
+
+  </section>
+  <!-- right section ends -->
+</section>
+
+<?php 
+		get_footer(); 
+		exit();
+} else {
+	//members only section
+	//load their brand. if they are senior contact load brand selector
+	$senior_contact = get_usermeta($uid,'senior_contact');
+	$objUserBrandData = $wpdb->get_results($wpdb->prepare("SELECT wp.post_title as brand_name,wp.id as brand_id FROM `wp_user_brand` wpb Inner join wp_posts wp  On (wpb.brand_id=wp.id AND wp.post_type='brand' AND wp.post_status='publish') where user_id=%d order by wpb.main_brand desc,brand_name",$uid));
+
+	$memberCompanyName = get_usermeta($uid,'user_company');
+?> 
+
+
+<section id="body_container">
+  <section class="heading_section">
+    <h2>Intelligence</h2>
+    <?php display_search_box(); ?>
+    <?php dynamic_sidebar('fourth-footer-widget-area'); ?>
+  </section>
+  <!-- left section -->
+  <section class="inner_left_section">
+    <nav>
+      <?php wp_nav_menu(array('menu' => 'menu' , 'container' => '')); ?>
+    </nav>
+    <p>&nbsp;</p>
+    <div><img src="/wp-content/themes/l2/images/question-mark.jpg" width="11" height="11"><br/><span style="font-family: Georgia, serif; font-style: italic;font-size:13px; line-height:18px; color:#999999;text-decoration:none;">For questions or comments regarding the Intelligence Data <a href="mailto:data@l2thinktank.com" style="color:#a0cd55;text-decoration:none;">contact us</a>.</span></div>
+
+  </section>
+  <!-- left section ends -->
+  <!-- right section -->
+  <a href="/video/l2-intelligence-page/" target="_blank" style="padding-left:5px;text-decoration:none;"><img src="/wp-content/themes/l2/images/question-mark.jpg" width="11" height="11"><span style="padding-left:5px;padding-right:5px;font-family: Georgia, serif; font-style: italic;font-size:13px; line-height:18px; color:#999999;text-decoration:none;">How to use the Intelligence Data</span><img src="/wp-content/themes/l2/images/play-arrow.jpg" width="11" height="11"></a>
+<!--[if lt IE 9]>
+<style>
+#visualization_section {display:none};
+</style>
+	<section id="no-viz"><h2 style="padding-top:25px;">Sorry, the L2 intelligence visualizations require advanced browser features not supported by your browser.</h2><h2 style="padding-top:25px;">Please upgrade to Chrome, Firefox, or Internet Explorer 9.</h2></section>
+<![endif]-->
+  <section class="inner_right_section" id="visualization_section">
+        <div id="right_section">
+          
+          <div id="module_container" class="module"></div>
+
+          <div id="footer">
+          </div>
+        </div>
+
+  </section>
+  <!-- right section ends -->
+</section>
+
+  <!-- templates  -->
+<script id="report_template" type="text/x-handlebars-template">
+{{#each data}}
+<li class="report">
+  <div class="report-info">
+    <div class="report-details">
+      <div class="report-name">{{ report_title }}</div>
+      <div class="report-date">{{ report_date }}</div>
+    </div>
+    <div class="rank">
+      <p>{{ rank }}</p>
+    </div>
+  </div>
+  <div class="arrow"></div>
+</li>
+{{/each}}
+</script>
+
+<script id="reports_view" type="text/x-handlebars-template">
+<p>L2 Research Reports</p>
+<ul id="reports"></ul>
+<div id="report_pane">
+  <div class="pane" id="cover">
+    <img src="../images/fashion-2012.jpeg"/>
+  </div>
+  <div id="top_ten_wrapper">
+    <h2>The Top ten</h2>
+    <ul class="pane">
+      <li>1. Burberry</li>
+      <li>2. Ralph Lauren</li>
+      <li>3. Kate Spade</li>
+      <li>4. Tory Burch</li>
+      <li>5. Gucci</li>
+    </ul>
+    <ul>
+      <li>6. Coach</li>
+      <li>7. Armani</li>
+      <li>8. YSL</li>
+      <li>9. Louis Vuitton</li>
+      <li>ten. Gecko</li>
+    </ul>
+  </div>
+  <div>
+    <h2>Your Score</h2>
+    <div>
+      <p id="score_text">Your IQ of ten4 represents an increase of 14 points since <a href="#">last year</a></p>
+    </div>
+  </div>
+</div>
+</script>
+
+<script id="spider_view" type="text/x-handlebars-template">
+<div id="report_card_image">
+<img src="images/fashion-2012.jpeg"/>
+</div>
+<div>
+  <p id="report_card">REPORT CARD</p>
+  <p id="report_title">Digital IQ Index&#174: Fashion 2012</p> 
+  <p id="data_note">Data is based on 9/12/12 through 12/12/12</p>
+</div>
+
+<div id="chart_wrapper">
+  <div id="spider_controls">
+    <div id="brand_toggle">
+      <p class="control-subheading">Brands</p>
+      <ul id="brand_list"></ul>
+      <div id="benchmark_brand_list_container">
+        <p> + Add Benchmark Brand</p>
+        <div class="benchmark_brand_list">
+          <ul id="b_brand_list">
+            <li>test 1</li>
+            <li>test 2</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <div id="category_total">
+      <p class="control-subheading">Categories</p>
+      <ul id="category_list">
+        <li class="category" id="social_media"><input type="checkbox" checked="checked"/> Social Media</li>
+        <li class="category" id="site"><input type="checkbox" checked="checked"/> Site </li>
+        <li class="category" id="digital_marketing"><input type="checkbox" checked="checked"/> Digital Marketing </li>
+        <li class="category" id="mobile"><input type="checkbox" checked="checked"/> Mobile </li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="control-subheading">Deep Dives</p>
+      <ul id="deep_dive_ul">
+        <li>
+        <img src="images/pdf.gif"/><a href="#">Deep Dive 12/18/12</a>
+        </li>
+      </ul>
+      <p id="dd_latin">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation. </p>
+    </div>
+  </div>
+  <div id="chart_container"></div>
+</div>
+<div id="german_chart">
+  <table>
+    <tr>
+      <th>Brand</th>
+      <th>Technology</th>
+      <th>Search & Navigation</th>
+      <th>Customer Service</th>
+      <th>Product Page</th>
+      <th>Account</th>
+      <th>Checkout</th>
+    </tr>
+  </table>
+</div>
+</script>
+
+<script id="spider_brand_list" type="text/x-handlebars-template">
+{{#each data}}
+<li class="brand-control">
+  <div class="brand-name">{{brand}}</div>
+</li>
+{{/each}}
+</script>
+
+<script id="benchmark_list_partial" type="text/x-handlebars-template">
+{{#each data}}
+<li class="brand-list-li">{{rank}} {{brand}}</li>
+{{/each}}
+</script>
+
+<script id="engagement_view" type="text/x-handlebars-template">
+<!-- <p>Facebook Media Engagement</p> -->
+<div id="engagement_chart_container"></div>
+  <div id="benchmark_control_container">
+
+    <div id="search_and_favorite_benchmarks_container">
+
+      <div id="search_benchmarks">        
+        <div id="search_benchmarks_heading">
+            <input id="benchmark_search_input" type="text" placeholder="fetching brands... please wait" disabled="True"/>
+            <ul id="benchmark_search_results_list"></ul>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="search_benchmarks_results"></div>
+      </div>
+      
+      <div id="favorite_benchmarks">
+        <div "favorite_benchmarks_heading">     
+          <img class="favorite-title-icon" src="images/clickedStar.png"/>
+          <p class="favorites-title benchmark-subheading">Favorites</p>
+        </div>
+        <div id="favorite_benchmarks_results"></div>
+      </div>      
+    </div>
+
+    <div id="category_benchmarks_container">
+      
+      <div id="category_benchmark_controls">
+
+        <!-- <div id="category_benchmarks_instruction_wrapper">
+                <div class="checkbox-icon"></div><p> to add to chart</p>
+                <p> <img id="favorite_instruction_icon" src="/wp-content/themes/l2/images/intelligencePage/clickedStar.png"/> to add/remove favorites </p>
+                <p> <span id="reset_link_text">links</span> to visit brand pages</p>
+            </div>-->
+
+            <p class="benchmark-drop-title benchmark-subheading" id="cat_heading">Category leaders</p>
+            <p class="benchmark-subheading" id="com_size_heading">Community size</p>
+
+        <select id="category_benchmark_drop">
+              <option value="18">L2 100</option>
+              <option value="3">Beauty & Skincare</option>
+              <option value="4">Fashion & Leather</option>
+              <option value="12">Retail</option>
+              <option value="13">Spirits & Champagnes</option>
+              <option value="15">Travel</option>
+              <option value="17">Watches & Jewelry</option>
+            </select>
+            <select id="community_size_drop">
+              <option value="1">20k - 100k</option>
+              <option value="2">100k - 500k</option>
+              <option value="3">500k - 1M</option>
+              <option value="4">1M+</option>
+            </select>
+            <div style="clear: both;"></div> 
+      </div>
+      <div id="category_benchmark_results"></div>
+    </div>
+    <div style="clear: both;"></div>
+    </div> 
+</script>
+
+<script id="german_chart_row" type="text/x-handlebars-template">
+<p>Facebook Media Engagement</p>
+<div id="engagement_chart_container"></div>
+<div id="engagement_controls"></div>
+</script>
+
+
+
+<script id="timeseries_view" type="text/x-handlebars-template">
+  <!-- metric control container -->
+    <div id="metric_control_container">
+        <div id="fb_metrics" class="platform-toggle facebook">
+            <img class="metric-image" src="images/Facebook.png"/>
+            <div id="facebook_likes_count_total" class="facebook-metric facebook metric active">"LIKES"</div>
+            <div id="facebook_likes_count_today" class="facebook-metric facebook metric">"LIKES"/DAY</div>
+            <div id="facebook_likes_interaction_rate" class="facebook-metric facebook metric">ENGAGEMENT</div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div id="twitter_metrics" class="platform-toggle twitter">
+            <img class="metric-image" src="images/Twitter.png"/>
+            <div id="twitter_follower_count_total" class="twitter-metric twitter metric">FOLLOWERS</div>
+            <div id="twitter_follower_count_today" class="twitter-metric twitter metric">FOLLOWERS/DAY</div>
+            <div id="twitter_tweets_count_today" class="twitter-metric twitter metric">TWEETS/DAY</div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div id="yt_metrics" class="platform-toggle youTube">
+            <img class="metric-image" src="images/YouTube.png"/>
+            <div id="youtube_videos_views_count_total" class="yt-metric youTube metric">VIEWS</div>
+            <div id="youtube_uploads_count_today" class="yt-metric youTube metric"># VIDEOS</div>
+            <div id="youtube_videos_views_count_total_growth30" class="yt-metric youTube metric">30 DAY VIEWS GROWTH %
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+
+    <!-- chart container -->
+  <div id="timeseries_chart_container"></div>
+  <div style="clear: both;"></div>              
+
+  <div id="benchmark_heading_wrapper">
+      <h2>Compare your brand:</h2>
+      <div id="reset_button">RESET</div>
+  <div style="clear: both;"></div>
+  </div>              
+
+  <!-- benchmark control container -->
+  <div id="benchmark_control_container">
+
+    <div id="search_and_favorite_benchmarks_container">
+
+      <div id="search_benchmarks">        
+        <div id="search_benchmarks_heading">
+            <input id="benchmark_search_input" type="text" placeholder="fetching brands... please wait" disabled="True"/>
+            <ul id="benchmark_search_results_list"></ul>
+            <div style="clear: both;"></div>
+        </div>
+        <div id="search_benchmarks_results"></div>
+      </div>
+      
+      <div id="favorite_benchmarks">
+        <div "favorite_benchmarks_heading">     
+          <img class="favorite-title-icon" src="images/clickedStar.png"/>
+          <p class="favorites-title benchmark-subheading">Favorites</p>
+        </div>
+        <div id="favorite_benchmarks_results"></div>
+      </div>      
+    </div>
+
+    <div id="category_benchmarks_container">
+      
+      <div id="category_benchmark_controls">
+
+        <!-- <div id="category_benchmarks_instruction_wrapper">
+                <div class="checkbox-icon"></div><p> to add to chart</p>
+                <p> <img id="favorite_instruction_icon" src="/wp-content/themes/l2/images/intelligencePage/clickedStar.png"/> to add/remove favorites </p>
+                <p> <span id="reset_link_text">links</span> to visit brand pages</p>
+            </div>-->
+
+            <p class="benchmark-drop-title benchmark-subheading">Category leaders</p>
+
+        <select id="category_benchmark_drop">
+              <option value="18">L2 100</option>
+              <option value="3">Beauty & Skincare</option>
+              <option value="4">Fashion & Leather</option>
+              <option value="12">Retail</option>
+              <option value="13">Spirits & Champagnes</option>
+              <option value="15">Travel</option>
+              <option value="17">Watches & Jewelry</option>
+            </select>
+            <div style="clear: both;"></div> 
+      </div>
+      <div id="category_benchmark_results"></div>
+    </div>
+    <div style="clear: both;"></div>
+    </div> 
+
+</script>
+
+<script id="brand_partial" type="text/x-handlebars-template">
+{{#each brands}}
+  <div class="brand">
+    <img class="favorite-icon" src="images/emptyStar.png"/>
+    <input type="checkbox" class="brand-check {{brand_id}}"/>
+    <p class="brand-name">{{brandfamily_name}} - {{geography_name}} {{extra_modifier}}</p>
+  </div>
+{{/each}}
+</script>
+
+<script id="landing_page_view" type="text/x-handlebars-template">
+<div>
+  <p id="explanation"> L2 intelligence tools are designed to allow members to track and benchmark their digital performance</p>
+  <p id="input_instruction"> Please select your default brand </p>
+  <div id="input_container">
+    <input id="set_default_input" type="text" placeholder="Fetching brands, please wait..." disabled="True"> <div id="submit_favorite">Make Default</div> 
+  </div>
+  <div style="clear: both;"></div>
+  <div id="module_icon_container">
+    <ul>
+      <li>
+        <div id="intelligence" class="module-icon"></div>
+        <p class="module-title">Intelligence</p>
+      </li>
+      <li>
+        <div id="category_leaders" class="module-icon"></div>
+        <p class="module-title">Category Leaders</p>
+      </li>
+      <li>
+        <div id="engagement" class="module-icon"></div>
+        <p class="module-title">Engagement</p>
+      </li>
+      <li>
+        <div id="l2_100" class="module-icon"></div>
+        <p class="module-title">L2 100</p>
+      </li>
+    </ul>
+  </div>
+</div>
+</script>
+
+<script id="top_ten_view" type="text/x-handlebars-template">
+  
+  <div id="top_ten_header">     
+    <div id="top_ten_title">
+      <p id="service_icon"><img src="images/Facebook.png"/></p>
+      <p id="service_title">Top 5 <span id="top_ten"></span> By Category: </p>
+    </div>
+
+  <div id="category_drop_wrapper">
+    <select id="category_benchmark_drop">
+      <option value="18">L2 100</option>
+      <option value="3">Beauty & Skincare</option>
+      <option value="4">Fashion & Leather</option>
+      <option value="12">Retail</option>
+      <option value="13">Spirits & Champagnes</option>
+      <option value="15">Travel</option>
+      <option value="17">Watches & Jewelry</option>
+    </select>
+  </div>
+
+    <div id="toggle_wrapper">
+    <div id="fb_toggle" class="facebook facebook-metric top-ten-metric active">Facebook</div>
+    <div id="twitter_toggle" class="twitter twitter-metric top-ten-metric">Twitter</div>
+    <div id="yt_toggle" class="youtube yt-metric top-ten-metric">YouTube</div>
+    </div>
+  </div>
+  <div style="clear: both;"></div>
+
+    <div id="top_ten_chart_container">
+      <div id="top_ten_wrapper" class="gray chart-wrapper">
+        <div id="top_ten_all_time">
+          <div id="top_ten_all_time_title" class="m2_title">
+            <p>ALL TIME</p>
+          </div>
+          <div id="top_ten_all_time_chart_container" class="top_ten_chart"></div>
+        </div>
+      </div>
+
+      <div id="top_ten_perday_wrapper" class="gray chart-wrapper">
+        <div id="top_ten_perday">
+          <div id="top_ten_perday_title" class="m2_title">
+            <p>30 DAYS</p>
+          </div>
+          <div id="top_ten_perday_chart_container" class="top_ten_chart"></div>
+        </div>
+      </div>
+
+      <div id="top_ten_growth_wrapper" class="gray chart-wrapper">
+        <div id="top_ten_growth">
+          <div id="top_ten_growth_title" class="m2_title">
+            <p>30 DAYS</p>
+          </div>
+          <div id="top_ten_growth_chart_container" class="top_ten_chart"></div>
+        </div>
+      </div>
+  </div>
+
+</script>
+
+<?php 
+	get_footer(); 
+} //end members only	
+?>

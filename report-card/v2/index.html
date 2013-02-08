@@ -15,7 +15,7 @@
 
 	</head>
 	<body>
-		<div id="user_email" style="display:none;"></div>
+		<div id="user_email" style="display:none;">biff@l2thinktank.com</div>
 		<div id="header"></div>
 
 		<div id="content">
@@ -351,28 +351,29 @@
 
 <script id="landing_page_view" type="text/x-handlebars-template">
 <div>
-	<p> L2 intelligence tools are designed to allow members to track and benchmark their digital performance</p>
-	<p> Please select your default brand </p>
-	<div>
-		<input type="text"> <div id="submit_favorite">Make Default</div> 
+	<p id="explanation"> L2 intelligence tools are designed to allow members to track and benchmark their digital performance</p>
+	<p id="input_instruction"> Please select your default brand </p>
+	<div id="input_container">
+		<input id="set_default_input" type="text" placeholder="Fetching brands, please wait..." disabled="True"> <div id="submit_favorite">Make Default</div> 
 	</div>
+	<div style="clear: both;"></div>
 	<div id="module_icon_container">
 		<ul>
 			<li>
-				<div class="module-icon"></div>
-				<p class="module-title"></p>
+				<div id="intelligence" class="module-icon"></div>
+				<p class="module-title">Intelligence</p>
 			</li>
 			<li>
-				<div class="module-icon"></div>
-				<p class="module-title"></p>
+				<div id="category_leaders" class="module-icon"></div>
+				<p class="module-title">Category Leaders</p>
 			</li>
 			<li>
-				<div class="module-icon"></div>
-				<p class="module-title"></p>
+				<div id="engagement" class="module-icon"></div>
+				<p class="module-title">Engagement</p>
 			</li>
 			<li>
-				<div class="module-icon"></div>
-				<p class="module-title"></p>
+				<div id="l2_100" class="module-icon"></div>
+				<p class="module-title">L2 100</p>
 			</li>
 		</ul>
 	</div>
